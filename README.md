@@ -1,1 +1,1 @@
-# index
+# Jnanin Yoga Studio
