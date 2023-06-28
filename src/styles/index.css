@@ -1,3 +1,83 @@
+@import url('https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root{
+  --yoga-black: #0E0E0F;
+  --yoga-white: #F9F3F2;
+  --yoga-red: #FCD0C7;
+  --yoga-green: #8CC9D2;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'EB Garamond', serif;
+  color: var(--yoga-black);
+}
+
+/* Tailwind Custom Color Component */
+@layer components {
+  /* Colors */
+  .yoga-green { @apply text-[#8CC9D2] }
+  .yoga-red { @apply text-[#FCD0C7] }
+  .yoga-white { @apply text-[#F9F3F2] }
+  .yoga-black { @apply text-[#0E0E0F] }
+  /* Backgrounds */
+  .bg-yoga-green { @apply bg-[#8CC9D2] }
+  .bg-yoga-red { @apply bg-[#FCD0C7] }
+  .bg-yoga-white { @apply bg-[#F9F3F2] }
+  .bg-yoga-black { @apply bg-[#0E0E0F] }
+  /* Borders */
+  .border-yoga-green { @apply border-[#8CC9D2] }
+  .border-yoga-red { @apply border-[#FCD0C7] }
+  .border-yoga-white { @apply border-[#F9F3F2] }
+  .border-yoga-black { @apply border-[#0E0E0F] }
+  /* Hover */
+  .hover\:yoga-green:hover { @apply hover:text-[#8CC9D2] }
+  .hover\:yoga-red:hover { @apply hover:text-[#FCD0C7] }
+  .hover\:yoga-white:hover { @apply hover:text-[#F9F3F2] }
+  .hover\:yoga-black:hover { @apply hover:text-[#0E0E0F] }
+
+  /* Custom Classes */
+  .bg-texture-h{
+    background-image: url('/src/assets/imgs/spine/texture-horizontal.jpg');
+    @apply bg-opacity-80;
+    @apply bg-yoga-white;
+    @apply bg-no-repeat;
+    @apply bg-origin-border;
+    @apply bg-cover;
+    @apply bg-center;
+  }
+
+  .bg-texture-v{
+      background-image: url('/src/assets/imgs/spine/texture-vertical.jpg');
+      /* @apply bg-opacity-20; */
+      /* @apply backdrop:opacity-80; */
+      backdrop-filter: opacity(0.2);
+      /* @apply bg-yoga-white; */
+      @apply bg-no-repeat;
+      @apply bg-origin-border;
+      @apply bg-cover;
+      @apply bg-center;
+  }
+}
+
+body{
+  background-image: url('/src/assets/imgs/spine/BeigeMat.jpg');
+  background-repeat: repeat;
+  background-origin: border-box;
+  background-attachment: fixed;
+}
+
+.cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.EBGramond{
+  font-family: 'EB Garamond', serif;
+}
