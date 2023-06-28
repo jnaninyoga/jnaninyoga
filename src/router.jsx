@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
-export default function router() {
+export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
