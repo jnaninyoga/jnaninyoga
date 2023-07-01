@@ -51,9 +51,9 @@ export default function Footer() {
         </ul>       
         {/* Navigation */}
         <ul className="sm:w-1/12 order-1 sm:order-4 cinzel flex flex-col gap-2" id="NavigatonLinks">
-          <li className="text-center text-xl"><Link to="/">Home</Link></li>
-          <li className="text-center text-xl"><Link to="/about">About</Link></li>
-          <li className="text-center text-xl"><Link to="/contact">Contact</Link></li>
+          <li className="text-center text-xl"><Link to="/" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green`}>Home</Link></li>
+          <li className="text-center text-xl"><Link to="/about" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green`}>About</Link></li>
+          <li className="text-center text-xl"><Link to="/contact" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green`}>Contact</Link></li>
         </ul>
       </section>
       <h6 className="mt-4 pt-4 w-screen text-center font-bold sm:text-base text-sm">{copyright("Jnanin Yoga")}</h6>

@@ -23,10 +23,10 @@
 /* Tailwind Custom Color Component */
 @layer components {
   /* Colors */
-  .yoga-green { @apply text-[#8CC9D2] }
-  .yoga-red { @apply text-[#FCD0C7] }
-  .yoga-white { @apply text-[#F9F3F2] }
-  .yoga-black { @apply text-[#0E0E0F] }
+  .text-yoga-green { @apply text-[#8CC9D2] }
+  .text-yoga-red { @apply text-[#FCD0C7] }
+  .text-yoga-white { @apply text-[#F9F3F2] }
+  .text-yoga-black { @apply text-[#0E0E0F] }
   /* Backgrounds */
   .bg-yoga-green { @apply bg-[#8CC9D2] }
   .bg-yoga-red { @apply bg-[#FCD0C7] }
@@ -43,28 +43,80 @@
   .hover\:yoga-white:hover { @apply hover:text-[#F9F3F2] }
   .hover\:yoga-black:hover { @apply hover:text-[#0E0E0F] }
 
-  /* Custom Classes */
-  .bg-texture-h{
-    background-image: url('/src/assets/imgs/spine/texture-horizontal.jpg');
-    @apply bg-opacity-80;
-    @apply bg-yoga-white;
-    @apply bg-no-repeat;
-    @apply bg-origin-border;
-    @apply bg-cover;
-    @apply bg-center;
-  }
+  /* Box Shadow */
+  .shadow-yoga-green { @apply shadow-[#8CC9D2] }
+  .shadow-yoga-red { @apply shadow-[#FCD0C7] }
 
-  .bg-texture-v{
-      background-image: url('/src/assets/imgs/spine/texture-vertical.jpg');
-      /* @apply bg-opacity-20; */
-      /* @apply backdrop:opacity-80; */
-      backdrop-filter: opacity(0.2);
-      /* @apply bg-yoga-white; */
+  @layer utilities{
+    .bg-texture{
+      @apply relative;
+      @apply bg-yoga-white;
+    }
+
+    .texture-h::before, .texture-v::before{
+      @apply content-[''];
+      @apply absolute;
+      @apply inset-0;
+      @apply h-full;
+      @apply w-full;
       @apply bg-no-repeat;
       @apply bg-origin-border;
       @apply bg-cover;
       @apply bg-center;
+      @apply opacity-40; 
+      @apply select-none;
+      @apply -z-10;
+    }
+
+    .texture-h::before{
+      background-image: url('/src/assets/imgs/spine/texture-horizontal.jpg');
+    }
+
+    .texture-v::before{
+      background-image: url('/src/assets/imgs/spine/texture-vertical.jpg');
+    }
+
+    .yoga-btn{
+      @apply flex;
+      @apply items-center;
+      @apply justify-center;
+      @apply text-center;
+      @apply font-bold;
+      @apply cinzel;
+      /* @apply uppercase; */
+      @apply px-6;
+      @apply py-4;
+      @apply transition-all;
+      @apply duration-300;
+      @apply ease-in-out;
+      @apply bg-yoga-red;
+      @apply outline;
+      @apply outline-2;
+      @apply outline-[var(--yoga-white)];
+      @apply -outline-offset-8;
+    }
+
+    .yoga-btn:hover{
+      box-shadow: 5px 5px 0 0 var(--yoga-green);
+      @apply scale-[1.02];
+    }
+
+    .shadow-yoga-green{
+      box-shadow: 0px 40px 0px 0px #8CC9D2;
+      @screen sm{
+        box-shadow: 20px 20px 0px 0px #8CC9D2;
+      }
+    }    
+
+    .shadow-yoga-green-reverse{
+      box-shadow: 0px 40px 0px 0px #8CC9D2;
+      @screen sm{
+        box-shadow: -20px 20px 0px 0px #8CC9D2;
+      }
+    }
+
   }
+
 }
 
 body{
@@ -80,4 +132,13 @@ body{
 
 .EBGramond{
   font-family: 'EB Garamond', serif;
+}
+
+/* Custom Classes */
+.shadow-yoga-green-sm {
+  box-shadow: 20px 20px 0px 0px #8CC9D2;
+}
+
+.shadow-yoga-green-mb {
+  box-shadow: 0px 40px 0px 0px #8CC9D2;
 }
