@@ -6,8 +6,16 @@ import { useState } from "react";
 export default function Header() {
   const [isMenuHidden, setIsMenuHidden] = useState(true);
 
-  const showMenu = () => { setIsMenuHidden(false) };
-  const hideMenu = () => { setIsMenuHidden(true) };
+  const showMenu = () => { 
+    setIsMenuHidden(false)
+    // PREVENT SCROLLING
+    document.body.style.overflow = "hidden";
+  };
+  const hideMenu = () => { 
+    setIsMenuHidden(true) 
+    // ALLOW SCROLLING
+    document.body.style.overflow = "auto";
+  };
   const activePage = link => window.location.pathname.toLowerCase() === link.toLowerCase() ? "before:w-full text-yoga-green" : "before:w-0";
 
   return (
@@ -27,8 +35,8 @@ export default function Header() {
           <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green ${activePage("/")}`}><Link to={"/"}>Home</Link></li>
           <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green ${activePage("/about")}`}><Link to={"/about"}>About</Link></li>
           <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green ${activePage("/contact")}`}><Link to={"/contact"}>Contact</Link></li>
+          <Lang className="text-xl"/>
         </ul>
-        <Lang className="text-xl"/>
         <button onClick={hideMenu} className="absolute top-6 right-6 text-2xl text-yoga-red sm:hidden"><i className="fi fi-bs-cross"></i></button>
       </nav>
 
