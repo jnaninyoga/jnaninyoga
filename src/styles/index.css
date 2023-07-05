@@ -20,6 +20,28 @@
   color: var(--yoga-black);
 }
 
+/* custom Scroll Bar - the thumb the only thing show up*/
+::-webkit-scrollbar {
+  @apply w-1.5;
+  @apply h-1.5;
+  @apply bg-transparent;
+  @apply appearance-none;
+}
+
+::-webkit-scrollbar-track {
+  background-image: url("../assets/imgs/spine/BeigeMat.jpg");
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-yoga-green;
+  @apply transition-all;
+  @apply duration-300;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-yoga-red;
+}
+
 /* Tailwind Custom Color Component */
 @layer components {
   /* Colors */
@@ -76,29 +98,60 @@
       background-image: url('/src/assets/imgs/spine/texture-vertical.jpg');
     }
 
-    .yoga-btn{
+    .yoga-btn, .yoga-btn-sec{
       @apply flex;
       @apply items-center;
       @apply justify-center;
       @apply text-center;
       @apply font-bold;
       @apply cinzel;
-      /* @apply uppercase; */
       @apply px-6;
-      @apply py-4;
+      @apply py-3;
       @apply transition-all;
       @apply duration-300;
       @apply ease-in-out;
-      @apply bg-yoga-red;
       @apply outline;
       @apply outline-2;
-      @apply outline-[var(--yoga-white)];
       @apply -outline-offset-8;
     }
 
-    .yoga-btn:hover{
+    .yoga-btn{
+      @apply bg-yoga-red;
+      @apply outline-[var(--yoga-white)];
+    }
+
+    .yoga-btn-sec{
+      @apply bg-yoga-white;
+      @apply outline-[var(--yoga-red)];
+    }
+
+    .yoga-btn:hover, .yoga-btn:focus, .yoga-btn:active, .yoga-btn-sec:hover, .yoga-btn-sec:focus, .yoga-btn-sec:active{
       box-shadow: 5px 5px 0 0 var(--yoga-green);
       @apply scale-[1.02];
+    }
+
+    .form-field{
+      @apply w-full;
+      @apply h-fit;
+      @apply min-h-[3rem];
+      @apply px-6;
+      @apply py-3;
+      @apply transition-all;
+      @apply duration-300;
+      @apply ease-in-out;
+      @apply bg-yoga-white;
+      @apply outline;
+      @apply outline-2;
+      @apply outline-[var(--yoga-green)];
+      @apply -outline-offset-8;
+    }
+
+    .form-field::placeholder{
+      @apply cinzel;
+    }
+
+    .form-field:hover, .form-field:focus, .form-field:active, .form-field:not(:placeholder-shown){
+      box-shadow: 5px 5px 0 0 var(--yoga-red);
     }
 
     .shadow-yoga-green{
@@ -107,14 +160,6 @@
         box-shadow: 20px 20px 0px 0px #8CC9D2;
       }
     }    
-
-    .shadow-yoga-green-reverse{
-      box-shadow: 0px 40px 0px 0px #8CC9D2;
-      @screen sm{
-        box-shadow: -20px 20px 0px 0px #8CC9D2;
-      }
-    }
-
   }
 
 }

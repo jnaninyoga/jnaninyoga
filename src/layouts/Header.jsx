@@ -19,16 +19,16 @@ export default function Header() {
   const activePage = link => window.location.pathname.toLowerCase() === link.toLowerCase() ? "before:w-full text-yoga-green" : "before:w-0";
 
   return (
-    <header className={`fixed z-[9999] bg-yoga-white sm:px-10 px-4 h-14 sm:h-20 w-full flex justify-between items-center`}>
+    <header className={`fixed z-[9999] bg-yoga-white sm:px-10 px-4 h-14 sm:h-16 w-full flex justify-between items-center`}>
       <div className="sm:h-full sm:w-auto w-full flex items-center sm:justify-center justify-between sm:gap-6">
-        <img className="sm:h-16 h-12" src={logo} alt="Jnanin Yoga Studio Logo" />
+        <img className="sm:h-14 h-12" src={logo} alt="Jnanin Yoga Studio Logo" />
         <h1 className="cinzel sm:text-xl font-bold uppercase">Jnanin Yoga Studio</h1>
         <button onClick={showMenu} className="sm:hidden flex items-center justify-center text-2xl"><i className="fi fi-bs-menu-burger flex items-center justify-center"></i></button>
       </div>
 
       <nav className={`bg-yoga-white sm:pt-0 pt-16 sm:h-full h-screen sm:w-auto w-screen sm:relative fixed z-[9999] top-0 flex items-center sm:justify-center justify-start sm:gap-4 gap-14 sm:flex-row flex-col texture-v sm:bg-none sm:before:bg-none sm:right-auto transition-all ${isMenuHidden ? "-right-[120%]" : "right-0"}`}>
         <Link to={"/"} className="sm:h-full sm:hidden flex items-center gap-4 sm:flex-row flex-col">
-          <img className="sm:h-16 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
+          <img className="sm:h-14 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
           <h1 className="cinzel text-2xl text-center font-bold uppercase">Jnanin Yoga Studio</h1>
         </Link>
         <ul className="flex items-center sm:text-xl text-2xl font-bold gap-4 sm:flex-row flex-col">

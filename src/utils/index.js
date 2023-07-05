@@ -23,6 +23,15 @@ export const OverviewStockImgs = {
     yoga: [Y1, Y2, Y3, Y4, Y5]
 };
 
+// Form Fields:
+export const formFields = [
+    {type: 'text', name: 'name', placeholder: 'Name'},
+    {type: 'email', name: 'email', placeholder: 'Email'},
+    {type: 'tel', name: 'phone', placeholder: 'Phone Number'},
+    {type: 'textarea', name: 'message', placeholder: 'Message'}
+];
+
+
 export function copyright(hostname=window.location.hostname){
     return `Copyright © ${new Date().getFullYear()} ${hostname}, All Rights Reserved`
 }
