@@ -3,6 +3,10 @@ import IntersectedSection from '../layouts/IntersectedSection';
 import YogaPose1 from '../assets/videos/yogapose-1.mp4';
 import YogaPose2 from '../assets/videos/yogapose-2.mp4';
 import YogaPose3 from '../assets/videos/yogapose-3.mp4';
+// Video Posters
+import YogaPose1Poster from '../assets/imgs/stock/yogapose-1.png';
+import YogaPose2Poster from '../assets/imgs/stock/yogapose-2.png';
+import YogaPose3Poster from '../assets/imgs/stock/yogapose-3.png';
 
 export default function Yoga() {
   return (
@@ -14,6 +18,7 @@ export default function Yoga() {
           Dolor blanditiis aperiam ipsum voluptas reprehenderit! Voluptates quo unde quas error eius? Qui ratione, culpa exercitationem odio quod a at molestiae. Reprehenderit iste id magnam sequi ipsa ratione iusto earum?"
           video={YogaPose1}
           alt='Yoga pose for stretching back and legs'
+          poster={YogaPose1Poster}
         />
         <IntersectedSection
           title='Yoga'
@@ -22,6 +27,7 @@ export default function Yoga() {
           Dolor blanditiis aperiam ipsum voluptas reprehenderit! Voluptates quo unde quas error eius? Qui ratione, culpa exercitationem odio quod a at molestiae. Reprehenderit iste id magnam sequi ipsa ratione iusto earum?"
           video={YogaPose2}
           alt='Yoga pose for stretching back and legs'
+          poster={YogaPose2Poster}
           reverse={true}
         />
         <IntersectedSection
@@ -31,6 +37,7 @@ export default function Yoga() {
           Dolor blanditiis aperiam ipsum voluptas reprehenderit! Voluptates quo unde quas error eius? Qui ratione, culpa exercitationem odio quod a at molestiae. Reprehenderit iste id magnam sequi ipsa ratione iusto earum?"
           video={YogaPose3}
           alt='Yoga pose for stretching back and legs'
+          poster={YogaPose3Poster}
         />
     </main>
   )
