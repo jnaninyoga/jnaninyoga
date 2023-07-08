@@ -20,6 +20,16 @@
   color: var(--yoga-black);
 }
 
+*::selection{
+  background-color: var(--yoga-green);
+  color: var(--yoga-white);
+}
+
+*::-moz-selection, *::-webkit-selection, *::-ms-selection, *::-o-selection, *::-khtml-selection {
+  background-color: var(--yoga-green);
+  color: var(--yoga-white);
+}
+
 /* custom Scroll Bar - the thumb the only thing show up*/
 ::-webkit-scrollbar {
   @apply w-1.5;
@@ -29,7 +39,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-image: url("../assets/imgs/spine/BeigeMat.jpg");
+  @apply bg-yoga-white;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -144,6 +154,7 @@
       @apply outline-2;
       @apply outline-[var(--yoga-green)];
       @apply -outline-offset-8;
+      @apply resize-none;
     }
 
     .form-field::placeholder{
