@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { useIntersectView } from '../hooks';
 import icon from '../assets/imgs/icons/lotus.png';
 import PropsTypes from 'prop-types';
+import Followers from '../components/Followers';
 
 Form.propTypes = {
     title: PropsTypes.string,
@@ -11,7 +12,7 @@ Form.propTypes = {
     onSubmit: PropsTypes.func
 }
 
-export default function Form({title, fields, btn, onSubmit}) {
+export default function Form({title, fields, btn, onSubmit=e=>e.preventDefault()}) {
     const [contact, setContact] = useState({});
     const formRef = useRef(null);
     const btnsRef = useRef(null);
@@ -51,6 +52,7 @@ export default function Form({title, fields, btn, onSubmit}) {
             <button type="reset" className={`${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[-100%] opacity-0'} yoga-btn-sec hover:yoga-btn`}>Reset</button>
             <button type="submit" className={`${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[100%] opacity-0'} yoga-btn`}>{btn}</button>
         </div>
+        <Followers/>
     </form>
   )
 }
