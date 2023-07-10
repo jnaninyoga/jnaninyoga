@@ -1,7 +1,7 @@
 import 'handyscript/lib/string';
 import { useState, useRef } from 'react';
 import { useIntersectView } from '../hooks';
-import icon from '../assets/imgs/icons/lotus.png';
+import icon from '../assets/imgs/icons/lotus.webp';
 import PropsTypes from 'prop-types';
 import Followers from '../components/Followers';
 
