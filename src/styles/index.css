@@ -8,10 +8,27 @@
 @tailwind utilities;
 
 :root{
+  --bg: #ece0d7;
   --yoga-black: #0E0E0F;
   --yoga-white: #F9F3F2;
-  --yoga-red: #FCD0C7;
+  --yoga-red: #fdc5ba;
   --yoga-green: #8CC9D2;
+  /* Yoga Colors for the Calander */
+  --yoga-type-1: var(--yoga-red);
+  --yoga-op-type-1: #fdc5ba60;
+  --yoga-drk-type-1: #57352f;
+  
+  --yoga-type-2: var(--yoga-green);
+  --yoga-op-type-2: #8cc9d260;
+  --yoga-drk-type-2: #0e3e49;
+
+  --yoga-type-3: #f0db65;
+  --yoga-op-type-3: #f0db6560;
+  --yoga-drk-type-3: #473c06;
+  
+  --yoga-type-4: #75f065;
+  --yoga-op-type-4: #75f06560;
+  --yoga-drk-type-4: #12440a;
 }
 
 * {
@@ -55,29 +72,36 @@
 /* Tailwind Custom Color Component */
 @layer components {
   /* Colors */
-  .text-yoga-green { @apply text-[#8CC9D2] }
-  .text-yoga-red { @apply text-[#FCD0C7] }
-  .text-yoga-white { @apply text-[#F9F3F2] }
-  .text-yoga-black { @apply text-[#0E0E0F] }
+  .text-yoga-green { @apply text-[var(--yoga-green)] }
+  .text-yoga-red { @apply text-[var(--yoga-red)] }
+  .text-yoga-white { @apply text-[var(--yoga-white)] }
+  .text-yoga-black { @apply text-[var(--yoga-black)] }
   /* Backgrounds */
-  .bg-yoga-green { @apply bg-[#8CC9D2] }
-  .bg-yoga-red { @apply bg-[#FCD0C7] }
-  .bg-yoga-white { @apply bg-[#F9F3F2] }
-  .bg-yoga-black { @apply bg-[#0E0E0F] }
+  .bg-yoga-green { @apply bg-[var(--yoga-green)] }
+  .bg-yoga-red { @apply bg-[var(--yoga-red)] }
+  .bg-yoga-white { @apply bg-[var(--yoga-white)] }
+  .bg-yoga-black { @apply bg-[var(--yoga-black)] }
   /* Borders */
-  .border-yoga-green { @apply border-[#8CC9D2] }
-  .border-yoga-red { @apply border-[#FCD0C7] }
-  .border-yoga-white { @apply border-[#F9F3F2] }
-  .border-yoga-black { @apply border-[#0E0E0F] }
+  .border-yoga-green { @apply border-[var(--yoga-green)] }
+  .border-yoga-red { @apply border-[var(--yoga-red)] }
+  .border-yoga-white { @apply border-[var(--yoga-white)] }
+  .border-yoga-black { @apply border-[var(--yoga-black)] }
   /* Hover */
-  .hover\:yoga-green:hover { @apply hover:text-[#8CC9D2] }
-  .hover\:yoga-red:hover { @apply hover:text-[#FCD0C7] }
-  .hover\:yoga-white:hover { @apply hover:text-[#F9F3F2] }
-  .hover\:yoga-black:hover { @apply hover:text-[#0E0E0F] }
+  .hover\:yoga-green:hover { @apply hover:text-[var(--yoga-green)] }
+  .hover\:yoga-red:hover { @apply hover:text-[var(--yoga-red)] }
+  .hover\:yoga-white:hover { @apply hover:text-[var(--yoga-white)] }
+  .hover\:yoga-black:hover { @apply hover:text-[var(--yoga-black)] }
+
+  /* Yoga Types Colors for Calander */
+  .text-yoga-1{ color: var(--yoga-drk-type-1) !important; }
+  .text-yoga-2{ color: var(--yoga-drk-type-2) !important; }
+  .text-yoga-3{ color: var(--yoga-drk-type-3) !important; }
+  .text-yoga-4{ color: var(--yoga-drk-type-4) !important; }
 
   /* Box Shadow */
-  .shadow-yoga-green { @apply shadow-[#8CC9D2] }
-  .shadow-yoga-red { @apply shadow-[#FCD0C7] }
+  .shadow-yoga-green { @apply shadow-[var(--yoga-green)] }
+  .shadow-yoga-red { @apply shadow-[var(--yoga-red)] }
+
 
   @layer utilities{
     .bg-texture{
@@ -101,11 +125,11 @@
     }
 
     .texture-h::before{
-      background-image: url('/src/assets/imgs/spine/texture-horizontal.jpg');
+      background-image: url('/src/assets/imgs/spine/texture-horizontal.webp');
     }
 
     .texture-v::before{
-      background-image: url('/src/assets/imgs/spine/texture-vertical.jpg');
+      background-image: url('/src/assets/imgs/spine/texture-vertical.webp');
     }
 
     .yoga-btn, .yoga-btn-sec{
@@ -165,10 +189,90 @@
       box-shadow: 5px 5px 0 0 var(--yoga-red);
     }
 
+    .session{
+      @apply p-2;
+      @apply flex;
+      @apply items-center;
+      @apply justify-center;
+      @apply flex-col;
+      @apply transition-all;
+      @apply duration-300;
+      @apply ease-in-out;
+      @apply outline;
+      @apply outline-2;
+      @apply -outline-offset-8;
+      @apply bg-texture;
+      @apply texture-h;
+      @apply mix-blend-screen;
+      @apply cursor-pointer;
+      @apply overflow-hidden;
+    }
+
+    .session-free{
+      @apply p-2;
+      @apply flex;
+      @apply items-center;
+      @apply justify-center;
+      @apply flex-col;
+      @apply transition-all;
+      @apply duration-300;
+      @apply ease-in-out;
+      @apply outline;
+      @apply outline-2;
+      @apply -outline-offset-8;
+      @apply outline-[var(--yoga-white)];
+      @apply mix-blend-screen;
+      @apply overflow-hidden;
+    }
+
+    .session.session-type-1{
+      @apply text-[var(--yoga-drk-type-1)] !important;
+      @apply bg-[var(--yoga-op-type-1)];
+      @apply outline-[var(--yoga-type-1)];
+    }
+
+    .session.session-type-2{
+      @apply text-[var(--yoga-drk-type-2)] !important;
+      @apply bg-[var(--yoga-op-type-2)];
+      @apply outline-[var(--yoga-type-2)];
+    }
+
+    .session.session-type-3{
+      @apply text-[var(--yoga-drk-type-3)] !important;
+      @apply bg-[var(--yoga-op-type-3)];
+      @apply outline-[var(--yoga-type-3)];
+    }
+
+    .session.session-type-4{
+      @apply text-[var(--yoga-drk-type-4)] !important;
+      @apply bg-[var(--yoga-op-type-4)];
+      @apply outline-[var(--yoga-type-4)];
+    }
+
+    .session.session-type-1:hover, .session.session-type-1:focus, .session.session-type-1:active, .session.session-type-1.session-selected{
+      box-shadow: 5px 5px 0 0 var(--yoga-type-1);
+    }
+
+    .session.session-type-2:hover, .session.session-type-2:focus, .session.session-type-2:active, .session.session-type-2.session-selected{
+      box-shadow: 5px 5px 0 0 var(--yoga-type-2);
+    }
+
+    .session.session-type-3:hover, .session.session-type-3:focus, .session.session-type-3:active, .session.session-type-3.session-selected{
+      box-shadow: 5px 5px 0 0 var(--yoga-type-3);
+    }
+
+    .session.session-type-4:hover, .session.session-type-4:focus, .session.session-type-4:active, .session.session-type-4.session-selected{
+      box-shadow: 5px 5px 0 0 var(--yoga-type-4);
+    }
+
+    .session:hover, .session:focus, .session:active, .session.session-selected{
+      @apply scale-[1.01];
+    }
+
     .shadow-yoga-green{
-      box-shadow: 0px 40px 0px 0px #8CC9D2;
+      box-shadow: 0px 40px 0px 0px var(--yoga-green);
       @screen sm{
-        box-shadow: 20px 20px 0px 0px #8CC9D2;
+        box-shadow: 20px 20px 0px 0px var(--yoga-green);
       }
     }    
   }
@@ -176,7 +280,9 @@
 }
 
 body{
-  background-image: url('/src/assets/imgs/spine/BeigeMat.jpg');
+  background-image: url('/src/assets/imgs/spine/BeigeMat.webp');
+  background-color: var(--bg);
+  background-size: 564px;
   background-repeat: repeat;
   background-origin: border-box;
   background-attachment: fixed;
@@ -186,15 +292,15 @@ body{
   font-family: 'Cinzel', serif;
 }
 
-.EBGramond{
+.EBGramond {
   font-family: 'EB Garamond', serif;
 }
 
 /* Custom Classes */
 .shadow-yoga-green-sm {
-  box-shadow: 20px 20px 0px 0px #8CC9D2;
+  box-shadow: 20px 20px 0px 0px var(--yoga-green);
 }
 
 .shadow-yoga-green-mb {
-  box-shadow: 0px 40px 0px 0px #8CC9D2;
+  box-shadow: 0px 40px 0px 0px var(--yoga-green);
 }
