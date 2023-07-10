@@ -4,9 +4,9 @@ import YogaPose1 from '../assets/videos/yogapose-1.mp4';
 import YogaPose2 from '../assets/videos/yogapose-2.mp4';
 import YogaPose3 from '../assets/videos/yogapose-3.mp4';
 // Video Posters
-import YogaPose1Poster from '../assets/imgs/stock/yogapose-1.png';
-import YogaPose2Poster from '../assets/imgs/stock/yogapose-2.png';
-import YogaPose3Poster from '../assets/imgs/stock/yogapose-3.png';
+import YogaPose1Poster from '../assets/imgs/stock/yogapose-1.webp';
+import YogaPose2Poster from '../assets/imgs/stock/yogapose-2.webp';
+import YogaPose3Poster from '../assets/imgs/stock/yogapose-3.webp';
 
 export default function Yoga() {
   return (

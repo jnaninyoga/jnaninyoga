@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { useIntersectView } from "../hooks";
 import { Link } from "react-router-dom";
-import aboutme from "../assets/imgs/stock/aboutme.png";
-import GreenMat from "../assets/imgs/spine/GreenMat.png";
-import LotusOverlay from "../assets/imgs/icons/lotusOverlay.png";
+import aboutme from "../assets/imgs/stock/aboutme.webp";
+import GreenMat from "../assets/imgs/spine/GreenMat.webp";
+import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
 
 export default function AboutMe() {
   const aboutmeRef = useRef(null);

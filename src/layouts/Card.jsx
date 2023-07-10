@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import icon from '../assets/imgs/icons/lotus.png';
+import icon from '../assets/imgs/icons/lotus.webp';
 import PropTypes from 'prop-types';
 import { useRef } from "react";
 import { useIntersectView } from "../hooks";

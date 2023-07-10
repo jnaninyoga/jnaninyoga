@@ -3,8 +3,8 @@ import Footer from "../layouts/Footer";
 import Header from "../layouts/Header";
 import OverLaped from "../layouts/OverLaped";
 import banner from "../assets/videos/banner.mp4";
-import LotusOverlay from "../assets/imgs/icons/lotusOverlay.png";
-import icon from "../assets/imgs/icons/lotus.png";
+import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
+import icon from "../assets/imgs/icons/lotus.webp";
 import profile from "../assets/imgs/stock/profile.webp";
 import { useIntersectView } from "../hooks";
 
@@ -33,24 +33,24 @@ export default function About() {
           Vitae suscipit rem labore minima accusantium maiores corrupti aliquid? Blanditiis expedita porro delectus explicabo, laborum corrupti modi possimus consequuntur aut odit maiores laboriosam rem illum vel? Vel esse excepturi dignissimos?
           Ullam explicabo incidunt aspernatur dignissimos inventore beatae eveniet iusto commodi labore suscipit doloremque consectetur fugit, eaque nemo mollitia pariatur, deserunt ratione est! Distinctio iusto in, ut delectus laboriosam modi dolor.
           Molestias at possimus libero enim voluptatem, dolorum exercitationem obcaecati perferendis rem accusamus iure, necessitatibus odit porro neque architecto asperiores quae vel ullam quidem temporibus quibusdam! Alias consectetur earum sit incidunt!</p>
-          <ul ref={SocialMedia} className="cinzel items-center flex gap-6" id="SocialMedia">
+          <ul ref={SocialMedia} className="cinzel items-center flex gap-6" id="socialmedia">
             <li>
-              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-200`} href="https://instagram.com/jnaninyoga" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-200`} href="https://instagram.com/jnaninyoga" title="Instagram Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
                 <i className="fi fi-brands-instagram sm:text-lg text-xl text-yoga-white hover:text-yoga-red transition-all duration-300"></i>
               </a>
             </li>
             <li>
-              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-300`} href="https://facebook.com/jnaninyoga" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-300`} href="https://facebook.com/jnaninyoga" title="Facebook Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
                 <i className="fi fi-brands-facebook sm:text-lg text-xl text-yoga-white hover:text-yoga-red transition-all duration-300"></i>
               </a>
             </li>
             <li>
-              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-500`} href="https://wa.me//212661286464" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-500`} href="https://wa.me//212661286464" title="Whatsapp Contact" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
                 <i className="fi fi-brands-whatsapp sm:text-lg text-xl text-yoga-white hover:text-yoga-red transition-all duration-300"></i>
               </a>
             </li>
             <li>
-              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-700`} href="mailto:contact@jnaninyoga.com" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+              <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-700`} href="mailto:contact@jnaninyoga.com" title="Contact Email" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
                 <i className="fi fi-bs-at sm:text-lg text-xl text-yoga-white hover:text-yoga-red transition-all duration-300"></i>
               </a>
             </li>

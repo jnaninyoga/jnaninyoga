@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useIntersectView } from '../hooks';
-import icon from '../assets/imgs/icons/lotus.png';
+import icon from '../assets/imgs/icons/lotus.webp';
 import PropTypes from 'prop-types';
 
 IntersectedSection.propTypes = {

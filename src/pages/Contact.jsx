@@ -3,7 +3,7 @@ import Form from "../layouts/Form";
 import Header from "../layouts/Header";
 import OverLaped from "../layouts/OverLaped";
 import banner from "../assets/videos/banner.mp4";
-import LotusOverlay from "../assets/imgs/icons/lotusOverlay.png";
+import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
 import { formFields } from "../utils";
 
 export default function Contact() {
