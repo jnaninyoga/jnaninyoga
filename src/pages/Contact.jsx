@@ -13,6 +13,11 @@ import OGP from '../constant/ogp';
 export default function Contact() {
   const { t } = useTranslation();
   const [contact, setContact] = useState({});
+  const TFields = t('contact.form.fields', {returnObjects: true});
+
+  contactFields.forEach((field) => {
+    field.placeholder = TFields[field.name.toLowerCase()] || field.placeholder;
+  });
 
   return (
     <>
