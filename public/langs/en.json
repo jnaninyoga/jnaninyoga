@@ -1,6 +1,11 @@
 {
     "navbar":["Home","About","Contact","Classes"],
     "home": {
+        "meta":{
+            "title":"Home - Jnanin Yoga Studio",
+            "description": "Experience holistic wellness and embrace your inner strength at Jnanin Yoga Studio. Join me (the Yoga coach Ouarda) as I guide you through empowering classes that nurture your mind, body, and spirit. Embrace balance, empowerment, and self-discovery within our inclusive community.",
+            "keywords": "Yoga studio, women-led, holistic wellness, empowerment, mind-body-spirit, yoga classes, self-discovery, balance, inner strength, transformative journey, Yoga coach Ouarda, mindfulness, meditation, flexibility, strength, community, inclusivity, wellbeing, stress relief, relaxation, breathwork, health, fitness, positive energy, tranquility"
+        },
         "hero":{
             "title":"Yoga is the journey of the self, through the self, to the self",
             "text":"Yoga, a timeless practice that has transcended generations, holds within it a wealth of wisdom and inspiration. As we embark on this transformative journey, we are reminded of the words of the great sage Patanjali, who said, 'Yoga is the stilling of the fluctuations of the mind.' In a world filled with constant noise and distractions, yoga beckons us to find tranquility amidst the chaos."
@@ -32,10 +37,20 @@
         }
     },
     "about": {
+        "meta":{
+            "title":"About - Jnanin Yoga Studio",
+            "description": "I'm Ouarda, a passionate Moroccan Yoga coach. I guide individuals on a transformative journey toward holistic well-being, adapting my teachings to meet unique needs and goals. With a focus on breathwork, mindfulness, and meditation, I unlock true potential and cultivate self-love. Join me for a beautiful journey of self-discovery, nourishing body and soul for a balanced life.",
+            "keywords": "Yoga studio, women-led, holistic wellness, empowerment, mind-body-spirit, yoga classes, self-discovery, balance, inner strength, transformative journey, Yoga coach Ouarda, mindfulness, meditation, flexibility, strength, community, inclusivity, wellbeing, stress relief, relaxation, breathwork, health, fitness, positive energy, tranquility"
+        },
         "title":"Yoga with Ouarda",
         "text":"Hello, lovely souls! I am Ouarda, a Moroccan female Yoga coach, and I am incredibly passionate about guiding individuals on their transformative journey toward holistic well-being. Growing up in the vibrant cultural tapestry of Morocco, I have always been fascinated by the wisdom and beauty that permeates our traditions. My personal exploration of yoga led me on a path of self-discovery, and I realized the profound impact it had on my mind, body, and spirit. This realization ignited a deep desire within me to share this incredible practice with others and to create a space where individuals can find solace, strength, and inner peace. As a Yoga coach, my mission is to provide a nurturing and inclusive environment for every individual who walks through my door. I believe that yoga is for everyone, regardless of age, shape, or experience. I strive to adapt my teachings to meet each student's unique needs and goals, guiding them on their personal journey of growth. Beyond the physical aspects of yoga, I emphasize the importance of breathwork, mindfulness, and meditation. These practices have been transformative in my own life, and I believe they are vital to unlocking our true potential and finding harmony within ourselves. Through my coaching, I aim to empower individuals to embrace their authentic selves, cultivate self-love, and live mindfully in every aspect of their lives. I am honored to be a part of my student's transformational journeys, witnessing the blossoming of strength, resilience, and inner peace. So, if you're ready to embark on a beautiful journey of self-discovery, I warmly invite you to join me on the mat. Together, let's explore the depths of yoga, nourish our bodies and souls, and create a life of balance, joy, and abundance."
     },
     "contact": {
+        "meta":{
+            "title":"Contact - Jnanin Yoga Studio",
+            "description": "Feel free to reach out to me at Jnain Yoga Studio through our contact form, email, or phone. I'm here to assist you with any inquiries or provide information about our services. Rest assured that I will respond promptly if you fill out the contact form. Thank you for your interest in Jnain Yoga Studio; I eagerly anticipate connecting with you soon.",
+            "keywords": "Yoga studio, Contact, reach out, inquiry, information, communication, message, email, phone, connect, contact form, Jnain Yoga Studio."
+        },
         "title": "Contact Us",
         "form":{
             "sendBtn": "Send",
@@ -43,6 +58,11 @@
         }
     },
     "classes": {
+        "meta":{
+            "title":"Classes - Jnanin Yoga Studio",
+            "description": "Explore the Classes page of Jnain Yoga Studio, where you will embark on a holistic yoga journey. Delve into our carefully curated schedule, effortlessly enroll in your preferred classes, and begin your extraordinary path toward well-being and self-exploration.",
+            "keywords": "Yoga studio, Classes, schedule, timetable, yoga sessions, Jnain Yoga Studio, session timing, calendar, booking, availability."
+        },
         "days":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
         "yogaCoursesTypes": [
             {
