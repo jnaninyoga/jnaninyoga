@@ -1,11 +1,17 @@
 import logo from "../assets/imgs/spine/logo.webp"
 import { Link } from "react-router-dom";
-import { copyright } from "../utils";
+import { copyright, standardNavbar } from "../utils";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation();
+  const navbar = t(`navbar`, { returnObjects: true });
+  
+  const Tnavbar = () => Array.isArray(navbar) ? navbar : standardNavbar;
+
   return (
     <footer className="bg-yoga-white flex flex-col py-8 px-10 items-center justify-between bottom-0 mt-5">
-      <h1 className="z-0 w-full sm:mb-4 mb-8 text-2xl sm:text-left text-center uppercase font-bold relative before:absolute before:h-1 sm:before:w-80 before:w-full before:bg-yoga-black sm:before:left-0 before:left-1/2 sm:before:translate-x-0 before:-translate-x-1/2 before:-bottom-2">Jnanin Yoga Studio</h1>
+      <h1 className="z-0 w-full sm:mb-4 mb-8 text-2xl ltr:sm:text-left rtl:sm:text-right text-center uppercase font-bold relative before:absolute before:h-1 sm:before:w-80 before:w-full before:bg-yoga-black ltr:sm:before:left-0 rtl:sm:before:right-0 before:left-1/2 sm:before:translate-x-0 before:-translate-x-1/2 before:-bottom-2">Jnanin Yoga Studio</h1>
       <section className="container w-full font-medium flex justify-evenly items-center sm:flex-row flex-col gap-4">
         <ul className="sm:w-1/3 sm:order-1 order-4 cinzel flex flex-col sm:gap-2 gap-4" id="contactinfo">
           <li>
@@ -51,10 +57,15 @@ export default function Footer() {
         </ul>       
         {/* Navigation */}
         <ul className="sm:w-1/12 order-1 sm:order-4 cinzel flex flex-col gap-2" id="navigaton">
-          <li className="text-center sm:text-lg text-xl"><Link to="/" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>Home</Link></li>
-          <li className="text-center sm:text-lg text-xl"><Link to="/about" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>About</Link></li>
-          <li className="text-center sm:text-lg text-xl"><Link to="/contact" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>Contact</Link></li>
-          <li className="text-center sm:text-lg text-xl"><Link to="/schedules" className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>Schedules</Link></li>
+          {Tnavbar().map((link, index) => (
+            <li key={index} className="text-center sm:text-lg text-xl">
+              <Link 
+              to={link.toLowerCase() === navbar[0].toLowerCase() ? "/" : `/${standardNavbar[index].toLowerCase()}`}
+              className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>
+              {link}
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
       <h6 className="mt-4 pt-4 w-screen text-center font-bold sm:text-base text-sm">{copyright("Jnanin Yoga")}</h6>
