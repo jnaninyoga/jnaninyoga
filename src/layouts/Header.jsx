@@ -1,10 +1,19 @@
 import Lang from "../components/Lang";
 import logo from "../assets/imgs/spine/logo.webp"
+import "handyscript/lib/string";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { standardNavbar } from "../utils";
+
 
 export default function Header() {
   const [isMenuHidden, setIsMenuHidden] = useState(true);
+  const { t } = useTranslation();
+  const navbar = t(`navbar`, { returnObjects: true });
+
+  // check if navbar is an array
+  const Tnavbar = () => Array.isArray(navbar) ? navbar : standardNavbar;
 
   const showMenu = () => { 
     setIsMenuHidden(false)
@@ -28,19 +37,24 @@ export default function Header() {
         <button onClick={showMenu} className="sm:hidden flex items-center justify-center text-2xl"><i className="fi fi-bs-menu-burger flex items-center justify-center"></i></button>
       </div>
 
-      <nav className={`bg-yoga-white sm:pt-0 pt-8 sm:h-full h-screen sm:w-auto w-screen sm:relative fixed z-[9999] top-0 flex items-center sm:justify-center justify-start sm:gap-4 gap-6 sm:flex-row flex-col texture-v sm:bg-none sm:before:bg-none sm:right-auto transition-all ${isMenuHidden ? "-right-[120%]" : "right-0"}`}>
+      <nav className={`bg-yoga-white sm:pt-0 pt-8 sm:h-full h-screen sm:w-auto w-screen sm:relative fixed z-[9999] top-0 flex items-center sm:justify-center justify-start sm:gap-6 gap-6 sm:flex-row flex-col texture-v sm:bg-none sm:before:bg-none sm:right-auto sm:left-auto ltr:sm:right-auto ltr:sm:left-auto rtl:sm:right-auto rtl:sm:left-auto transition-all ${isMenuHidden ? "ltr:-right-[120%] rtl:-left-[120%]" : "ltr:right-0 rtl:left-0"}`}>
         <Link to={"/"} className="sm:h-full sm:hidden flex items-center gap-4 sm:flex-row flex-col">
           <img className="sm:h-14 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
           <h1 className="cinzel text-2xl text-center font-bold uppercase">Jnanin Yoga Studio</h1>
         </Link>
         <ul className="flex items-center sm:text-lg text-xl font-bold gap-4 sm:flex-row flex-col">
-          <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase ${activePage("/")}`}><Link to={"/"}>Home</Link></li>
-          <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase ${activePage("/about")}`}><Link to={"/about"}>About</Link></li>
-          <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase ${activePage("/contact")}`}><Link to={"/contact"}>Contact</Link></li>
-          <li onClick={hideMenu} className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase ${activePage("/schedules")}`}><Link to={"/schedules"}>Schedules</Link></li>
+          {
+            Tnavbar().map((link, index) => (
+              <li key={index} onClick={hideMenu}>
+                <Link to={link.toLowerCase() === navbar[0].toLowerCase() ? "/" : `/${standardNavbar[index].toLowerCase()}`} 
+                className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase outline-none focus:before:w-full focus:text-yoga-green ${activePage(link.toLowerCase() === navbar[0].toLowerCase() ? "/" : `/${standardNavbar[index].toLowerCase()}`)}`}>
+                { link.toCapitalCase() }
+                </Link>
+              </li>
+          ))}
           <Lang className="text-xl mt-4"/>
         </ul>
-        <button onClick={hideMenu} className="absolute top-6 right-6 text-2xl text-yoga-red sm:hidden"><i className="fi fi-bs-cross"></i></button>
+        <button onClick={hideMenu} className="absolute top-6 ltr:right-6 rtl:left-6 text-2xl text-yoga-red sm:hidden"><i className="fi fi-bs-cross"></i></button>
       </nav>
     </header>
   )

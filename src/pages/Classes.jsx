@@ -5,9 +5,17 @@ import banner from "../assets/videos/yoga.mp4";
 import Session from "../components/Session";
 import sessions from "../constant/sessions.json"
 import SessionRefernce from "../components/SessionRefernce";
+import { useTranslation } from "react-i18next";
+import { activePage, standardDays, standardYogaCoursesTypes } from "../utils";
 
-export default function Schedules() {
-    console.log(sessions);
+export default function Classes() {
+    const { t } = useTranslation();
+    const days = t(`${activePage()}.days`, { returnObjects: true });
+    const yogaCoursesTypes = t(`${activePage()}.yogaCoursesTypes`, { returnObjects: true });
+
+    const TDays = () => Array.isArray(days) ? days : standardDays;
+    const TYogaCoursesTypes = () => Array.isArray(yogaCoursesTypes) ? yogaCoursesTypes : standardYogaCoursesTypes;
+
   return (
     <>
     <Header/>
@@ -16,12 +24,9 @@ export default function Schedules() {
             <table className="table-fixed sm:rotate-0 border-separate border-spacing-2">
                 <thead>
                     <tr className="text-yoga-white w-full">
-                        <th className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">Monday</th>
-                        <th className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">Tuesday</th>
-                        <th className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">Wednesday</th>
-                        <th className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">Thursday</th>
-                        <th className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">Friday</th>
-                        <th className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">Saturday</th>
+                        {TDays().map((day, idx) => (
+                            <th key={idx} className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">{day}</th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +39,8 @@ export default function Schedules() {
                                 start={session.start}
                                 end={session.end}
                                 desc={session.desc}
+                                instructor={t("sessionInstructor", { course: TYogaCoursesTypes()[session.type - session.type === 0 ? 0 : 1].type, start: session.start, end: session.end })}
+                                alt={TYogaCoursesTypes()[session.type - session.type === 0 ? 0 : 1].type}
                             />
                             ))}
                         </tr>
@@ -42,9 +49,7 @@ export default function Schedules() {
             </table>
         </section>
     </OverLaped>
-    
-        <SessionRefernce/>
-
+    <SessionRefernce types={TYogaCoursesTypes()}/>
     <Footer/>
     </>
   )
