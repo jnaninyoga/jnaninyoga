@@ -1,0 +1,67 @@
+{
+    "navbar":["Home","About","Contact","Classes"],
+    "home": {
+        "hero":{
+            "title":"Yoga is the journey of the self, through the self, to the self",
+            "text":"Yoga, a timeless practice that has transcended generations, holds within it a wealth of wisdom and inspiration. As we embark on this transformative journey, we are reminded of the words of the great sage Patanjali, who said, 'Yoga is the stilling of the fluctuations of the mind.' In a world filled with constant noise and distractions, yoga beckons us to find tranquility amidst the chaos."
+        },
+        "overview":["Classes","Studio","Yoga"],
+        "yogamotivation":[
+            {
+                "title": "Unlocking Your Potential",
+                "text": "Yoga is a transformative practice that holds the power to enhance every aspect of your life. By practicing yoga, you embark on a journey of self-discovery and self-improvement. It offers numerous physical and mental benefits, allowing you to cultivate strength, flexibility, and balance in your body. Through the practice of yoga, you can connect with your inner self, reaching a state of deep relaxation and tranquility. It serves as a reminder that your body is not separate from your soul but rather an integral part of it. By embracing yoga, you can unlock the potential within yourself and experience the profound connection between your body and soul."
+            },
+            {
+                "title": "Finding Inner Peace",
+                "text": "In today's fast-paced world, meditation has become more important than ever. Amidst the chaos and constant distractions, meditation provides a refuge of peace and stillness. It allows you to quiet the mind, let go of stress and worries, and find inner clarity. Through regular meditation practice, you can develop a heightened sense of self-awareness and mindfulness, enabling you to fully experience the present moment. Meditation creates a sacred space where you can connect with your soul, fostering a deeper understanding of your true essence. By dedicating time to meditation, you embark on a profound journey of self-exploration and spiritual growth."
+            },
+            {
+                "title": "Harmonizing Body and Soul",
+                "text": "The practice of yoga and meditation offers a unique opportunity to unite your body, mind, and soul in perfect harmony. Yoga postures (asanas) not only strengthen and stretch your physical body but also serve as a gateway to accessing the deeper layers of your being. As you flow through the movements, you become attuned to your breath, allowing it to guide you into a state of deep meditation. Through this union of movement and stillness, you create a sacred space within yourself, where you can experience a sense of oneness. By connecting your body to your soul through yoga and meditation, you tap into a limitless wellspring of inner peace, strength, and joy that radiates into all aspects of your life."
+            }
+        ],
+        "contactcard":{
+            "title":"KEEP UP WITH OUR SESSIONS",
+            "text":"Discover the transformative power of yoga and meditation with our tailored sessions designed to unlock your true potential. Join us to cultivate strength, flexibility, and inner peace, regardless of your level of experience. Don't miss out on the opportunity for a healthier, happier you. Stay connected with our sessions and embark on an incredible journey of self-discovery. Contact us now to unleash your limitless potential",
+            "btn":"Contact Us"
+        },
+        "aboutme":{
+            "title":"About Me",
+            "text":"Greetings, dear souls! I'm Ouarda, a Moroccan female Yoga coach, and I am wholeheartedly here to embark on a transformative journey of holistic well-being with you. Together, let's weave a tapestry of strength, flexibility, and inner peace, as we celebrate the unique path you tread. Through the gentle cadence of breathwork, the stillness of mindfulness, and the sacred art of meditation, we shall awaken the dormant embers of your true potential. Beyond the confines of the mat, I empower you to embrace your authentic self, enveloping your being with love, and finding solace in the gentle embrace of mindful bliss. As we traverse this sacred space hand in hand, we shall paint a vivid tapestry of balance, joy, and abundant blessings, breathing life into the boundless possibilities that yoga offers. It is an immense honor for me to bear witness to the blossoming of your inner strength and profound peace. So, take my hand, dear one, and together, let our spirits soar to the celestial heights of self-discovery and serenity.",
+            "btn":"Learn More"
+        }
+    },
+    "about": {
+        "title":"Yoga with Ouarda",
+        "text":"Hello, lovely souls! I am Ouarda, a Moroccan female Yoga coach, and I am incredibly passionate about guiding individuals on their transformative journey toward holistic well-being. Growing up in the vibrant cultural tapestry of Morocco, I have always been fascinated by the wisdom and beauty that permeates our traditions. My personal exploration of yoga led me on a path of self-discovery, and I realized the profound impact it had on my mind, body, and spirit. This realization ignited a deep desire within me to share this incredible practice with others and to create a space where individuals can find solace, strength, and inner peace. As a Yoga coach, my mission is to provide a nurturing and inclusive environment for every individual who walks through my door. I believe that yoga is for everyone, regardless of age, shape, or experience. I strive to adapt my teachings to meet each student's unique needs and goals, guiding them on their personal journey of growth. Beyond the physical aspects of yoga, I emphasize the importance of breathwork, mindfulness, and meditation. These practices have been transformative in my own life, and I believe they are vital to unlocking our true potential and finding harmony within ourselves. Through my coaching, I aim to empower individuals to embrace their authentic selves, cultivate self-love, and live mindfully in every aspect of their lives. I am honored to be a part of my student's transformational journeys, witnessing the blossoming of strength, resilience, and inner peace. So, if you're ready to embark on a beautiful journey of self-discovery, I warmly invite you to join me on the mat. Together, let's explore the depths of yoga, nourish our bodies and souls, and create a life of balance, joy, and abundance."
+    },
+    "contact": {
+        "title": "Contact Us",
+        "form":{
+            "sendBtn": "Send",
+            "resetBtn": "Reset"
+        }
+    },
+    "classes": {
+        "days":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "yogaCoursesTypes": [
+            {
+                "type": "Collective Course",
+                "desc": "its a collective sessions"
+            },
+            {
+                "type": "Private Course",
+                "desc": "its a private sessions"
+            },
+            {
+                "type": "Special Course",
+                "desc": "its a special sessions"
+            },
+            {
+                "type": "Online Course",
+                "desc": "its an online and live sessions in social media"
+            }
+        ],
+        "sessionInstructor": "The {{course}} starts at '{{start}}' and ends at '{{end}}' in (24h format)"
+    }
+}

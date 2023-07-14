@@ -1,0 +1,67 @@
+{
+    "navbar":["Accueil", "A propos", "Contact", "Séances"],
+    "home": {
+        "hero":{
+            "title":"Le yoga est le voyage de soi, à travers soi, vers soi",
+            "text":"Le yoga, une pratique intemporelle qui a transcendé les générations, contient une mine de sagesse et d'inspiration. Alors que nous nous embarquons dans ce voyage transformateur, nous nous souvenons des paroles du grand sage Patanjali, qui a dit : « Le yoga est l'apaisement des fluctuations de l'esprit. Dans un monde rempli de bruit et de distractions constants, le yoga nous invite à trouver la tranquillité au milieu du chaos."
+        },
+        "overview":["Séances","Studio","Yoga"],
+        "yogamotivation":[
+            {
+                "title": "Libérez votre potentiel",
+                "text": "Le yoga est une pratique transformatrice qui détient le pouvoir d'améliorer tous les aspects de votre vie. En pratiquant le yoga, vous vous lancez dans un voyage de découverte de soi et d'amélioration de soi. Il offre de nombreux avantages physiques et mentaux, vous permettant de cultiver la force, la souplesse et l'équilibre de votre corps. Grâce à la pratique du yoga, vous pouvez vous connecter avec votre moi intérieur, atteignant un état de relaxation profonde et de tranquillité. Cela sert à rappeler que votre corps n'est pas séparé de votre âme mais plutôt une partie intégrante de celle-ci. En adoptant le yoga, vous pouvez libérer le potentiel en vous et découvrir le lien profond entre votre corps et votre âme."
+            },
+            {
+                "title": "Trouver la paix intérieure",
+                "text": "Dans le monde trépidant d'aujourd'hui, la méditation est devenue plus importante que jamais. Au milieu du chaos et des distractions constantes, la méditation offre un refuge de paix et d'immobilité. Il vous permet de calmer l'esprit, de laisser aller le stress et les soucis et de retrouver la clarté intérieure. Grâce à une pratique régulière de la méditation, vous pouvez développer un sens aigu de la conscience de soi et de la pleine conscience, vous permettant de vivre pleinement le moment présent. La méditation crée un espace sacré où vous pouvez vous connecter avec votre âme, favorisant une compréhension plus profonde de votre véritable essence. En consacrant du temps à la méditation, vous vous lancez dans un profond voyage d'exploration de soi et de croissance spirituelle."
+            },
+            {
+                "title": "Harmonisation du corps et de l'âme",
+                "text": "La pratique du yoga et de la méditation offre une occasion unique d'unir votre corps, votre esprit et votre âme en parfaite harmonie. Les postures de yoga (asanas) non seulement renforcent et étirent votre corps physique, mais servent également de passerelle pour accéder aux couches les plus profondes de votre être. Au fur et à mesure que vous parcourez les mouvements, vous devenez à l'écoute de votre respiration, ce qui vous permet de vous guider dans un état de méditation profonde. Grâce à cette union de mouvement et d'immobilité, vous créez un espace sacré en vous-même, où vous pouvez ressentir un sentiment d'unité. En connectant votre corps à votre âme par le yoga et la méditation, vous puisez dans une source illimitée de paix intérieure, de force et de joie qui rayonne dans tous les aspects de votre vie."
+            }
+        ],
+        "contactcard":{
+            "title":"SUIVEZ NOS SÉANCES",
+            "text":"Découvrez le pouvoir transformateur du yoga et de la méditation avec nos séances sur mesure conçues pour libérer votre véritable potentiel. Rejoignez-nous pour cultiver la force, la flexibilité et la paix intérieure, quel que soit votre niveau d'expérience. Ne manquez pas l'occasion d'être en meilleure santé et plus heureux. Restez connecté avec nos sessions et embarquez pour un incroyable voyage de découverte de soi. Contactez-nous maintenant pour libérer votre potentiel illimité",
+            "btn":"Contactez Nous"
+        },
+        "aboutme":{
+            "title":"Sur Moi",
+            "text":"Salutations, chères âmes! Je suis Ouarda, une coach de yoga marocaine, et je suis de tout cœur ici pour embarquer avec vous dans un voyage transformateur de bien-être holistique. Ensemble, tissons une tapisserie de force, de flexibilité et de paix intérieure, alors que nous célébrons le chemin unique que vous parcourez. Grâce à la douce cadence de la respiration, au calme de la pleine conscience et à l'art sacré de la méditation, nous réveillerons les braises endormies de votre véritable potentiel. Au-delà des limites du tapis, je vous donne le pouvoir d'embrasser votre moi authentique, d'envelopper votre être d'amour et de trouver du réconfort dans la douce étreinte du bonheur conscient. En traversant cet espace sacré main dans la main, nous peindrons une tapisserie vivante d'équilibre, de joie et de bénédictions abondantes, insufflant la vie aux possibilités illimitées qu'offre le yoga. C'est un immense honneur pour moi de témoigner de l'épanouissement de votre force intérieure et de votre paix profonde. Alors, prends ma main, mon cher, et ensemble, laissons nos esprits s'envoler vers les hauteurs célestes de la découverte de soi et de la sérénité.",
+            "btn":"Apprendre encore plus"
+        }
+    },
+    "about": {
+        "title":"Yoga avec Ouarda",
+        "text":"Bonjour, belles âmes! Je suis Ouarda, une coach de yoga marocaine, et je suis incroyablement passionnée par l'accompagnement des individus dans leur voyage transformateur vers le bien-être holistique. Ayant grandi dans la tapisserie culturelle vibrante du Maroc, j'ai toujours été fasciné par la sagesse et la beauté qui imprègnent nos traditions.Mon exploration personnelle du yoga m'a conduit sur un chemin de découverte de soi et j'ai réalisé l'impact profond qu'il avait sur mon esprit, mon corps et mon esprit. Cette prise de conscience a suscité en moi un profond désir de partager cette pratique incroyable avec les autres et de créer un espace où les individus peuvent trouver réconfort, force et paix intérieure.En tant que coach de yoga, ma mission est de fournir un environnement stimulant et inclusif à chaque personne qui franchit ma porte. Je crois que le yoga est pour tout le monde, peu importe l'âge, la forme ou l'expérience. Je m'efforce d'adapter mes enseignements pour répondre aux besoins et aux objectifs uniques de chaque élève, en les guidant dans leur cheminement personnel de croissance.Au-delà des aspects physiques du yoga, j'insiste sur l'importance de la respiration, de la pleine conscience et de la méditation. Ces pratiques ont transformé ma propre vie, et je crois qu'elles sont essentielles pour libérer notre véritable potentiel et trouver l'harmonie en nous-mêmes.Grâce à mon coaching, je vise à donner aux individus les moyens d'embrasser leur moi authentique, de cultiver l'amour de soi et de vivre en pleine conscience dans tous les aspects de leur vie. Je suis honoré de faire partie des voyages de transformation de mon élève, témoin de l'épanouissement de la force, de la résilience et de la paix intérieure.Alors, si vous êtes prêt à vous lancer dans un beau voyage de découverte de soi, je vous invite chaleureusement à me rejoindre sur le tapis. Ensemble, explorons les profondeurs du yoga, nourrissons nos corps et nos âmes et créons une vie d'équilibre, de joie et d'abondance."
+    },
+    "contact": {
+        "title": "Contactez Nous",
+        "form":{
+            "sendBtn": "Envoyer",
+            "resetBtn": "Annuler"
+        }
+    },
+    "classes": {
+        "days": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+        "yogaCoursesTypes": [
+            {
+                "type": "Coure Collectif",
+                "desc": "c'est un cours collectif"
+            },
+            {
+                "type": "Coure Privé",
+                "desc": "c'est un cours privé"
+            },
+            {
+                "type": "Coure Spécial",
+                "desc": "c'est un coure spécial"
+            },
+            {
+                "type": "Coure en ligne",
+                "desc": "c'est un live est en ligne coure dans les réseaux sociaux"
+            }
+        ],
+        "sessionInstructor": "Le {{course}} commence à '{{start}}' et se termine à '{{end}}' en (format 24h)"
+    }
+}
