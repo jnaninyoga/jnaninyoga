@@ -53,6 +53,12 @@
         },
         "title": "Contact Us",
         "form":{
+            "fields": {
+                "fullname": "Full Name",
+                "email": "Email",
+                "phone": "Phone Number",
+                "message": "Message"
+            },
             "sendBtn": "Send",
             "resetBtn": "Reset"
         }

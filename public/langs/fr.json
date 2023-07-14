@@ -53,6 +53,12 @@
         },
         "title": "Contactez Nous",
         "form":{
+            "fields": {
+                "fullname": "Nom Complet",
+                "email": "Email",
+                "phone": "Numéro de téléphone",
+                "message": "Message"
+            },
             "sendBtn": "Envoyer",
             "resetBtn": "Annuler"
         }
