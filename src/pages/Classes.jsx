@@ -7,6 +7,8 @@ import sessions from "../constant/sessions.json"
 import SessionRefernce from "../components/SessionRefernce";
 import { useTranslation } from "react-i18next";
 import { activePage, standardDays, standardYogaCoursesTypes } from "../utils";
+import Meta from "../meta";
+import OGP from '../constant/ogp';
 
 export default function Classes() {
     const { t } = useTranslation();
@@ -18,6 +20,7 @@ export default function Classes() {
 
   return (
     <>
+    <Meta title={t('classes.meta.title')} description={t('classes.meta.description')} keywords={t('classes.meta.keywords')} ogp={OGP.classes}/>
     <Header/>
     <OverLaped banner={banner} type="video">
         <section className="h-full pb-4 sm:pb-0 sm:overflow-x-hidden overflow-x-scroll scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
