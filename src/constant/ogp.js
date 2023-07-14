@@ -25,6 +25,11 @@ export default {
         url: "https://jnaninyoga.com/classes",
         type: "website"
     },
+    notfound:{
+        image: home,
+        url: "https://jnaninyoga.com",
+        type: "website"
+    }
 }
 
 export const HostName = "https://jnaninyoga.com";
