@@ -28,7 +28,7 @@ export const OverviewStockImgs = {
 // Form Fields:
 export const contactFields = [
     // the name field is string at least 6 chars long only letters no special chars
-    {type: 'text', name: 'name', placeholder: 'Name', regex: /^[a-zA-Z]{6,}$/, error: 'Name must be at least 6 characters long with only letters'},
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z]{6,}$/, error: 'Name must be at least 6 characters long with only letters'},
     {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
     {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
     // the message field is string at least 2 chars long
