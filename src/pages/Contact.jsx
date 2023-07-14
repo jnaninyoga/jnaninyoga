@@ -7,6 +7,8 @@ import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
 import { contactFields } from "../utils";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Meta from "../meta";
+import OGP from '../constant/ogp';
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -14,6 +16,7 @@ export default function Contact() {
 
   return (
     <>
+    <Meta title={t('contact.meta.title')} description={t('contact.meta.description')} keywords={t('contact.meta.keywords')} ogp={OGP.contact}/>
     <Header/>
     <OverLaped banner={banner} type={"video"}>
       <img src={LotusOverlay} className={`opacity-100 -z-10 absolute scale-75 sm:bottom-6 bottom-0 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />

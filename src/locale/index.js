@@ -24,7 +24,7 @@ i18n
     loadPath: `/langs/{{lng}}.json`,
   },
   react: {
-    useSuspense: false, //  <---- this will do the magic of loading the translation files, set it to true will make the app crash
+    useSuspense: true, //  <---- this will do the magic of loading the translation files, set it to true will make the app crash
   },
   interpolation: {
     escapeValue: false // react already safes from xss
