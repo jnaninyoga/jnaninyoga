@@ -83,5 +83,15 @@
             }
         ],
         "sessionInstructor": "The {{course}} starts at '{{start}}' and ends at '{{end}}' in (24h format)"
+    },
+    "notfound": {
+        "meta":{
+            "title":"404 - Jnanin Yoga Studio",
+            "description": "The page you are looking for does not exist. Please check the URL or go to the home page.",
+            "keywords": "Yoga studio, 404, not found, page not found, error, Jnain Yoga Studio, home page."
+        },
+        "title": "Page Not Found",
+        "text": "The page you are looking for does not exist. Please check the URL or go to the home page.",
+        "btn": "Go Back"
     }
 }
