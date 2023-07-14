@@ -83,5 +83,15 @@
             }
         ],
         "sessionInstructor": "Le {{course}} commence à '{{start}}' et se termine à '{{end}}' en (format 24h)"
+    },
+    "notfound": {
+        "meta":{
+            "title":"404 - Jnanin Yoga Studio",
+            "description": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
+            "keywords": "Page non trouvée, 404, erreur, page d'accueil, Jnain Yoga Studio."
+        },
+        "title": "Page non trouvée",
+        "text": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
+        "btn": "Retour à la page d'accueil"
     }
 }
