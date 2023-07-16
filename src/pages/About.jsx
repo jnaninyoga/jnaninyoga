@@ -10,7 +10,8 @@ import { useIntersectView } from "../hooks";
 import { useTranslation } from "react-i18next";
 import { activePage } from "../utils";
 import Meta from "../meta";
-import OGP from '../constant/ogp';
+import Map from "../components/Map";
+// import OGP from '../constant/ogp';
 
 export default function About() {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ export default function About() {
   
   return (
   <>
-  <Meta title={t('about.meta.title')} description={t('about.meta.description')} keywords={t('about.meta.keywords')} ogp={OGP.about}/>
+  <Meta title={t('about.meta.title')} />
   <Header/>
   <OverLaped banner={banner} type={"video"}>
     <img src={LotusOverlay} className={`opacity-100 -z-10 absolute scale-75 sm:bottom-6 bottom-0 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />
@@ -34,7 +35,7 @@ export default function About() {
         <img src={profile} className={`${isProfileIntersected ? "opacity-100 -translate-y-1/2" : "opacity-0 translate-y-1/2"} absolute h-[60%] w-[60%] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full object-cover object-center transition-all duration-300 select-none pointer-events-none`} alt="The Yoga Coash Ouarda"/>
       </div>
       <article className="flex flex-col items-center justify-center gap-6 mt-12">
-        <h1 className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel text-yoga-white sm:text-4xl text-3xl font-bold uppercase transition-all duration-500`}>{t(`${activePage()}.title`)}</h1>
+        <h1 className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel text-yoga-white text-center sm:text-4xl text-2xl font-bold uppercase transition-all duration-500`}>{t(`${activePage()}.title`)}</h1>
         <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} text-yoga-white sm:w-[100%] sm:text-center text-justify sm:text-lg transition-all duration-300`}>
           {t(`${activePage()}.text`)}
         </p>
@@ -63,6 +64,7 @@ export default function About() {
       </article>
     </section>
   </OverLaped>
+  <Map title={t('about.map')}/>
   <Footer/>
   </>
   )

@@ -7,14 +7,14 @@ import Yoga from "../components/Yoga";
 import Footer from "../layouts/Footer";
 import Header from "../layouts/Header";
 import Meta from "../meta";
-import OGP from '../constant/ogp';
+// import OGP from '../constant/ogp';
 
 export default function Home() {
   const { t } = useTranslation();
   
   return (
     <>
-      <Meta title={t('home.meta.title')} description={t('home.meta.description')} keywords={t('home.meta.keywords')} ogp={OGP.home}/>
+      <Meta title={t('home.meta.title')}/>
       <Header/>
       <Hero/>
       <Overview/>

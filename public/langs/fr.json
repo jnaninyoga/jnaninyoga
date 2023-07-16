@@ -43,7 +43,8 @@
             "keywords": "Coach de yoga, bien-être holistique, voyage transformateur, traditions marocaines, respiration, pleine conscience, méditation, découverte de soi, besoins uniques, amour de soi, vie équilibrée."
         },
         "title":"Yoga avec Ouarda",
-        "text":"Bonjour, belles âmes! Je suis Ouarda, une coach de yoga marocaine, et je suis incroyablement passionnée par l'accompagnement des individus dans leur voyage transformateur vers le bien-être holistique. Ayant grandi dans la tapisserie culturelle vibrante du Maroc, j'ai toujours été fasciné par la sagesse et la beauté qui imprègnent nos traditions.Mon exploration personnelle du yoga m'a conduit sur un chemin de découverte de soi et j'ai réalisé l'impact profond qu'il avait sur mon esprit, mon corps et mon esprit. Cette prise de conscience a suscité en moi un profond désir de partager cette pratique incroyable avec les autres et de créer un espace où les individus peuvent trouver réconfort, force et paix intérieure.En tant que coach de yoga, ma mission est de fournir un environnement stimulant et inclusif à chaque personne qui franchit ma porte. Je crois que le yoga est pour tout le monde, peu importe l'âge, la forme ou l'expérience. Je m'efforce d'adapter mes enseignements pour répondre aux besoins et aux objectifs uniques de chaque élève, en les guidant dans leur cheminement personnel de croissance.Au-delà des aspects physiques du yoga, j'insiste sur l'importance de la respiration, de la pleine conscience et de la méditation. Ces pratiques ont transformé ma propre vie, et je crois qu'elles sont essentielles pour libérer notre véritable potentiel et trouver l'harmonie en nous-mêmes.Grâce à mon coaching, je vise à donner aux individus les moyens d'embrasser leur moi authentique, de cultiver l'amour de soi et de vivre en pleine conscience dans tous les aspects de leur vie. Je suis honoré de faire partie des voyages de transformation de mon élève, témoin de l'épanouissement de la force, de la résilience et de la paix intérieure.Alors, si vous êtes prêt à vous lancer dans un beau voyage de découverte de soi, je vous invite chaleureusement à me rejoindre sur le tapis. Ensemble, explorons les profondeurs du yoga, nourrissons nos corps et nos âmes et créons une vie d'équilibre, de joie et d'abondance."
+        "text":"Bonjour, belles âmes! Je suis Ouarda, une coach de yoga marocaine, et je suis incroyablement passionnée par l'accompagnement des individus dans leur voyage transformateur vers le bien-être holistique. Ayant grandi dans la tapisserie culturelle vibrante du Maroc, j'ai toujours été fasciné par la sagesse et la beauté qui imprègnent nos traditions.Mon exploration personnelle du yoga m'a conduit sur un chemin de découverte de soi et j'ai réalisé l'impact profond qu'il avait sur mon esprit, mon corps et mon esprit. Cette prise de conscience a suscité en moi un profond désir de partager cette pratique incroyable avec les autres et de créer un espace où les individus peuvent trouver réconfort, force et paix intérieure.En tant que coach de yoga, ma mission est de fournir un environnement stimulant et inclusif à chaque personne qui franchit ma porte. Je crois que le yoga est pour tout le monde, peu importe l'âge, la forme ou l'expérience. Je m'efforce d'adapter mes enseignements pour répondre aux besoins et aux objectifs uniques de chaque élève, en les guidant dans leur cheminement personnel de croissance.Au-delà des aspects physiques du yoga, j'insiste sur l'importance de la respiration, de la pleine conscience et de la méditation. Ces pratiques ont transformé ma propre vie, et je crois qu'elles sont essentielles pour libérer notre véritable potentiel et trouver l'harmonie en nous-mêmes.Grâce à mon coaching, je vise à donner aux individus les moyens d'embrasser leur moi authentique, de cultiver l'amour de soi et de vivre en pleine conscience dans tous les aspects de leur vie. Je suis honoré de faire partie des voyages de transformation de mon élève, témoin de l'épanouissement de la force, de la résilience et de la paix intérieure.Alors, si vous êtes prêt à vous lancer dans un beau voyage de découverte de soi, je vous invite chaleureusement à me rejoindre sur le tapis. Ensemble, explorons les profondeurs du yoga, nourrissons nos corps et nos âmes et créons une vie d'équilibre, de joie et d'abondance.",
+        "map": "La localisation de Jnanin Yoga Studio"
     },
     "contact": {
         "meta":{
@@ -53,6 +54,21 @@
         },
         "title": "Contactez Nous",
         "form":{
+            "fields": {
+                "fullname": "Nom Complet",
+                "email": "Email",
+                "phone": "Numéro de téléphone",
+                "message": "Message"
+            },
+            "fieldserrors":{
+                "fullname": "Le Nom doit être au moins 2 caractères",
+                "email": "L'e-mail doit être une adresse e-mail valide",
+                "phone": "Le numéro de téléphone doit comporter 10 chiffres",
+                "message": "Le message doit être au moins 2 caractères"
+            },
+            "onEmpty": "Veuillez remplir tous les champs",
+            "empty": "Veuillez remplir le champ '{{field}}'",
+            "onSuccess": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
             "sendBtn": "Envoyer",
             "resetBtn": "Annuler"
         }
