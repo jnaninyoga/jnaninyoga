@@ -27,12 +27,12 @@ export const OverviewStockImgs = {
 
 // Form Fields:
 export const contactFields = [
-    // the name field is string at least 6 chars long only letters no special chars
-    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z]{6,}$/, error: 'Name must be at least 6 characters long with only letters'},
+    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z ]{6,}$/, error: 'Full Name must be at least 6 characters long and only letters and spaces'},
     {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
     {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
-    // the message field is string at least 2 chars long
-    {type: 'textarea', name: 'message', placeholder: 'Message', regex: /^.{2,}$/, error: 'Message must be at least 2 characters long'}
+    // the message field is string at least 2 chars long alow new lines and spaces
+    {type: 'textarea', name: 'message', placeholder: 'Message', regex: /^[\S\s]{2,}$/, error: 'Message must be at least 2 characters long and only letters, numbers, spaces and new lines'}
 ];
 
 // Yoga Calander:
