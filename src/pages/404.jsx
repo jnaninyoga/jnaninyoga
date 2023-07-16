@@ -5,14 +5,14 @@ import banner from  "../assets/imgs/stock/notfound.webp"
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Meta from "../meta";
-import OGP from "../constant/ogp";
+// import OGP from "../constant/ogp";
 // import AnimatedLotus from "../assets/imgs/icons/animatedlotus.mp4";
 
 export default function NotFound() {
   const { t } = useTranslation();
   return (
     <>
-    <Meta title={t('notfound.meta.title')} description={t('notfound.meta.description')} keywords={t('notfound.meta.keywords')} ogp={OGP.notfound}/>
+    <Meta title={t('notfound.meta.title')}/>
     <Header/>
     <OverLaped banner={banner}>
         <section className="sm:w-[90vw] flex flex-1 justify-center items-center flex-col gap-4">
