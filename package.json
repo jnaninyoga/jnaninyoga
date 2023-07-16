@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite --port=3000 --host",
     "build": "vite build",
-    "postbuild": "react-snap",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
