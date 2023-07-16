@@ -6,14 +6,18 @@ import Session from "../components/Session";
 import sessions from "../constant/sessions.json"
 import SessionRefernce from "../components/SessionRefernce";
 import { useTranslation } from "react-i18next";
-import { activePage, standardDays, standardYogaCoursesTypes } from "../utils";
+import { standardDays, standardYogaCoursesTypes } from "../utils";
 import Meta from "../meta";
+import { useActivePage, usePathLanguage } from "../hooks";
 // import OGP from '../constant/ogp';
 
 export default function Classes() {
     const { t } = useTranslation();
-    const days = t(`${activePage()}.days`, { returnObjects: true });
-    const yogaCoursesTypes = t(`${activePage()}.yogaCoursesTypes`, { returnObjects: true });
+    const activePage = useActivePage();
+    usePathLanguage();
+
+    const days = t(`${activePage}.days`, { returnObjects: true });
+    const yogaCoursesTypes = t(`${activePage}.yogaCoursesTypes`, { returnObjects: true });
 
     const TDays = () => Array.isArray(days) ? days : standardDays;
     const TYogaCoursesTypes = () => Array.isArray(yogaCoursesTypes) ? yogaCoursesTypes : standardYogaCoursesTypes;

@@ -8,12 +8,16 @@ import { contactFields } from "../utils";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Meta from "../meta";
+import { usePathLanguage } from "../hooks";
 // import app from "../firebase";
 // import OGP from '../constant/ogp';
 
 export default function Contact() {
   const { t } = useTranslation();
+  usePathLanguage();
+
   const [contact, setContact] = useState({});
+  
   const TFields = t('contact.form.fields', {returnObjects: true});
   const TFieldsErrors = t('contact.form.fieldserrors', {returnObjects: true});
 

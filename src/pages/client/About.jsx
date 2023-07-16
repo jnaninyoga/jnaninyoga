@@ -6,15 +6,16 @@ import banner from "../assets/videos/banner.mp4";
 import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
 import icon from "../assets/imgs/icons/lotus.webp";
 import profile from "../assets/imgs/stock/profile.webp";
-import { useIntersectView } from "../hooks";
+import { useActivePage, useIntersectView, usePathLanguage } from "../hooks";
 import { useTranslation } from "react-i18next";
-import { activePage } from "../utils";
 import Meta from "../meta";
 import Map from "../components/Map";
 // import OGP from '../constant/ogp';
 
 export default function About() {
   const { t } = useTranslation();
+  const activePage = useActivePage();
+  usePathLanguage();
 
   const wrapper = useRef(null);
   const profileImg = useRef(null);
@@ -35,9 +36,9 @@ export default function About() {
         <img src={profile} className={`${isProfileIntersected ? "opacity-100 -translate-y-1/2" : "opacity-0 translate-y-1/2"} absolute h-[60%] w-[60%] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full object-cover object-center transition-all duration-300 select-none pointer-events-none`} alt="The Yoga Coash Ouarda"/>
       </div>
       <article className="flex flex-col items-center justify-center gap-6 mt-12">
-        <h1 className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel text-yoga-white text-center sm:text-4xl text-2xl font-bold uppercase transition-all duration-500`}>{t(`${activePage()}.title`)}</h1>
+        <h1 className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel text-yoga-white text-center sm:text-4xl text-2xl font-bold uppercase transition-all duration-500`}>{t(`${activePage}.title`)}</h1>
         <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} text-yoga-white sm:w-[100%] sm:text-center text-justify sm:text-lg transition-all duration-300`}>
-          {t(`${activePage()}.text`)}
+          {t(`${activePage}.text`)}
         </p>
         <ul ref={SocialMedia} className="cinzel items-center flex gap-6" id="socialmedia">
           <li>
