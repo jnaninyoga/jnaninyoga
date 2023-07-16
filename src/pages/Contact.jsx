@@ -8,7 +8,7 @@ import { contactFields } from "../utils";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Meta from "../meta";
-import app from "../firebase";
+// import app from "../firebase";
 // import OGP from '../constant/ogp';
 
 export default function Contact() {
@@ -26,12 +26,12 @@ export default function Contact() {
   // sending the contact form to firebase collection called "contact"
   const sendContact = (contactdata) => {
     console.log(contactdata);
-    app.firestore().collection("contact").add(contact).then(() => {
-      alert(t('contact.form.success'));
-      setContact({});
-    }).catch((error) => {
-      alert(error.message);
-    });
+    // app.firestore().collection("contact").add(contact).then(() => {
+    //   alert(t('contact.form.success'));
+    //   setContact({});
+    // }).catch((error) => {
+    //   alert(error.message);
+    // });
   }
 
   return (
