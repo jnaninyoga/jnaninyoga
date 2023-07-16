@@ -1,15 +1,15 @@
 import { useRef } from "react";
-import { useIntersectView } from "../hooks";
+import { useActivePage, useIntersectView } from "../hooks";
 import { Link } from "react-router-dom";
 import profile from "../assets/imgs/stock/aboutme.webp";
 import GreenMat from "../assets/imgs/spine/GreenMat.webp";
 import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
 import { useTranslation } from "react-i18next";
-import { activePage } from "../utils";
 
 export default function AboutMe() {
   const { t } = useTranslation();
-  const aboutme = t(`${activePage()}.aboutme`, { returnObjects: true });
+  const activePage = useActivePage();
+  const aboutme = t(`${activePage}.aboutme`, { returnObjects: true });
 
   const aboutmeRef = useRef(null);
   const aboutWrapper = useRef(null);

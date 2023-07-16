@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react"
-import { OverviewStockImgs, activePage } from "../utils"
+import { OverviewStockImgs } from "../utils"
 import { useTranslation } from "react-i18next";
+import { useActivePage } from "../hooks";
 
 export default function Overview() {
     const { t } = useTranslation();
-    const overview = t(`${activePage()}.overview`, { returnObjects: true });
+    const activePage = useActivePage();
+    const overview = t(`${activePage}.overview`, { returnObjects: true });
     const standardTitles = ["Classes","Studio","Yoga"];
 
     const TTitles = () => Array.isArray(overview) ? overview : standardTitles;

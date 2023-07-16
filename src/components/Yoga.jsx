@@ -8,11 +8,13 @@ import YogaPose1Poster from '../assets/imgs/stock/yogapose-1.webp';
 import YogaPose2Poster from '../assets/imgs/stock/yogapose-2.webp';
 import YogaPose3Poster from '../assets/imgs/stock/yogapose-3.webp';
 import { useTranslation } from 'react-i18next';
-import { activePage } from '../utils';
+import { useActivePage } from '../hooks';
 
 export default function Yoga() {
   const { t } = useTranslation();
-  const yogamotivation = t(`${activePage()}.yogamotivation`, { returnObjects: true });
+  const activePage = useActivePage();
+
+  const yogamotivation = t(`${activePage}.yogamotivation`, { returnObjects: true });
   const videos = [YogaPose1, YogaPose2, YogaPose3];
   const posters = [YogaPose1Poster, YogaPose2Poster, YogaPose3Poster];
 

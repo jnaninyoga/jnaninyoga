@@ -5,11 +5,17 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { standardNavbar } from "../utils";
+import { useActivePage, useCurrentLanguage } from "../hooks";
+import { useParams } from "react-router-dom/dist";
 
 
 export default function Header() {
   const [isMenuHidden, setIsMenuHidden] = useState(true);
   const { t } = useTranslation();
+  const { lang } = useParams();
+  const currentLanguage = useCurrentLanguage();
+  const activePage = useActivePage();
+
   const navbar = t(`navbar`, { returnObjects: true });
 
   // check if navbar is an array
@@ -25,7 +31,7 @@ export default function Header() {
     // ALLOW SCROLLING
     document.body.style.overflow = "auto";
   };
-  const activePage = link => window.location.pathname.toLowerCase() === link.toLowerCase() ? "before:w-full text-yoga-green" : "before:w-0";
+  const activeLink = link => activePage === link.toLowerCase() ? "before:w-full text-yoga-green" : "before:w-0";
 
   return (
     <header className={`fixed z-[9999] bg-yoga-white sm:px-10 px-4 h-14 sm:h-16 w-full flex justify-between items-center`}>
@@ -46,8 +52,8 @@ export default function Header() {
           {
             Tnavbar().map((link, index) => (
               <li key={index} onClick={hideMenu}>
-                <Link to={link.toLowerCase() === navbar[0].toLowerCase() ? "/" : `/${standardNavbar[index].toLowerCase()}`} 
-                className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase outline-none focus:before:w-full focus:text-yoga-green ${activePage(link.toLowerCase() === navbar[0].toLowerCase() ? "/" : `/${standardNavbar[index].toLowerCase()}`)}`}>
+                <Link to={`${lang ? `/${currentLanguage.code}/` : '/'}${link.toLowerCase() === navbar[0].toLowerCase() ? "" : `${standardNavbar[index].toLowerCase()}`}`}
+                className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase outline-none focus:before:w-full focus:text-yoga-green ${activeLink(standardNavbar[index].toLowerCase())}`}>
                 { link.toCapitalCase() }
                 </Link>
               </li>

@@ -1,8 +1,8 @@
 // using Helmet to setupe mata data for each page
 import { Helmet } from 'react-helmet'
-import { activePage } from '../utils';
+import { useActivePage } from '../hooks';
 import PropType from 'prop-types';
-import metadata, { HostName } from '../constant/meta';
+import metadata, { HostName } from './meta';
 
 Meta.propTypes = {
     meta: PropType.shape({
@@ -23,17 +23,18 @@ Meta.propTypes = {
 
 export default function Meta(meta) {
     const { title } = meta;
-    const { description, keywords, image, url, type } = metadata[activePage().toLowerCase()];
+    const activePage = useActivePage();
+    const { description, keywords, image, url, type } = metadata[activePage];
 
     return (
         <Helmet prioritizeSeoTags>
-            <title>{title || (activePage().toCapitalCase() + " - Jnanin Yoga Studio")}</title>
+            <title>{title || (activePage.toCapitalCase() + " - Jnanin Yoga Studio")}</title>
             <meta name="author" content="Jnanin Yoga Studio"/>
             {/* Canonical */}
             <link rel="canonical" href="https://jnaninyoga.com/"/>
             
             {/* OGP - Open Graph Protocol */}
-            <meta name="title" property="og:title" content={title || (activePage().toCapitalCase() + " - Jnanin Yoga Studio")}/>
+            <meta name="title" property="og:title" content={title || (activePage.toCapitalCase() + " - Jnanin Yoga Studio")}/>
             <meta name="description" property="og:description" content={description}/>
             <meta name="keywords" content={keywords}/>
             <meta property="og:type" content={type || "website"}/>
@@ -46,7 +47,7 @@ export default function Meta(meta) {
 
             {/* Twitter Card */}
             <meta name="twitter:card" content="summary_large_image"/>
-            <meta name="twitter:title" content={title || (activePage().toCapitalCase() + " - Jnanin Yoga Studio")}/>
+            <meta name="twitter:title" content={title || (activePage.toCapitalCase() + " - Jnanin Yoga Studio")}/>
             <meta name="twitter:description" content={description}/>
             <meta name="twitter:image" content={HostName + image}/>
             <meta name="twitter:image:alt" content="Jnanin Yoga Studio"/>

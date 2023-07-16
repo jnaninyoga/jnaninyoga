@@ -58,7 +58,7 @@ export const standardYogaCoursesTypes = [
 ]
 
 export const supportedLanguages = [
-    {name: 'English', code: 'en', dir: 'ltr'}, 
+    {name: 'English', code: 'en', dir: 'ltr'},
     {name: 'Français', code: 'fr', dir: 'ltr'},
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
