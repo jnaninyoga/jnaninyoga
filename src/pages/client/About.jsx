@@ -1,15 +1,16 @@
 import { useRef } from "react";
-import Footer from "../layouts/Footer";
-import Header from "../layouts/Header";
-import OverLaped from "../layouts/OverLaped";
-import banner from "../assets/videos/banner.mp4";
-import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
-import icon from "../assets/imgs/icons/lotus.webp";
-import profile from "../assets/imgs/stock/profile.webp";
-import { useActivePage, useIntersectView, usePathLanguage } from "../hooks";
+import Footer from "../../layouts/Footer";
+import Header from "../../layouts/Header";
+import OverLaped from "../../layouts/OverLaped";
+import banner from "../../assets/videos/banner.mp4";
+import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
+import icon from "../../assets/imgs/icons/lotus.webp";
+import profile from "../../assets/imgs/stock/profile.webp";
+import { useActivePage, useIntersectView, usePathLanguage } from "../../hooks";
 import { useTranslation } from "react-i18next";
-import Meta from "../meta";
-import Map from "../components/Map";
+import Meta from "../../meta";
+import metadata from "../../meta/meta";
+import Map from "../../components/Map";
 // import OGP from '../constant/ogp';
 
 export default function About() {
@@ -26,7 +27,7 @@ export default function About() {
   
   return (
   <>
-  <Meta title={t('about.meta.title')} />
+  <Meta title={t('about.meta.title')} {...metadata.about}/>
   <Header/>
   <OverLaped banner={banner} type={"video"}>
     <img src={LotusOverlay} className={`opacity-100 -z-10 absolute scale-75 sm:bottom-6 bottom-0 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />

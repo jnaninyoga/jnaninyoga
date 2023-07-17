@@ -1,14 +1,15 @@
-import Footer from "../layouts/Footer";
-import Header from "../layouts/Header";
-import OverLaped from "../layouts/OverLaped";
-import banner from "../assets/videos/yoga.mp4";
-import Session from "../components/Session";
-import sessions from "../constant/sessions.json"
-import SessionRefernce from "../components/SessionRefernce";
+import Footer from "../../layouts/Footer";
+import Header from "../../layouts/Header";
+import OverLaped from "../../layouts/OverLaped";
+import banner from "../../assets/videos/yoga.mp4";
+import Session from "../../components/Session";
+import sessions from "../../constant/sessions.json"
+import SessionRefernce from "../../components/SessionRefernce";
 import { useTranslation } from "react-i18next";
-import { standardDays, standardYogaCoursesTypes } from "../utils";
-import Meta from "../meta";
-import { useActivePage, usePathLanguage } from "../hooks";
+import { standardDays, standardYogaCoursesTypes } from "../../utils";
+import Meta from "../../meta";
+import metadata from "../../meta/meta";
+import { useActivePage, usePathLanguage } from "../../hooks";
 // import OGP from '../constant/ogp';
 
 export default function Classes() {
@@ -24,7 +25,7 @@ export default function Classes() {
 
   return (
     <>
-    <Meta title={t('classes.meta.title')} />
+    <Meta title={t('classes.meta.title')} {...metadata.classes}/>
     <Header/>
     <OverLaped banner={banner} type="video">
         <section className="h-full pb-4 sm:pb-0 sm:overflow-x-hidden overflow-x-scroll scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
