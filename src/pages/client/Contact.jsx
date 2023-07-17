@@ -1,22 +1,27 @@
-import Footer from "../layouts/Footer";
-import Form from "../layouts/Form";
-import Header from "../layouts/Header";
-import OverLaped from "../layouts/OverLaped";
-import banner from "../assets/videos/banner.mp4";
-import LotusOverlay from "../assets/imgs/icons/lotusOverlay.webp";
-import { contactFields } from "../utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
+import Form from "../../layouts/Form";
+import OverLaped from "../../layouts/OverLaped";
+import banner from "../../assets/videos/banner.mp4";
+import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
+import { contactFields } from "../../utils";
 import { useTranslation } from "react-i18next";
-import Meta from "../meta";
-import { usePathLanguage } from "../hooks";
-// import app from "../firebase";
+import Meta from "../../meta";
+import metadata from "../../meta/meta";
+import { useCurrentLanguage, usePathLanguage } from "../../hooks";
+import { DB } from "../../firebase";
+import { collection, addDoc } from "firebase/firestore";
+import Thank from "../../layouts/Thank";
 // import OGP from '../constant/ogp';
 
 export default function Contact() {
   const { t } = useTranslation();
+  const currentLanguage = useCurrentLanguage();
   usePathLanguage();
 
   const [contact, setContact] = useState({});
+  const [showThankPage, setShowThankPage] = useState(false);
   
   const TFields = t('contact.form.fields', {returnObjects: true});
   const TFieldsErrors = t('contact.form.fieldserrors', {returnObjects: true});
@@ -28,19 +33,30 @@ export default function Contact() {
   });
 
   // sending the contact form to firebase collection called "contact"
-  const sendContact = (contactdata) => {
-    console.log(contactdata);
-    // app.firestore().collection("contact").add(contact).then(() => {
-    //   alert(t('contact.form.success'));
-    //   setContact({});
-    // }).catch((error) => {
-    //   alert(error.message);
-    // });
+  const sendContact = async (contactdata) => {
+    try {
+      const docRef = await addDoc(collection(DB, "contact"), {...contactdata, lang: currentLanguage.name, answered: false});
+      setShowThankPage(true);
+      console.log(contactdata);
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowThankPage(false);
+    }, 18000);
+    return () => clearTimeout(timeout);
+  }, [showThankPage]);
+
+  // if the contact form is sent successfully, it will render the thank you page
+  if (showThankPage) return <Thank mr={contact.fullname} onClick={() => setShowThankPage(false)}/>
 
   return (
     <>
-    <Meta title={t('contact.meta.title')} />
+    <Meta title={t('contact.meta.title')} {...metadata.contact}/>
     <Header/>
     <OverLaped banner={banner} type={"video"}>
       <img src={LotusOverlay} className={`opacity-100 -z-10 absolute scale-75 sm:bottom-6 bottom-0 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />
