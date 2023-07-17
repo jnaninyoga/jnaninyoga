@@ -109,5 +109,10 @@
         "title": "Page non trouvée",
         "text": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
         "btn": "Retour à la page d'accueil"
+    },
+    "thankpage":{
+        "title": "Merci '{{mr}}' pour votre message",
+        "text": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
+        "btn": "Retour"
     }
 }

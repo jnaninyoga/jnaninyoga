@@ -110,5 +110,10 @@
         "title": "Page Not Found",
         "text": "The page you are looking for does not exist. Please check the URL or go to the home page.",
         "btn": "Go Back"
+    },
+    "thankpage":{
+        "title": "Thank you '{{mr}}' for your message",
+        "text": "Thanks for contacting us, we will contact you soon",
+        "btn": "Go Back"
     }
 }
