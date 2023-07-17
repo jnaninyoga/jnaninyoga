@@ -2,18 +2,30 @@ import OverLaped from "./OverLaped";
 import Header from "./Header";
 import Footer from "./Footer";
 import banner from  "../assets/imgs/stock/notfound.webp"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Meta from "../meta";
 import { usePathLanguage } from "../hooks";
+import { useEffect } from "react";
+import metadata from '../meta/meta';
 // import AnimatedLotus from "../assets/imgs/icons/animatedlotus.mp4";
 
 export default function NotFound() {
   const { t } = useTranslation();
-  usePathLanguage()
+  const navigate = useNavigate();
+  usePathLanguage();
+
+  // set a timeout of 15s to redirect to home
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate("/");
+    }, 18000);
+    return () => clearTimeout(timeout);
+  }, [navigate]);
+
   return (
     <>
-    <Meta title={t('notfound.meta.title')}/>
+    <Meta title={t('notfound.meta.title')} {...metadata.notfound}/>
     <Header/>
     <OverLaped banner={banner}>
         <section className="sm:w-[90vw] flex flex-1 justify-center items-center flex-col gap-4">
