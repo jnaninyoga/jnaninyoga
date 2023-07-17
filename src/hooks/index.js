@@ -1,7 +1,7 @@
 import i18next, { changeLanguage } from "i18next";
 import { useState, useEffect} from "react";
 import { useLocation, useParams } from "react-router-dom/dist";
-import { supportedLanguages } from "../utils";
+import { standardNavbar, supportedLanguages } from "../utils";
 
 export function useIntersectView(ref) {
     const [isIntersected, setIsintersected] = useState();
@@ -20,7 +20,8 @@ export function useIntersectView(ref) {
 export function useActivePage() {
     const path = useLocation().pathname.toLowerCase().split("/");
     const pathPage = supportedLanguages.map(lang => lang.code).includes(path[1]) ? path[2] : path[1];
-    return !pathPage ? "home" : pathPage;
+    const activePage = !pathPage ? "home" : pathPage;
+    return standardNavbar.map(page => page.toLowerCase()).includes(activePage) ? activePage : "notfound";
 }
 
 export function useCurrentLanguage() {
@@ -32,10 +33,11 @@ export function usePathLanguage() {
     const { lang } = useParams();
     // const queryLang = useLocation().search.split("=")[1];
     const currentLang = useCurrentLanguage();
-    const pathLang = lang ? lang.toLowerCase() : "en";
+    const pathLang = supportedLanguages.map(lang => lang.code).includes(lang?.toLowerCase()) ? lang : "en";
 
-    console.log({lang, pathLang, currentLang});
+    console.log(i18next.language);
     // if (!supportedLanguages.find(lang => lang.code === pathLang)) return;
     // if (currentLang.code !== queryLang && !lang) changeLanguage(queryLang);
     if (currentLang.code !== pathLang) changeLanguage(pathLang);
+    return pathLang;
 }
