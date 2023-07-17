@@ -21,7 +21,7 @@ export default function Lang() {
     const changeLang = lang => {
         changeLanguage(lang);
         setDropdown(false); // hide the dropdown
-        navigteTo(`/${lang}/${activePage}`)
+        navigteTo(`/${lang}${activePage === "home" ? '' : '/'+activePage}`);
     }
 
 
