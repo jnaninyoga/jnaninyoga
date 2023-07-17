@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/client/Home";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Classes from "./pages/Classes";
+import About from "./pages/client/About";
+import Contact from "./pages/client/Contact";
+import Classes from "./pages/client/Classes";
 import NotFound from "./layouts/404";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Client Routes */}
         <Route path="/" element={<Home />} index />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
