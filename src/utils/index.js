@@ -1,5 +1,3 @@
-import i18next from "i18next";
-
 // Classes - Stock Images
 import C1 from "../assets/imgs/stock/classes-1.webp";
 import C2 from "../assets/imgs/stock/classes-2.webp";
@@ -28,7 +26,7 @@ export const OverviewStockImgs = {
 // Form Fields:
 export const contactFields = [
     // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
-    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z ]{6,}$/, error: 'Full Name must be at least 6 characters long and only letters and spaces'},
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 6 characters long and only letters and spaces'},
     {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
     {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
     // the message field is string at least 2 chars long alow new lines and spaces
@@ -63,9 +61,8 @@ export const supportedLanguages = [
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
 
-export const currentLanguage = () => supportedLanguages.find(lang => lang.code === i18next.language);
-
-export const activePage = () => window.location.pathname.split("/")[1].toLowerCase() === "" ? "home" : window.location.pathname.split("/")[1].toLowerCase();
+// export const currentLanguage = () => supportedLanguages.find(lang => lang.code === i18next.language);
+// export const activePage = () => window.location.pathname.split("/")[1].toLowerCase() === "" ? "home" : window.location.pathname.split("/")[1].toLowerCase();
 
 export function copyright(hostname=window.location.hostname){
     return `Copyright © ${new Date().getFullYear()} ${hostname}, All Rights Reserved`
