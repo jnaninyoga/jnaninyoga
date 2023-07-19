@@ -34,6 +34,22 @@
             "title":"About Me",
             "text":"Greetings, dear souls! I'm Ouarda, a Moroccan female Yoga coach, and I am wholeheartedly here to embark on a transformative journey of holistic well-being with you. Together, let's weave a tapestry of strength, flexibility, and inner peace, as we celebrate the unique path you tread. Through the gentle cadence of breathwork, the stillness of mindfulness, and the sacred art of meditation, we shall awaken the dormant embers of your true potential. Beyond the confines of the mat, I empower you to embrace your authentic self, enveloping your being with love, and finding solace in the gentle embrace of mindful bliss. As we traverse this sacred space hand in hand, we shall paint a vivid tapestry of balance, joy, and abundant blessings, breathing life into the boundless possibilities that yoga offers. It is an immense honor for me to bear witness to the blossoming of your inner strength and profound peace. So, take my hand, dear one, and together, let our spirits soar to the celestial heights of self-discovery and serenity.",
             "btn":"Learn More"
+        },
+        "reviews":{
+            "btn":"Add Yours",
+            "form":{
+                "title": "Add Your Review",
+                "fields": {
+                    "fullname": "Full Name",
+                    "review": "Your Review"
+                },
+                "fieldserrors":{
+                    "fullname": "Name must be at least 2 characters long",
+                    "review": "review must be at least 10 characters long"
+                },
+                "onSuccess": "Thank you {{mr}} for your awesome review!",
+                "resetBtn": "Cancel"
+            }
         }
     },
     "about": {
@@ -62,7 +78,7 @@
                 "message": "Message"
             },
             "fieldserrors":{
-                "name": "Name must be at least 6 characters long",
+                "fullname": "Name must be at least 2 characters long",
                 "email": "Email must be a valid email address",
                 "phone": "Phone must be 10 digit long",
                 "message": "Message must be at least 2 characters long"
@@ -115,5 +131,20 @@
         "title": "Thank you '{{mr}}' for your message",
         "text": "Thanks for contacting us, we will contact you soon",
         "btn": "Go Back"
+    },
+    "adminauth":{
+        "title": "Welcome Coach Ouarda",
+        "form":{
+            "fields": {
+                "username": "Username",
+                "password": "Password"
+            },
+            "fieldserrors":{
+                "username": "Username Invalid",
+                "password": "Password Invalid"
+            },
+            "onEmpty": "Username or Password is incorrect",
+            "login": "Login"
+        }
     }
 }
