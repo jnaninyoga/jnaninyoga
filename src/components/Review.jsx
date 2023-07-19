@@ -22,7 +22,7 @@ export default function Review({author="Anonymous", review, rate}) {
         </figcaption>
         {review && <blockquote className="relative p-1">
             <img src={LotusOverlay} className={`${isReviewIntersected ? "opacity-20" : "opacity-0"} -z-20 max-w-[140px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />
-            <p className="text-yoga-white sm:text-lg text-center z-10">{review}</p>
+            <p className="text-yoga-white sm:text-lg text-center z-10 sm:px-0 px-4">{review}</p>
         </blockquote>}
     </figure>
   )
