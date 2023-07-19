@@ -20,7 +20,7 @@ export default function AboutMe() {
   const isBtnIntersected = useIntersectView(btn);
 
   return (
-    <section ref={aboutmeRef} id="aboutme" className="container sm:pb-0 pb-4 sm:h-[540px] flex flex-1 justify-center items-start text-yoga-white  sm:mt-24 sm:flex-row flex-col overflow-hidden" style={{backgroundImage: `url(${GreenMat})`}}>
+    <section ref={aboutmeRef} id="aboutme" className="container sm:pb-0 sm:h-[540px] flex flex-1 justify-center items-start text-yoga-white  sm:mt-24 sm:flex-row flex-col overflow-hidden" style={{backgroundImage: `url(${GreenMat})`}}>
         <img src={profile} className={`${isAboutMeIntersected ? "sm:translate-x-0 opacity-100" : "sm:translate-x-[-100%] opacity-0"} sm:w-1/3 w-full h-full object-cover object-center transition-all duration-700`} alt="Yoga Coash Profile picture" />
         <div ref={aboutWrapper} className={`relative ltr:sm:pl-8 rtl:sm:pr-8 sm:py-12 py-8 h-full flex flex-1 justify-start sm:items-start items-center flex-col gap-10`}>
           <img src={LotusOverlay} className={`${isBtnIntersected ? "opacity-100" : "opacity-0"} absolute sm:bottom-6 bottom-0 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />
