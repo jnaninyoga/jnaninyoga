@@ -36,6 +36,7 @@
             "btn":"Learn More"
         },
         "reviews":{
+            "title":"What People Say",
             "btn":"Add Yours",
             "form":{
                 "title": "Add Your Review",

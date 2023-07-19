@@ -36,6 +36,7 @@
             "btn":"Apprendre encore plus"
         },
         "reviews":{
+            "title":"Ce que les gens disent",
             "btn":"Ajouter un avis",
             "form":{
                 "title": "Ajouter Votre Avis",
@@ -47,7 +48,7 @@
                     "fullname": "Le Nom doit être au moins 2 caractères",
                     "review": "Votre avis doit être au moins 10 caractères"
                 },
-                "onSuccess": "Merci {{mr}} pour votre super avis !",
+                "onSuccess": "Merci {{mr}} pour votre super avis!",
                 "resetBtn": "Annuler"
             }
         }
