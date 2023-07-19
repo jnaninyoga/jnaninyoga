@@ -1,7 +1,9 @@
 import i18next, { changeLanguage } from "i18next";
 import { useState, useEffect} from "react";
-import { useLocation, useParams } from "react-router-dom/dist";
+import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
 import { standardNavbar, supportedLanguages } from "../utils";
+import { collectionDB, docSnap } from "../firebase";
+import * as CryptoJS from "crypto-js";
 
 export function useIntersectView(ref) {
     const [isIntersected, setIsintersected] = useState();
@@ -35,9 +37,37 @@ export function usePathLanguage() {
     const currentLang = useCurrentLanguage();
     const pathLang = supportedLanguages.map(lang => lang.code).includes(lang?.toLowerCase()) ? lang : "en";
 
-    console.log(i18next.language);
     // if (!supportedLanguages.find(lang => lang.code === pathLang)) return;
     // if (currentLang.code !== queryLang && !lang) changeLanguage(queryLang);
     if (currentLang.code !== pathLang) changeLanguage(pathLang);
     return pathLang;
+}
+
+// Auth Hook that check if the user is logged in or not buy checking the token in the cokies 'jnaninyoga'
+export function useAdminAuth() {
+    const [auth, setAuth] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const navigte = useNavigate();
+    const currentLang = useCurrentLanguage();
+
+    useEffect(() => {
+        (async () => {
+        const token = document.cookie.search("yogacoach") !== -1 ? JSON.parse(document.cookie.split(";").find(cookie => cookie.includes("yogacoach")).split("=")[1]) : null;
+        const decodedToken = token ? CryptoJS.AES.decrypt(decodeURIComponent(token.password), "yogacoach").toString(CryptoJS.enc.Utf8) : null;
+        // validate the token with firebase
+        const auth = collectionDB("auth");
+        const admin = await (await docSnap(auth)).docs[0].data();
+        // if not logged in redirect to login page
+        if (!decodedToken || decodedToken !== admin.password) {
+            navigte(`/lotus/${currentLang.code}/login`);
+            setLoading(false);
+            return;
+        }
+    
+        if (decodedToken === admin.password) setAuth(true);
+        setLoading(false);
+        })();
+    }, [currentLang.code, navigte]);
+
+    return { auth, loading };
 }
