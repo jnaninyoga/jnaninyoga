@@ -11,8 +11,7 @@ export default function Stars({stars, rate}) {
     <div className='flex justify-center items-center gap-1'>
     {stars > 0 && ( Array(stars).fill(0).map((_, i) => 
         <div key={i}>
-            <Rate fill={rate > 0 && i < rate}
-            color={"#fdc5ba"}/>
+            <Rate fill={rate > 0 && i < rate} className={"w-6 h-6"} color={"#fdc5ba"}/>
         </div>
     ))}
     </div>
