@@ -284,6 +284,9 @@
     .shadow-yoga-green{
       box-shadow: 0px 40px 0px 0px var(--yoga-green);
       @screen sm{
+        box-shadow: 0px 80px 0px 0px var(--yoga-green);
+      }
+      @screen lg{
         box-shadow: 20px 20px 0px 0px var(--yoga-green);
       }
     }    

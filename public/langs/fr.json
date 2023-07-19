@@ -34,6 +34,23 @@
             "title":"Sur Moi",
             "text":"Salutations, chères âmes! Je suis Ouarda, une coach de yoga marocaine, et je suis de tout cœur ici pour embarquer avec vous dans un voyage transformateur de bien-être holistique. Ensemble, tissons une tapisserie de force, de flexibilité et de paix intérieure, alors que nous célébrons le chemin unique que vous parcourez. Grâce à la douce cadence de la respiration, au calme de la pleine conscience et à l'art sacré de la méditation, nous réveillerons les braises endormies de votre véritable potentiel. Au-delà des limites du tapis, je vous donne le pouvoir d'embrasser votre moi authentique, d'envelopper votre être d'amour et de trouver du réconfort dans la douce étreinte du bonheur conscient. En traversant cet espace sacré main dans la main, nous peindrons une tapisserie vivante d'équilibre, de joie et de bénédictions abondantes, insufflant la vie aux possibilités illimitées qu'offre le yoga. C'est un immense honneur pour moi de témoigner de l'épanouissement de votre force intérieure et de votre paix profonde. Alors, prends ma main, mon cher, et ensemble, laissons nos esprits s'envoler vers les hauteurs célestes de la découverte de soi et de la sérénité.",
             "btn":"Apprendre encore plus"
+        },
+        "reviews":{
+            "title":"Ce que les gens disent",
+            "btn":"Ajouter un avis",
+            "form":{
+                "title": "Ajouter Votre Avis",
+                "fields": {
+                    "fullname": "Votre nom",
+                    "review": "Votre avis"
+                },
+                "fieldserrors":{
+                    "fullname": "Le Nom doit être au moins 2 caractères",
+                    "review": "Votre avis doit être au moins 10 caractères"
+                },
+                "onSuccess": "Merci {{mr}} pour votre super avis!",
+                "resetBtn": "Annuler"
+            }
         }
     },
     "about": {
@@ -109,5 +126,25 @@
         "title": "Page non trouvée",
         "text": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
         "btn": "Retour à la page d'accueil"
+    },
+    "thankpage":{
+        "title": "Merci '{{mr}}' pour votre message",
+        "text": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
+        "btn": "Retour"
+    },
+    "adminauth":{
+        "title": "Bienvenue Coach Ouarda",
+        "form":{
+            "fields": {
+                "username": "Nom d'utilisateur",
+                "password": "Mot de passe"
+            },
+            "fieldserrors":{
+                "username": "Invalid Nom d'utilisateur",
+                "password": "Invalid Mot de passe"
+            },
+            "onEmpty": "Nom d'utilisateur ou Mot de passe est incorrect",
+            "login": "connexion"
+        }
     }
 }

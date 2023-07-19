@@ -8,18 +8,20 @@ import YogaPose1Poster from '../assets/imgs/stock/yogapose-1.webp';
 import YogaPose2Poster from '../assets/imgs/stock/yogapose-2.webp';
 import YogaPose3Poster from '../assets/imgs/stock/yogapose-3.webp';
 import { useTranslation } from 'react-i18next';
-import { activePage } from '../utils';
+import { useActivePage } from '../hooks';
 
 export default function Yoga() {
   const { t } = useTranslation();
-  const yogamotivation = t(`${activePage()}.yogamotivation`, { returnObjects: true });
+  const activePage = useActivePage();
+
+  const yogamotivation = t(`${activePage}.yogamotivation`, { returnObjects: true });
   const videos = [YogaPose1, YogaPose2, YogaPose3];
   const posters = [YogaPose1Poster, YogaPose2Poster, YogaPose3Poster];
 
   const TYogaMotivation = () => Array.isArray(yogamotivation) ? yogamotivation : [yogamotivation];
 
   return (
-    <main  className="container w-screen sm:px-8 sm:py-6 flex flex-1 items-center justify-between flex-col my-14 sm:gap-48 gap-0 overflow-x-hidden">
+    <main  className="container w-screen sm:px-8 lg:py-6 flex flex-1 items-center justify-between flex-col my-14 lg:gap-48 sm:gap-10 gap-0 overflow-x-hidden">
       {TYogaMotivation().map((section, index) => (
         <IntersectedSection
           key={index}

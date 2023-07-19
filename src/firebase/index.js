@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { collection, getDocs, getFirestore, serverTimestamp, query, limit } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,5 +20,22 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+export const DB = getFirestore(app);
 export const analytics = getAnalytics(app);
 export default app;
+
+export const collectionDB = (name) => collection(DB, name);
+export const docSnap = async (collectionRef) => await getDocs(collectionRef);
+// Firebase FireStore TimeStamp
+export const timestamp = serverTimestamp();
+
+// function that will ensure every document has timestamp field
+export const document = (doc) => { return {...doc, timestamp}};
+
+// fetch docs into array:
+// export const fetchDocs = async (collectionRef) => await docSnap(collectionRef).docs.map(doc => doc.data());
+
+// fetch docs with limits
+export const fetchDocs = (collectionRef, limitNumber) => query(collectionRef, limit(limitNumber));
+
+

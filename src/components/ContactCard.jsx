@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
 import Card from "../layouts/Card";
-import { activePage } from "../utils";
+import { useActivePage } from "../hooks";
 
 export default function ContactCard() {
   const { t } = useTranslation();
-  const ContactMotivation = t(`${activePage()}.contactcard`, { returnObjects: true });
+  const activePage = useActivePage();
+  const ContactMotivation = t(`${activePage}.contactcard`, { returnObjects: true });
   
   return (
     <section className="container flex items-center justify-center">

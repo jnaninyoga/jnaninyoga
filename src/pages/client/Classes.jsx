@@ -1,26 +1,31 @@
-import Footer from "../layouts/Footer";
-import Header from "../layouts/Header";
-import OverLaped from "../layouts/OverLaped";
-import banner from "../assets/videos/yoga.mp4";
-import Session from "../components/Session";
-import sessions from "../constant/sessions.json"
-import SessionRefernce from "../components/SessionRefernce";
+import Footer from "../../layouts/Footer";
+import Header from "../../layouts/Header";
+import OverLaped from "../../layouts/OverLaped";
+import banner from "../../assets/videos/yoga.mp4";
+import Session from "../../components/Session";
+import sessions from "../../constant/sessions.json"
+import SessionRefernce from "../../components/SessionRefernce";
 import { useTranslation } from "react-i18next";
-import { activePage, standardDays, standardYogaCoursesTypes } from "../utils";
-import Meta from "../meta";
+import { standardDays, standardYogaCoursesTypes } from "../../utils";
+import Meta from "../../meta";
+import metadata from "../../meta/meta";
+import { useActivePage, usePathLanguage } from "../../hooks";
 // import OGP from '../constant/ogp';
 
 export default function Classes() {
     const { t } = useTranslation();
-    const days = t(`${activePage()}.days`, { returnObjects: true });
-    const yogaCoursesTypes = t(`${activePage()}.yogaCoursesTypes`, { returnObjects: true });
+    const activePage = useActivePage();
+    usePathLanguage();
+
+    const days = t(`${activePage}.days`, { returnObjects: true });
+    const yogaCoursesTypes = t(`${activePage}.yogaCoursesTypes`, { returnObjects: true });
 
     const TDays = () => Array.isArray(days) ? days : standardDays;
     const TYogaCoursesTypes = () => Array.isArray(yogaCoursesTypes) ? yogaCoursesTypes : standardYogaCoursesTypes;
 
   return (
     <>
-    <Meta title={t('classes.meta.title')} />
+    <Meta title={t('classes.meta.title')} {...metadata.classes}/>
     <Header/>
     <OverLaped banner={banner} type="video">
         <section className="h-full pb-4 sm:pb-0 sm:overflow-x-hidden overflow-x-scroll scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">

@@ -5,10 +5,10 @@ import Suspens from '../layouts/Suspens';
 
 export default function Core() {
     return (
-        <React.StrictMode>
-            <Suspense fallback={<Suspens/>}>
+        <Suspense fallback={<Suspens/>}>
+            <React.StrictMode>
                 <Router />
-            </Suspense>
-        </React.StrictMode>
+            </React.StrictMode>
+        </Suspense>
     )
 }

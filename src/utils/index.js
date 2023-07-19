@@ -1,5 +1,3 @@
-import i18next from "i18next";
-
 // Classes - Stock Images
 import C1 from "../assets/imgs/stock/classes-1.webp";
 import C2 from "../assets/imgs/stock/classes-2.webp";
@@ -28,11 +26,25 @@ export const OverviewStockImgs = {
 // Form Fields:
 export const contactFields = [
     // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
-    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z ]{6,}$/, error: 'Full Name must be at least 6 characters long and only letters and spaces'},
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
     {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
     {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
     // the message field is string at least 2 chars long alow new lines and spaces
     {type: 'textarea', name: 'message', placeholder: 'Message', regex: /^[\S\s]{2,}$/, error: 'Message must be at least 2 characters long and only letters, numbers, spaces and new lines'}
+];
+
+export const adminLoginFields = [
+    // username
+    {type: 'text', name: 'username', placeholder: 'Username', regex: /^[\S\s]{2,}$/, error: 'Username must be at least 6 characters long'},
+    // password
+    {type: 'password', name: 'password', placeholder: 'Password', regex: /^[\S\s]{6,}$/, error: 'Invalid Password'}
+];
+
+export const reviewsFields = [
+    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
+    // the message field is string at least 2 chars long alow new lines and spaces
+    {type: 'textarea', name: 'review', placeholder: 'Your Review', regex: /^[\S\s]{10,500}$/, maxChars: 500, error: 'review must be at least 10 characters long'}
 ];
 
 // Yoga Calander:
@@ -58,14 +70,13 @@ export const standardYogaCoursesTypes = [
 ]
 
 export const supportedLanguages = [
-    {name: 'English', code: 'en', dir: 'ltr'}, 
+    {name: 'English', code: 'en', dir: 'ltr'},
     {name: 'Français', code: 'fr', dir: 'ltr'},
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
 
-export const currentLanguage = () => supportedLanguages.find(lang => lang.code === i18next.language);
-
-export const activePage = () => window.location.pathname.split("/")[1].toLowerCase() === "" ? "home" : window.location.pathname.split("/")[1].toLowerCase();
+// export const currentLanguage = () => supportedLanguages.find(lang => lang.code === i18next.language);
+// export const activePage = () => window.location.pathname.split("/")[1].toLowerCase() === "" ? "home" : window.location.pathname.split("/")[1].toLowerCase();
 
 export function copyright(hostname=window.location.hostname){
     return `Copyright © ${new Date().getFullYear()} ${hostname}, All Rights Reserved`
