@@ -1,13 +1,14 @@
 import Rating from '../components/Rating'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GreenMat from "../assets/imgs/spine/GreenMat.webp";
+import icon from '../assets/imgs/icons/lotus.webp';
 import Review from '../components/Review';
 import Form from "./Form";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Mousewheel, A11y } from 'swiper/modules';
 import { reviewsFields } from "../utils";
 import { useTranslation } from 'react-i18next';
-import { useActivePage, useCurrentLanguage } from '../hooks';
+import { useActivePage, useCurrentLanguage, useIntersectView } from '../hooks';
 import { addDoc, onSnapshot } from 'firebase/firestore';
 import { collectionDB, document, fetchDocs } from '../firebase';
 
@@ -27,6 +28,9 @@ export default function Reviews() {
     const [rate, setRate] = useState(5);
     const [isFormActive, setIsFormActive] = useState(false);
     const [thankPage, setThankPage] = useState(false);
+
+    const reviewsRef = useRef(null);
+    const isReviewsIntersected = useIntersectView(reviewsRef);
 
     const TFields = t(`${activePage}.reviews.form.fields`, {returnObjects: true});
     const TFieldsErrors = t(`${activePage}.reviews.form.fieldserrors`, {returnObjects: true});
@@ -76,7 +80,7 @@ export default function Reviews() {
   return (
     <section id="reviews" className="container min-h-[400px] relative mt-14 py-8 flex flex-1 justify-center items-center flex-col gap-6 sm:mt-20 overflow-hidden" style={{backgroundImage: `url(${GreenMat})`}}>
     {isFormActive ? 
-    <section className='w-full flex flex-1 justify-center items-center px-4'>
+    <section className='w-full flex flex-1 justify-center items-center px-4 flex-col'>
     {thankPage ?        
         <article className="w-full flex flex-1 justify-center items-center flex-col gap-4">
             <h1 className="cinzel sm:text-4xl text-3x text-center text-yoga-white font-bold uppercase">{t(`${activePage}.reviews.form.onSuccess`, {mr: reviewData.fullname})}</h1>
@@ -96,6 +100,11 @@ export default function Reviews() {
         />
     }
     </section> :
+    <section ref={reviewsRef} className='w-full flex flex-1 justify-center items-center flex-col gap-12'>
+        <div className='w-full flex justify-center items-center flex-col gap-4'>
+            <img src={icon} className={`${isReviewsIntersected ? "scale-1" : "scale-0"} h-12 w-12 transition-all duration-500 select-none`} alt="Red/pink lotus icon" />
+            <h2 className={`${isReviewsIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} sm:w-1/2 w-[80%] text-yoga-white cinzel sm:text-4xl text-2xl font-bold uppercase text-center transition-all duration-500 relative before:absolute before:h-1 before:w-full before:bg-yoga-white  before:left-1/2  before:-translate-x-1/2 before:-bottom-2`}>{t(`${activePage}.reviews.title`)}</h2>
+        </div>
 
     <Swiper
     className="w-full h-full"
@@ -144,6 +153,7 @@ export default function Reviews() {
         })
     }
     </Swiper>
+    </section>
     }
     {!isFormActive && <button onClick={() => setIsFormActive(true)} className="yoga-btn">{t(`${activePage}.reviews.btn`)}</button> }
     </section>
