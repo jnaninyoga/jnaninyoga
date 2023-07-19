@@ -10,9 +10,10 @@ import { useTranslation } from "react-i18next";
 import Meta from "../../meta";
 import metadata from "../../meta/meta";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
-import { DB } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collectionDB, document } from "../../firebase";
+import { addDoc } from "firebase/firestore";
 import Thank from "../../layouts/Thank";
+import Followers from "../../components/Followers";
 // import OGP from '../constant/ogp';
 
 export default function Contact() {
@@ -35,7 +36,7 @@ export default function Contact() {
   // sending the contact form to firebase collection called "contact"
   const sendContact = async (contactdata) => {
     try {
-      const docRef = await addDoc(collection(DB, "contact"), {...contactdata, lang: currentLanguage.name, answered: false});
+      const docRef = await addDoc(collectionDB("contact"), document({...contactdata, lang: currentLanguage.name, answered: false}));
       setShowThankPage(true);
       console.log(contactdata);
       console.log("Document written with ID: ", docRef.id);
@@ -69,6 +70,7 @@ export default function Contact() {
       sendBtn={t('contact.form.sendBtn')}
       resetBtn={t('contact.form.resetBtn')}
       />
+      <Followers/>
     </OverLaped>
     <Footer/>
     </>
