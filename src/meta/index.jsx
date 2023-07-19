@@ -14,8 +14,6 @@ Meta.propTypes = {
     })
 }
 
-
-
 export default function Meta(meta) {
     const { title, description, keywords, image, url, type } = meta;
     // const activePage = useActivePage();
