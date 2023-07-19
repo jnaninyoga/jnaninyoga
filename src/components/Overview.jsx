@@ -38,19 +38,21 @@ export default function Overview() {
     });
 
   return (
-    <section className="container w-full px-4 py-10 flex flex-1 flex-col sm:flex-row justify-evenly bg-yoga-white gap-4 sm:gap-8">
-        <div className="h-full flex flex-col items-center justify-between sm:gap-4">
-            <img  src={classesOverview} className={`h-[400px] w-[400px] aspect-square object-contain select-none transition-opacity duration-500 ${animateTrigger ? 'opacity-100' : 'opacity-0'}`} alt="Yoga Classes Gallery Images" />
-            <h3 className="cinzel text-2xl font-bold uppercase">{TTitles()[0]}</h3>
-        </div>
-        <div className="h-full flex flex-col items-center justify-between sm:gap-4">
-            <img src={studioOverview} className={`h-[400px] w-[400px] aspect-square object-contain select-none transition-opacity duration-500 ${animateTrigger ? 'opacity-100' : 'opacity-0'}`} alt="Yoga Studio Gallery Images" />
-            <h3 className="cinzel text-2xl font-bold uppercase">{TTitles()[1]}</h3>
-        </div>
-        <div className="h-full flex flex-col items-center justify-between sm:gap-4">
-            <img src={yogaOverview} className={`h-[400px] w-[400px] aspect-square object-contain select-none transition-opacity duration-500 ${animateTrigger ? 'opacity-100' : 'opacity-0'}`} alt="Yoga Pose Gallery Images" />
-            <h3 className="cinzel text-2xl font-bold uppercase">{TTitles()[2]}</h3>
-        </div>
+    <section className="w-screen px-4 py-10 flex justify-center items-center bg-yoga-white">
+        <section className="container w-full flex flex-1 flex-col sm:flex-row justify-evenly gap-4 sm:gap-8">
+            <div className="h-1/3 w-full sm:h-full sm:w-1/3 flex flex-col items-center justify-between gap-4">
+                <img  src={classesOverview} className={`h-full w-full sm:aspect-square object-contain select-none transition-opacity duration-500 ${animateTrigger ? 'opacity-100' : 'opacity-0'}`} alt="Yoga Classes Gallery Images" />
+                <h3 className="cinzel text-2xl font-bold uppercase">{TTitles()[0]}</h3>
+            </div>
+            <div className="h-1/3 w-full sm:h-full sm:w-1/3 flex flex-col items-center justify-between gap-4">
+                <img src={studioOverview} className={`h-full w-full sm:aspect-square object-contain select-none transition-opacity duration-500 ${animateTrigger ? 'opacity-100' : 'opacity-0'}`} alt="Yoga Studio Gallery Images" />
+                <h3 className="cinzel text-2xl font-bold uppercase">{TTitles()[1]}</h3>
+            </div>
+            <div className="h-1/3 w-full sm:h-full sm:w-1/3 flex flex-col items-center justify-between gap-4">
+                <img src={yogaOverview} className={`h-full w-full sm:aspect-square object-contain select-none transition-opacity duration-500 ${animateTrigger ? 'opacity-100' : 'opacity-0'}`} alt="Yoga Pose Gallery Images" />
+                <h3 className="cinzel text-2xl font-bold uppercase">{TTitles()[2]}</h3>
+            </div>
+        </section>
     </section>
   )
 }

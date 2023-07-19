@@ -2,7 +2,7 @@ import Lang from "../components/Lang";
 import logo from "../assets/imgs/spine/logo.webp"
 import "handyscript/lib/string";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { standardNavbar } from "../utils";
 import { useActivePage, useCurrentLanguage } from "../hooks";
@@ -21,6 +21,21 @@ export default function Header() {
   // check if navbar is an array
   const Tnavbar = () => Array.isArray(navbar) ? navbar : standardNavbar;
 
+  // hide the navbar when scrolling down and show it when scrolling up
+  const [hideNavbar, setHideNavbar] = useState(false);
+
+  useEffect(() => {
+    let prevScrollPos = window.pageYOffset;
+    const onScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      setHideNavbar(prevScrollPos < currentScrollPos);
+      prevScrollPos = currentScrollPos;
+    };
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const showMenu = () => { 
     setIsMenuHidden(false)
     // PREVENT SCROLLING
@@ -31,10 +46,11 @@ export default function Header() {
     // ALLOW SCROLLING
     document.body.style.overflow = "auto";
   };
+
   const activeLink = link => activePage === link.toLowerCase() ? "before:w-full text-yoga-green" : "before:w-0";
 
   return (
-    <header className={`fixed z-[9999] bg-yoga-white sm:px-10 px-4 h-14 sm:h-16 w-full flex justify-between items-center`}>
+    <header className={`fixed ${hideNavbar ? '-top-[100%] opacity-0' : 'top-0 opacity-100'} z-[9999] bg-yoga-white sm:px-10 px-4 h-14 sm:h-16 w-full flex justify-between items-center transition-all duration-300`}>
       <div className="lg:h-full lg:w-auto w-full flex items-center lg:justify-center justify-between lg:gap-6">
         <Link to={"/"}>
           <img className="lg:h-14 h-12" src={logo} alt="Jnanin Yoga Studio Logo" />
