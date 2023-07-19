@@ -11,8 +11,7 @@ import metadata from "../../meta/meta";
 import { useActivePage, usePathLanguage } from "../../hooks";
 import NotFound from "../../layouts/404";
 import Reviews from "../../layouts/Reviews";
-// import { useParams } from "react-router-dom/dist";
-// import OGP from '../constant/ogp';
+import Wrapper from "../../layouts/Wrapper";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -20,22 +19,20 @@ export default function Home() {
   usePathLanguage();
 
   // check if activePage is notfound, it will render 404 page
-  if (activePage === 'notfound') {
-    return <NotFound/>
-  }
+  if (activePage === 'notfound') return <NotFound/>;
   
   return (
     <>
       <Meta title={t('home.meta.title')} {...metadata.home}/>
       <Header/>
-      <section className="w-screen flex flex-1 justify-center items-center flex-col overflow-hidden">
+      <Wrapper>
         <Hero/>
         <Overview/>
         <Yoga/>
         <ContactCard/>
         <AboutMe/>
         <Reviews/>
-      </section>
+      </Wrapper>
       <Footer/>
     </>
   )
