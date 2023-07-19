@@ -11,13 +11,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-yoga-white flex flex-col py-8 px-10 items-center justify-between bottom-0 mt-5">
-      <h1 className="z-0 w-full sm:mb-4 mb-8 text-2xl ltr:sm:text-left rtl:sm:text-right text-center uppercase font-bold relative before:absolute before:h-1 sm:before:w-80 before:w-full before:bg-yoga-black ltr:sm:before:left-0 rtl:sm:before:right-0 before:left-1/2 sm:before:translate-x-0 before:-translate-x-1/2 before:-bottom-2">Jnanin Yoga Studio</h1>
-      <section className="container w-full font-medium flex justify-evenly items-center sm:flex-row flex-col gap-4">
-        <ul className="sm:w-1/3 sm:order-1 order-4 cinzel flex flex-col sm:gap-2 gap-4" id="contactinfo">
+      <h1 className="z-0 w-full lg:mb-4 mb-8 lg:text-2xl sm:text-3xl text-2xl ltr:lg:text-left rtl:lg:text-right text-center uppercase font-bold relative before:absolute before:h-1 lg:before:w-80 before:sm:w-[70%] before:w-full before:bg-yoga-black ltr:lg:before:left-0 rtl:lg:before:right-0 before:left-1/2 lg:before:translate-x-0 before:-translate-x-1/2 before:-bottom-2">Jnanin Yoga Studio</h1>
+      <section className="container w-full font-medium flex justify-evenly items-center lg:flex-row flex-col lg:gap-4 sm:gap-6 gap-4">
+        <ul className="lg:w-1/3 lg:order-1 order-4 cinzel lg:text-base sm:text-xl flex sm:flex-col-reverse flex-col lg:items-start sm:items-center items-start lg:gap-2 gap-4" id="contactinfo">
           <li>
             <a className="flex items-start gap-4" href="https://goo.gl/maps/e4rGL1BPWrSXGZH77" title="espace essafwa, angle BD Yacoub El Mansour et, Bd Allal Al Fassi, Marrakesh" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-ss-marker"></i>
-              <h4 className="uppercase underline-offset-4 underline">espace essafwa, angle BD Yacoub El Mansour et, Bd Allal Al Fassi, Marrakesh</h4>
+              <h4 className="uppercase sm:text-center lg:text-start underline-offset-4 underline">espace essafwa, angle BD Yacoub El Mansour et, Bd Allal Al Fassi, Marrakesh</h4>
             </a>
           </li>
           <li>
@@ -33,9 +33,9 @@ export default function Footer() {
             </a>
           </li>
         </ul>
-        <img className="h-40 sm:order-2 order-2" src={logo} alt="Jnanin Yoga Studio Logo" />
+        <img className="h-40 lg:order-2 order-2" src={logo} alt="Jnanin Yoga Studio Logo" />
         {/* Social Media */}
-        <ul className="sm:w-[14%] w-full sm:order-3 order-3 cinzel flex flex-col sm:gap-2 gap-4" id="socialmedia">
+        <ul className="lg:w-[14%] lg:text-base sm:text-xl w-full lg:order-3 order-3 cinzel flex lg:flex-col sm:flex-row flex-col sm:justify-center lg:items-start sm:items-center lg:gap-2 gap-4" id="socialmedia">
           <li>
             <a className="flex items-center gap-4" href="https://instagram.com/jnaninyoga" title="Instagram Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-brands-instagram"></i>
@@ -56,9 +56,9 @@ export default function Footer() {
           </li>
         </ul>       
         {/* Navigation */}
-        <ul className="sm:w-1/12 order-1 sm:order-4 cinzel flex flex-col gap-2" id="navigaton">
+        <ul className="lg:w-1/12 order-1 lg:order-4 cinzel flex flex-col sm:items-center gap-2" id="navigaton">
           {Tnavbar().map((link, index) => (
-            <li key={index} className="text-center sm:text-lg text-xl">
+            <li key={index} className="text-center lg:text-lg text-xl">
               <Link 
               to={link.toLowerCase() === navbar[0].toLowerCase() ? "/" : `/${standardNavbar[index].toLowerCase()}`}
               className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>
@@ -68,7 +68,7 @@ export default function Footer() {
           ))}
         </ul>
       </section>
-      <h6 className="mt-4 pt-4 w-screen text-center font-bold sm:text-base text-sm">{copyright("Jnanin Yoga")}</h6>
+      <h6 className="mt-4 pt-4 w-screen text-center font-bold lg:text-base sm:text-lg text-sm">{copyright("Jnanin Yoga")}</h6>
     </footer>
   )
 }

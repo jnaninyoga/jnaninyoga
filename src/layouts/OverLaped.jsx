@@ -17,7 +17,7 @@ export default function OverLaped(props) {
           <video poster={overlay} src={banner} onContextMenu={e => e.preventDefault()} className="relative w-full sm:h-80 h-52 object-cover object-center pointer-events-none select-none" alt="The background Video banner" muted loop autoPlay preload='auto'></video>
           : <img src={banner || overlay} onContextMenu={e => e.preventDefault()} className="relative w-full sm:h-80 h-52 object-cover object-center pointer-events-none select-none" alt="The background image banner" />
         }
-        <main className="container relative px-4 py-8 sm:w-fit w-[92%] h-fit sm:-translate-y-20 -translate-y-14 flex justify-center flex-col" style={{backgroundImage: `url(${textureBG})`}}>
+        <main className="container relative px-4 py-8 h-min lg:w-fit w-[92%] lg:-translate-y-20 -translate-y-14 flex justify-center flex-col" style={{backgroundImage: `url(${textureBG})`}}>
             {props.children}
         </main>
     </section>

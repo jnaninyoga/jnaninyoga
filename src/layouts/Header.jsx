@@ -35,20 +35,20 @@ export default function Header() {
 
   return (
     <header className={`fixed z-[9999] bg-yoga-white sm:px-10 px-4 h-14 sm:h-16 w-full flex justify-between items-center`}>
-      <div className="sm:h-full sm:w-auto w-full flex items-center sm:justify-center justify-between sm:gap-6">
+      <div className="lg:h-full lg:w-auto w-full flex items-center lg:justify-center justify-between lg:gap-6">
         <Link to={"/"}>
-          <img className="sm:h-14 h-12" src={logo} alt="Jnanin Yoga Studio Logo" />
+          <img className="lg:h-14 h-12" src={logo} alt="Jnanin Yoga Studio Logo" />
         </Link>
         <h1 className="cinzel sm:text-xl font-bold uppercase">Jnanin Yoga Studio</h1>
-        <button onClick={showMenu} className="sm:hidden flex items-center justify-center text-2xl"><i className="fi fi-bs-menu-burger flex items-center justify-center"></i></button>
+        <button onClick={showMenu} className="lg:hidden flex items-center justify-center sm:text-3xl text-2xl"><i className="fi fi-bs-menu-burger flex items-center justify-center"></i></button>
       </div>
 
-      <nav className={`bg-yoga-white sm:pt-0 pt-8 sm:h-full h-screen sm:w-auto w-screen sm:relative fixed z-[9999] top-0 flex items-center sm:justify-center justify-start sm:gap-6 gap-6 sm:flex-row flex-col texture-v sm:bg-none sm:before:bg-none sm:right-auto sm:left-auto ltr:sm:right-auto ltr:sm:left-auto rtl:sm:right-auto rtl:sm:left-auto transition-all ${isMenuHidden ? "ltr:-right-[120%] rtl:-left-[120%]" : "ltr:right-0 rtl:left-0"}`}>
-        <Link to={"/"} className="sm:h-full sm:hidden flex items-center gap-4 sm:flex-row flex-col">
-          <img className="sm:h-14 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
-          <h1 className="cinzel text-2xl text-center font-bold uppercase">Jnanin Yoga Studio</h1>
+      <nav className={`bg-yoga-white lg:pt-0 sm:pt-0 pt-10 lg:h-full h-screen lg:w-auto w-screen lg:relative fixed z-[9999] top-0 flex items-center sm:justify-center justify-start gap-6 lg:flex-row flex-col texture-v lg:bg-none lg:before:bg-none lg:right-auto lg:left-auto ltr:lg:right-auto ltr:lg:left-auto rtl:lg:right-auto rtl:lg:left-auto transition-all ${isMenuHidden ? "ltr:-right-[120%] rtl:-left-[120%]" : "ltr:right-0 rtl:left-0"}`}>
+        <Link to={"/"} className="lg:h-full lg:hidden flex items-center gap-4 lg:flex-row flex-col">
+          <img className="lg:h-14 sm:h-60 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
+          <h1 className="cinzel sm:text-4xl text-2xl text-center font-bold uppercase">Jnanin Yoga Studio</h1>
         </Link>
-        <ul className="flex items-center sm:text-lg text-xl font-bold gap-4 sm:flex-row flex-col">
+        <ul className="flex items-center lg:text-lg sm:text-2xl text-xl font-bold lg:gap-4 sm:gap-8 gap-4 lg:flex-row flex-col">
           {
             Tnavbar().map((link, index) => (
               <li key={index} onClick={hideMenu}>
@@ -58,9 +58,9 @@ export default function Header() {
                 </Link>
               </li>
           ))}
-          <Lang className="text-xl mt-4"/>
+          <Lang className="lg:text-xl sm:text-2xl text-xl mt-4"/>
         </ul>
-        <button onClick={hideMenu} className="absolute top-6 ltr:right-6 rtl:left-6 text-2xl text-yoga-red sm:hidden"><i className="fi fi-bs-cross"></i></button>
+        <button onClick={hideMenu} className="absolute top-6 ltr:right-6 rtl:left-6 sm:text-3xl text-2xl text-yoga-red lg:hidden"><i className="fi fi-bs-cross"></i></button>
       </nav>
     </header>
   )

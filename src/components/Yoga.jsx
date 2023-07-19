@@ -21,7 +21,7 @@ export default function Yoga() {
   const TYogaMotivation = () => Array.isArray(yogamotivation) ? yogamotivation : [yogamotivation];
 
   return (
-    <main  className="container w-screen sm:px-8 sm:py-6 flex flex-1 items-center justify-between flex-col my-14 sm:gap-48 gap-0 overflow-x-hidden">
+    <main  className="container w-screen sm:px-8 lg:py-6 flex flex-1 items-center justify-between flex-col my-14 lg:gap-48 sm:gap-10 gap-0 overflow-x-hidden">
       {TYogaMotivation().map((section, index) => (
         <IntersectedSection
           key={index}

@@ -75,7 +75,7 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
     
 
   return (
-    <form ref={formRef} action="" onSubmit={submitForm} className='sm:w-[50vw] w-full sm:px-20 px-2 flex items-center gap-1 flex-col'>
+    <form ref={formRef} action="" onSubmit={submitForm} className='lg:w-[50vw] w-full lg:px-20 sm:px-10 px-2 flex items-center gap-1 flex-col'>
         <img src={icon} className={`${isFormIntersected ? "scale-1" : "scale-0"} sm:h-16 sm:w-16 h-12 w-12 transition-all duration-500 select-none`} alt="Red/pink lotus icon" />
         <h1 className={`${isFormIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel text-yoga-white text-center sm:text-3xl text-2xl font-bold uppercase transition-all duration-500`}>{title}</h1>
         {insertElement && <div className={`${isFormIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} my-4 transition-all duration-500 delay-200`}>
