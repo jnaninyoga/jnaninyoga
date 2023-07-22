@@ -124,7 +124,6 @@
       @apply bg-center;
       @apply opacity-40; 
       @apply select-none;
-      @apply -z-10;
     }
 
     .texture-h::before{
