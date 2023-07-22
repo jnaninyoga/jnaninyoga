@@ -12,7 +12,7 @@ export default function Map({title}){
     const isMapIntersected = useIntersectView(map);
 
     return(
-        <section ref={map} className="w-screen max-h-[700px] pt-6 mb-14 flex flex-1 justify-start items-center flex-col gap-4 bg-yoga-white texture-v sm:texture-h texture-opacity-80 overflow-hidden" id="#studiolocation">
+        <section ref={map} itemProp="location" itemScope itemType="https://schema.org/Place" className="w-screen max-h-[700px] pt-6 mb-14 flex flex-1 justify-start items-center flex-col gap-4 bg-yoga-white texture-v sm:texture-h texture-opacity-80 overflow-hidden" id="#studiolocation">
             <img src={icon} className={`${isMapIntersected ? "scale-1" : "scale-0"} sm:h-16 sm:w-16 h-12 w-12 transition-all duration-500 select-none`} alt="Red/pink lotus icon" />
             <h2 className={`${isMapIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} cinzel lg:text-4xl sm:text-3xl text-2xl font-bold uppercase text-center transition-all duration-500`}>{title}</h2>
             <iframe

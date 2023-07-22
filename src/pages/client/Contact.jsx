@@ -14,7 +14,6 @@ import { collectionDB, document } from "../../firebase";
 import { addDoc } from "firebase/firestore";
 import Thank from "../../layouts/Thank";
 import Followers from "../../components/Followers";
-// import OGP from '../constant/ogp';
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -36,10 +35,8 @@ export default function Contact() {
   // sending the contact form to firebase collection called "contact"
   const sendContact = async (contactdata) => {
     try {
-      const docRef = await addDoc(collectionDB("contact"), document({...contactdata, lang: currentLanguage.name, answered: false}));
+      await addDoc(collectionDB("contact"), document({...contactdata, lang: currentLanguage.name, answered: false}));
       setShowThankPage(true);
-      console.log(contactdata);
-      console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -48,12 +45,13 @@ export default function Contact() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowThankPage(false);
+      setContact({});
     }, 18000);
     return () => clearTimeout(timeout);
   }, [showThankPage]);
 
   // if the contact form is sent successfully, it will render the thank you page
-  if (showThankPage) return <Thank mr={contact.fullname} onClick={() => setShowThankPage(false)}/>
+  if (showThankPage) return <Thank mr={contact.fullname} onClick={() => { setShowThankPage(false); setContact({}); }}/>
 
   return (
     <>
