@@ -41,7 +41,7 @@ export default function About() {
         <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} text-yoga-white sm:w-[100%] sm:text-center text-justify sm:text-lg transition-all duration-300`}>
           {t(`${activePage}.text`)}
         </p>
-        <ul ref={SocialMedia} className="cinzel items-center flex gap-6" id="socialmedia">
+        <ul ref={SocialMedia} className="cinzel items-center flex gap-6">
           <li>
             <a className={`${isSocialMediaIntersected ? "opacity-100 scale-100":"opacity-0 scale-0"} flex items-center gap-4 transition-all duration-200`} href="https://instagram.com/jnaninyoga" title="Instagram Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-brands-instagram lg:text-lg sm:text-2xl text-xl text-yoga-white hover:text-yoga-red transition-all duration-300"></i>

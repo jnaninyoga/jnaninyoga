@@ -46,7 +46,7 @@ export default function Reviews() {
     const sendReview = async (reviewdata) => {
         try {
             await addDoc(collectionDB("reviews"), document({...reviewdata, rate, lang: currentLanguage.name}));
-            setReviews([...reviews, reviewdata]);
+            if (reviewdata.rate >= 4) setReviews([...reviews, reviewdata]);
             setThankPage(true);
         } catch (e) {
             console.error(e);
@@ -58,11 +58,11 @@ export default function Reviews() {
         (async () => {
             try {
                 const reviewsRef = collectionDB("reviews");
-                onSnapshot(fetchDocs(reviewsRef, 100), (querySnapshot) => {
+                onSnapshot(fetchDocs(reviewsRef, ["rate", ">=", 4], ["rate"], 100), (querySnapshot) => {
                     setReviews(querySnapshot.docs.map(doc => doc.data()));
                 });
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         })()
     }, []);
