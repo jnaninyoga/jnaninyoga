@@ -13,6 +13,16 @@
   --yoga-white: #F9F3F2;
   --yoga-red: #fdc5ba;
   --yoga-green: #8CC9D2;
+
+  /* OP Backgrounds */
+  --yoga-ligth-red: #fae0dbee;
+  --yoga-ligth-green: #a6e8ec;
+
+  /* Dark  Backgrounds*/
+  --yoga-dark-red: #b3786cee;
+  --yoga-dark-green: #13a9b1;
+  --yoga-dark-white: #928b8b;
+
   /* Yoga Colors for the Calander */
   --yoga-type-1: var(--yoga-red);
   --yoga-op-type-1: #fdc5ba60;
@@ -79,11 +89,30 @@
   .text-yoga-red { @apply text-[var(--yoga-red)] }
   .text-yoga-white { @apply text-[var(--yoga-white)] }
   .text-yoga-black { @apply text-[var(--yoga-black)] }
+
+  /* Ligth Text Colors */
+  .text-yoga-green-ligth { @apply text-[var(--yoga-ligth-green)] }
+  .text-yoga-red-ligth { @apply text-[var(--yoga-ligth-red)] }
+
+  /* Dark Text Colors */
+  .text-yoga-green-dark { @apply text-[var(--yoga-dark-green)] }
+  .text-yoga-red-dark { @apply text-[var(--yoga-dark-red)] }
+  .text-yoga-white-dark { @apply text-[var(--yoga-dark-white)] }
+
   /* Backgrounds */
   .bg-yoga-green { @apply bg-[var(--yoga-green)] }
   .bg-yoga-red { @apply bg-[var(--yoga-red)] }
   .bg-yoga-white { @apply bg-[var(--yoga-white)] }
   .bg-yoga-black { @apply bg-[var(--yoga-black)] }
+
+  /* Ligth Backgrounds */
+  .bg-yoga-red-ligth { @apply bg-[var(--yoga-ligth-red)] }
+  .bg-yoga-green-ligth { @apply bg-[var(--yoga-ligth-green)] }
+
+  /* Dark Backgrounds */
+  .bg-yoga-red-dark { @apply bg-[var(--yoga-dark-red)] }
+  .bg-yoga-green-dark { @apply bg-[var(--yoga-dark-green)] }
+
   /* Borders */
   .border-yoga-green { @apply border-[var(--yoga-green)] }
   .border-yoga-red { @apply border-[var(--yoga-red)] }

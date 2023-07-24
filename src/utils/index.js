@@ -49,6 +49,7 @@ export const reviewsFields = [
 
 // Yoga Calander:
 export const standardNavbar = ["Home","About","Contact","Classes"];
+export const dashboardNavbar = ["Contacts","Reviews","Classes","Account"];
 export const standardDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 export const standardYogaCoursesTypes = [
     {
@@ -67,7 +68,14 @@ export const standardYogaCoursesTypes = [
         type: "Online Course",
         desc: "its an online and live sessions in social media"
     }
-]
+];
+
+export const dashboardNavicons = {
+    contacts: "fi fi-ss-headset",
+    reviews: "fi fi-sr-star-comment-alt",
+    classes: "fi fi-sr-calendar",
+    account: "fi fi-sr-user-gear",
+}
 
 export const supportedLanguages = [
     {name: 'English', code: 'en', dir: 'ltr'},

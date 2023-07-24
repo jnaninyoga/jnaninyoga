@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { useAdminAuth } from "../../hooks"
-import NotImplemented from "../../layouts/NotImplemented";
-import OverLaped from "../../layouts/OverLaped";
+import DashboardSidebar from "../../layouts/DashboardSidebar";
 
 export default function Dashboard() {
     useAdminAuth();
+    const [activeBoard, setActiveBoard] = useState("contacts");
 
   return (
-    <main>
-        {/* <OverLaped> */}
-            <NotImplemented />
-        {/* </OverLaped> */}
+    <main className="flex w-screen lg:flex-row flex-col">
+      <DashboardSidebar board={[activeBoard, setActiveBoard]}/>
+      <section>
+        
+      </section>
     </main>
   )
 }
