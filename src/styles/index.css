@@ -19,9 +19,9 @@
   --yoga-ligth-green: #a6e8ec;
 
   /* Dark  Backgrounds*/
-  --yoga-dark-red: #b3786cee;
+  --yoga-dark-red: #eca394;
   --yoga-dark-green: #13a9b1;
-  --yoga-dark-white: #928b8b;
+  --yoga-dark-white: #f7efef;
 
   /* Yoga Colors for the Calander */
   --yoga-type-1: var(--yoga-red);
@@ -112,6 +112,7 @@
   /* Dark Backgrounds */
   .bg-yoga-red-dark { @apply bg-[var(--yoga-dark-red)] }
   .bg-yoga-green-dark { @apply bg-[var(--yoga-dark-green)] }
+  .bg-yoga-white-dark { @apply bg-[var(--yoga-dark-white)] }
 
   /* Borders */
   .border-yoga-green { @apply border-[var(--yoga-green)] }
