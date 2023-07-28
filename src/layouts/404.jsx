@@ -8,7 +8,7 @@ import Meta from "../meta";
 import { usePathLanguage } from "../hooks";
 import { useEffect } from "react";
 import metadata from '../meta/meta';
-// import AnimatedLotus from "../assets/imgs/icons/animatedlotus.mp4";
+import Icon from "../assets/svg";
 
 export default function NotFound() {
   const { t } = useTranslation();
@@ -29,15 +29,21 @@ export default function NotFound() {
     <Header/>
     <OverLaped banner={banner}>
         <section className="sm:w-[90vw] flex flex-1 justify-center items-center flex-col gap-4">
-            {/* <img src={AnimatedLotus} className="w-[480px] h-[480px] aspect-square object-cover object-center" alt="" /> */}
-            {/* <video muted autoPlay loop src={AnimatedLotus} className="w-[480px] h-[480px] aspect-square object-cover object-center" alt="" ></video> */}
-            {/* <lottie-player src="https://lottie.host/13d290ed-9dff-4a44-ab8c-d6a11b0bc664/Wu2Mu5BrPP.json" background="transparent" speed="1" style={{width: 300, height: 300, background: "#fff"}} loop autoplay></lottie-player> */}
-            <article className="w-full flex flex-1 justify-center items-center flex-col gap-4">
-              <h1 className="cinzel text-8xl text-center text-yoga-white font-bold animate-bounce">404</h1>
-              <h2 className="cinzel text-4xl text-center text-yoga-white font-bold uppercase">{t("notfound.title")}</h2>
-              <p className="cinzel sm:text-2xl text-center text-yoga-white font-bold">{t("notfound.text")}</p>
-              <button><Link to="/" className="cinzel sm:text-2xl text-xl font-bold yoga-btn">{t("notfound.btn")}</Link></button>
-            </article>
+          <div className="relative flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center -translate-y-10">
+              <Icon 
+              label="Lotus"
+              src="https://cdn.lordicon.com/hvuelaml.json"
+              colors={{oc: "#ffffff", pc: "#fdc5ba", sc: "#ffffff"}}
+              />
+            </div>
+            <h1 className="absolute top-[150px] cinzel text-8xl text-center text-yoga-white font-bold animate-bounce">404</h1>
+          </div>
+          <article className="w-full flex flex-1 justify-center items-center flex-col gap-4">
+            <h2 className="cinzel text-4xl text-center text-yoga-white font-bold uppercase">{t("notfound.title")}</h2>
+            <p className="sm:text-2xl text-center text-yoga-white font-medium">{t("notfound.text")}</p>
+            <button><Link to="/" className="cinzel sm:text-2xl text-xl font-bold yoga-btn">{t("notfound.btn")}</Link></button>
+          </article>
         </section>
     </OverLaped>
     <Footer/>

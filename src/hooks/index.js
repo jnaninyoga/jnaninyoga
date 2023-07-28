@@ -1,9 +1,11 @@
 import i18next, { changeLanguage } from "i18next";
-import { useState, useEffect} from "react";
+import { useState, useEffect, useContext} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
-import { standardNavbar, supportedLanguages } from "../utils";
-import { collectionDB, docSnap } from "../firebase";
-import * as CryptoJS from "crypto-js";
+import { standardNavbar, supportedLanguages, tokenDecoder } from "../utils";
+import { docSnap } from "../firebase";
+import { DashboardContext } from "../context/dashboard";
+import { ActiveBoardContext } from "../context/activeboard";
+import collections from "../firebase/collections";
 
 export function useIntersectView(ref) {
     const [isIntersected, setIsintersected] = useState();
@@ -33,12 +35,9 @@ export function useCurrentLanguage() {
 // change the i18next language based on the page path like about/ => about/en
 export function usePathLanguage() {
     const { lang } = useParams();
-    // const queryLang = useLocation().search.split("=")[1];
     const currentLang = useCurrentLanguage();
     const pathLang = supportedLanguages.map(lang => lang.code).includes(lang?.toLowerCase()) ? lang : "en";
 
-    // if (!supportedLanguages.find(lang => lang.code === pathLang)) return;
-    // if (currentLang.code !== queryLang && !lang) changeLanguage(queryLang);
     if (currentLang.code !== pathLang) changeLanguage(pathLang);
     return pathLang;
 }
@@ -52,22 +51,32 @@ export function useAdminAuth() {
 
     useEffect(() => {
         (async () => {
-        const token = document.cookie.search("yogacoach") !== -1 ? JSON.parse(document.cookie.split(";").find(cookie => cookie.includes("yogacoach")).split("=")[1]) : null;
-        const decodedToken = token ? CryptoJS.AES.decrypt(decodeURIComponent(token.password), "yogacoach").toString(CryptoJS.enc.Utf8) : null;
+        const token = tokenDecoder("yogacoach");
         // validate the token with firebase
-        const auth = collectionDB("auth");
-        const admin = await (await docSnap(auth)).docs[0].data();
+        const admin = await (await docSnap(collections.auth)).docs[0].data();
         // if not logged in redirect to login page
-        if (!decodedToken || decodedToken !== admin.password) {
+        if (!token || token.password !== admin.password) {
             navigte(`/lotus/${currentLang.code}/login`);
             setLoading(false);
             return;
         }
     
-        if (decodedToken === admin.password) setAuth(true);
+        if (token.password === admin.password) setAuth(true);
         setLoading(false);
         })();
     }, [currentLang.code, navigte]);
 
     return { auth, loading };
+}
+
+// hook that serve the dashboard context
+export function useData(){
+    const {data, setData} = useContext(DashboardContext);
+    return { data, setData };
+}
+
+// hook the server the active board in the dashboard
+export function useActiveBoard() {
+    const {activeBoard, setActiveBoard} = useContext(ActiveBoardContext);
+    return { activeBoard, setActiveBoard };
 }

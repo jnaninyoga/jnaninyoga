@@ -10,10 +10,11 @@ import { useTranslation } from "react-i18next";
 import Meta from "../../meta";
 import metadata from "../../meta/meta";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
-import { collectionDB, document } from "../../firebase";
+import { document } from "../../firebase";
 import { addDoc } from "firebase/firestore";
 import Thank from "../../layouts/Thank";
 import Followers from "../../components/Followers";
+import collections from "../../firebase/collections";
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ export default function Contact() {
   // sending the contact form to firebase collection called "contact"
   const sendContact = async (contactdata) => {
     try {
-      await addDoc(collectionDB("contact"), document({...contactdata, lang: currentLanguage.name, answered: false}));
+      await addDoc(collections.contacts, document({...contactdata, lang: currentLanguage.name, answered: false}));
       setShowThankPage(true);
     } catch (e) {
       console.error("Error adding document: ", e);

@@ -1,5 +1,6 @@
 {
     "navbar":["Accueil", "A propos", "Contact", "Les Séances"],
+    "dashboardNavbar": ["Contacts","Avis","Les Séances","Compte"],
     "home": {
         "meta":{
             "title":"Accueil - Jnanin Yoga Studio",

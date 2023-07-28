@@ -1,15 +1,17 @@
-import { useAdminAuth } from "../../hooks"
-import NotImplemented from "../../layouts/NotImplemented";
-import OverLaped from "../../layouts/OverLaped";
+import ActiveBoardProvider from "../../context/activeboard";
+import DashboardProvider from "../../context/dashboard";
+import DashboardSidebar from "../../layouts/DashboardSidebar";
+import Switchboard from "./Switchboard";
 
 export default function Dashboard() {
-    useAdminAuth();
-
   return (
-    <main>
-        {/* <OverLaped> */}
-            <NotImplemented />
-        {/* </OverLaped> */}
+    <main className="flex w-screen lg:flex-row flex-col">
+        <ActiveBoardProvider>
+          <DashboardProvider>
+              <DashboardSidebar/>
+              <Switchboard />
+          </DashboardProvider>
+        </ActiveBoardProvider>    
     </main>
   )
 }
