@@ -9,8 +9,9 @@ import { Autoplay, Mousewheel, A11y } from 'swiper/modules';
 import { reviewsFields } from "../utils";
 import { useTranslation } from 'react-i18next';
 import { useActivePage, useCurrentLanguage, useIntersectView } from '../hooks';
-import { addDoc, onSnapshot } from 'firebase/firestore';
-import { collectionDB, document, fetchDocs } from '../firebase';
+import { addDoc, onSnapshot, limit, where, orderBy } from "firebase/firestore";
+import { document, fetchDocs } from '../firebase';
+import collections from '../firebase/collections';
 
 // Styles
 import 'swiper/css';
@@ -45,7 +46,7 @@ export default function Reviews() {
     // submitting the review form to firebase collection called "reviews"
     const sendReview = async (reviewdata) => {
         try {
-            await addDoc(collectionDB("reviews"), document({...reviewdata, rate, lang: currentLanguage.name}));
+            await addDoc(collections.reviews, document({...reviewdata, rate, lang: currentLanguage.name}));
             if (reviewdata.rate >= 4) setReviews([...reviews, reviewdata]);
             setThankPage(true);
         } catch (e) {
@@ -57,8 +58,7 @@ export default function Reviews() {
     useEffect(() => {
         (async () => {
             try {
-                const reviewsRef = collectionDB("reviews");
-                onSnapshot(fetchDocs(reviewsRef, ["rate", ">=", 4], ["rate"], 100), (querySnapshot) => {
+                onSnapshot(fetchDocs(collections.reviews, where("rate", ">=", 4), orderBy("rate", "desc"), limit(100)), (querySnapshot) => {
                     setReviews(querySnapshot.docs.map(doc => doc.data()));
                 });
             } catch (error) {

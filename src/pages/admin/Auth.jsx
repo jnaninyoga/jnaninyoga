@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OverLaped from "../../layouts/OverLaped";
 import Footer from "../../layouts/Footer";
 import Form from "../../layouts/Form";
-import { adminLoginFields } from "../../utils";
+import { adminLoginFields, tokenCoder } from "../../utils";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { useTranslation } from "react-i18next";
-import { collectionDB, docSnap } from "../../firebase";
+import { docSnap } from "../../firebase";
 import { useAdminAuth, useCurrentLanguage, usePathLanguage } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import * as CryptoJS from "crypto-js";
+import collections from "../../firebase/collections";
 
 export default function Auth() {
     const { t } = useTranslation();
@@ -17,12 +17,12 @@ export default function Auth() {
     const currentLanguage = useCurrentLanguage();
     usePathLanguage();
 
-    console.log(token);
-
     // if the user is logged in, redirect to the dashboard
     if(!token.loading && token.auth) navigate(`/lotus/${currentLanguage.code}`);
 
     const [auth, setAuth] = useState({});
+    // error messages for the login form
+    const [error, setError] = useState();
 
     const TFields = t('adminauth.form.fields', {returnObjects: true});
     const TFieldsErrors = t('adminauth.form.fieldserrors', {returnObjects: true});
@@ -35,27 +35,24 @@ export default function Auth() {
     
     const validateAuth = async (authdata) => {
       try{
-        const auth = collectionDB("auth");
-        const admin = await (await docSnap(auth, "admin")).docs[0].data();
+        const admin = await (await docSnap(collections.auth)).docs[0].data();
         if (admin.username === authdata.username && admin.password === authdata.password){
-          console.log("logged in");
-          // setting a cookie to remember the user for 1 day
-          const date = new Date()
-          date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
-          // hash the admin password before saving it in the cookie using crypto-js
-          // normaliz the hashed password to avoid '=' in the cookie
-          admin.password = encodeURIComponent(CryptoJS.AES.encrypt(admin.password, "yogacoach").toString());
-          // CryptoJS.AES.decrypt(decodeURIComponent(admin.password), "yogacoach").toString(CryptoJS.enc.Utf8);
-          // admin.password = btoa(admin.password);
-          document.cookie = `yogacoach=${JSON.stringify(admin)}; expires=${date.toUTCString()}; path=/`;
+          tokenCoder("yogacoach", authdata);
           navigate(`/lotus/${currentLanguage.code}`);
-        }else{
-          console.log("not logged in");
+        } else {
+          setError(t('adminauth.form.onEmpty'));
         }
-      }catch(e){
-        console.log(e);
+      }catch(error){
+        console.log(error);
       }
     }
+
+    /// 5s timeout to clear the error message
+    useEffect(() => {
+      if(!error) return;
+      const timeout = setTimeout(() => setError(), 5000);
+      return () => clearTimeout(timeout);
+    }, [error]);
 
   return (
     <>
@@ -64,6 +61,7 @@ export default function Auth() {
         <Form
         onSubmit={validateAuth}
         onEmpty={t('adminauth.form.onEmpty')}
+        onError={error}
         title={t('adminauth.title')}
         state={[auth, setAuth]}
         fields={adminLoginFields}
