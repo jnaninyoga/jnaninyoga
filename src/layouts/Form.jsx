@@ -1,6 +1,6 @@
 import 'handyscript/lib/string';
 import { useState, useRef, useEffect } from 'react';
-import { useIntersectView } from '../hooks';
+import { useCurrentLanguage, useIntersectView } from '../hooks';
 import icon from '../assets/imgs/icons/lotus.webp';
 import PropsTypes from 'prop-types';
 // import { formFields } from '../utils';
@@ -12,15 +12,20 @@ Form.propTypes = {
     sendBtn: PropsTypes.string,
     resetBtn: PropsTypes.string,
     onEmpty: PropsTypes.string,
+    onError: PropsTypes.string,
     insertElement: PropsTypes.element,
     onSubmit: PropsTypes.func,
     onReset: PropsTypes.func,
 }
 
-export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, insertElement, onSubmit=e=>e.preventDefault(), onReset=e=>e.preventDefault()}) {
+export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, onError, insertElement, onSubmit=e=>e.preventDefault(), onReset=e=>e.preventDefault()}) {
+    const currentLanguage = useCurrentLanguage();
     const [form, setForm] = state;
     const [emptyError, setEmptyError] = useState({});
     const [error, setError] = useState({});
+
+    // for field type of password
+    const [showPassword, setShowPassword] = useState(false);
 
     const [isEmptyError, setIsEmptyError] = useState(false);
 
@@ -35,18 +40,9 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
 
     const setFormField = e =>{
         const regex = new RegExp(field(e).regex);
-        // regex.test(e.target.value) ? setForm({...form, [e.target.name]: e.target.value}) : setError({...error, [e.target.name]: field(e).error});
         setForm({...form, [e.target.name]: regex.test(e.target.value) ? e.target.value : ""});
         setError({...error, [e.target.name]: !regex.test(e.target.value) ? field(e).error : ""});
         setEmptyError({...emptyError, [e.target.name]: e.target.value == "" ? field(e).emptyError : ""});
-        // if(e.target.value !== ""){
-        //     setEmptyError({...emptyError, [e.target.name]: '' });
-        //     // setError({...error, [e.target.name]: !regex.test(e.target.value) ? fields.find(field => field.name === e.target.name).error : ``});
-        // }else{
-        //     // testing fields with regex if it's not empty
-        //     setError({...error, [e.target.name]: ''})
-        //     setEmptyError({...emptyError, [e.target.name]: field(e).emptyError });
-        // }
     }
 
     const submitForm = e =>{
@@ -81,8 +77,8 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
         {insertElement && <div className={`${isFormIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} my-4 transition-all duration-500 delay-200`}>
             {insertElement}
         </div>}
-        <p className={`${isFormIntersected && isEmptyError ? "translate-y-0 opacity-100 mb-2" : 'translate-y-[100%] opacity-0 mb-0'} text-center sm:text-lg text-base font-bold form-label-error transition-all duration-500`}>{onEmpty}</p>
-        <div ref={wrapper} className='w-full flex items-center justify-center gap-4 flex-col'>
+        <p className={`${isFormIntersected && (isEmptyError || onError) ? "translate-y-0 opacity-100 mb-2" : 'translate-y-[100%] opacity-0 mb-0'} text-center sm:text-lg text-base font-bold form-label-error transition-all duration-500`}>{onEmpty || onError}</p>
+        <div dir={currentLanguage.dir} ref={wrapper} className='w-full flex items-center justify-center gap-4 flex-col'>
             {fields.map((field, index) => 
             field.type === 'textarea' ?
             <div key={index} className='relative w-full h-fit flex flex-col gap-1'>
@@ -90,9 +86,10 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
                 onChange={setFormField}
                 // expand the textarea as the user types new lines
                 rows={form[field.name] ? form[field.name].split('\n').length : 1}
-                className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} resize-y delay-[${ 100 * index + 100 }ms] `}
+                className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} resize-y delay-[${ 100 * index + 100 }ms] `}
                 name={field.name}
                 placeholder={field.placeholder.toLowerCase().toCapitalCase()}
+                defaultValue={field.defaultValue}
                 />
                 {// check if the textarea have a maxChars rule like maxChars = 500
                 (field.maxChars && form[field.name]?.length > 0) &&
@@ -103,18 +100,25 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
                 :<></>}
             </div>
             :
-            <div key={index} className='w-full h-fit flex flex-col gap-1'>
+            <div key={index} className='relative w-full h-fit flex flex-col gap-1'>
             <input
                 onChange={setFormField} 
-                className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} delay-[${ 100 * index + 100 }ms]`}
-                type={field.type.toLowerCase()}
+                className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} delay-[${ 100 * index + 100 }ms]`}
+                type={field.type.toLowerCase() === 'password' ? showPassword ? 'text' : 'password' : field.type.toLowerCase()}
                 name={field.name.toLowerCase()}
                 placeholder={field.placeholder.toLowerCase().toCapitalCase()}
+                defaultValue={field.defaultValue}
                 key={index}
                 />
                 {emptyError[field.name] ? <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} pl-2 m-0 font-bold text-sm form-label-error transition-all duration-[${ 100 * index + 100 }ms]`}>{emptyError[field.name]}</p>
                 : error[field.name] ? <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} pl-2 m-0 font-bold text-sm form-label-error transition-all duration-[${ 100 * index + 100 }ms]`}>{error[field.name]}</p>
                 :<></>}
+                {/* if the field is type of password, show the show/hide password button */}
+                {field.type.toLowerCase() === 'password' && (
+                    <button type='button' title={showPassword ? "Hide Password" : "Show Password"} onClick={() => setShowPassword(!showPassword)} className={`${isWrapperIntersected ? "-translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} absolute top-[17px] ${currentLanguage.dir === "rtl" ? "left-6" : "right-6"} p-0 m-0 text-sm transition-all duration-[${ 100 * index + 100 }ms]`}> 
+                        <i className={`fi ${showPassword ? "fi-sr-eye-crossed" : "fi-sr-eye"} ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-label-error" : "text-yoga-green"} flex justify-center items-end`}></i>
+                    </button>
+                )}
             </div>
             )}
         </div>
