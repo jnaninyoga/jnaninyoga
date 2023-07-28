@@ -1,3 +1,5 @@
+import * as CryptoJS from "crypto-js";
+
 // Classes - Stock Images
 import C1 from "../assets/imgs/stock/classes-1.webp";
 import C2 from "../assets/imgs/stock/classes-2.webp";
@@ -40,6 +42,13 @@ export const adminLoginFields = [
     {type: 'password', name: 'password', placeholder: 'Password', regex: /^[\S\s]{6,}$/, error: 'Invalid Password'}
 ];
 
+export const accountFields = [
+    // username
+    {type: 'text', name: 'username', placeholder: 'Username', defaultValue: 'admin', regex: /^[a-zA-Z]{5,12}$/, error: 'Username must be between 5 to 12 characters long, only letters [A-Z]'},
+    // password
+    {type: 'password', name: 'password', placeholder: 'Password', defaultValue: 'admin', regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,16}$/, error: 'Password must be between 8 and 16 characters, one uppercase letter, one lowercase letter, one number or one special character [!@#$%^&*]'},
+];
+
 export const reviewsFields = [
     // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
     {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
@@ -77,14 +86,43 @@ export const dashboardNavicons = {
     account: "fi fi-sr-user-gear",
 }
 
+// export const dashboardNavicons = {
+//     reviews: {
+//         icon: "https://cdn.lordicon.com/mdgrhyca.json",
+//         colors: {pc: ":#13a9b1"}
+//     },
+
+// }
+
 export const supportedLanguages = [
     {name: 'English', code: 'en', dir: 'ltr'},
     {name: 'Français', code: 'fr', dir: 'ltr'},
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
 
-// export const currentLanguage = () => supportedLanguages.find(lang => lang.code === i18next.language);
-// export const activePage = () => window.location.pathname.split("/")[1].toLowerCase() === "" ? "home" : window.location.pathname.split("/")[1].toLowerCase();
+// formate date to `0000 mon 00, 00:00:00`
+export function dateFormater(date){
+    return new Date(date?.seconds * 1000).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+}
+
+export function tokenDecoder(secret){
+    const token = document.cookie.search(secret) !== -1 ? JSON.parse(document.cookie.split(";").find(cookie => cookie.includes(secret)).split("=")[1]) : null;
+    return {
+        ...token,
+        password: token ? CryptoJS.AES.decrypt(decodeURIComponent(token.password), secret).toString(CryptoJS.enc.Utf8) : null
+    }
+}
+
+export  function tokenCoder(secret, token){
+    // setting a cookie to remember the user for 1 day
+    const date = new Date()
+    date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
+    // hash the admin password before saving it in the cookie using crypto-js
+    // normaliz the hashed password to avoid '=' in the cookie
+    token.password = encodeURIComponent(CryptoJS.AES.encrypt(token.password, secret).toString());
+    document.cookie = `${secret}=${JSON.stringify(token)}; expires=${date.toUTCString()}; path=/`;
+    return token;
+}
 
 export function copyright(hostname=window.location.hostname){
     return `Copyright © ${new Date().getFullYear()} ${hostname}, All Rights Reserved`

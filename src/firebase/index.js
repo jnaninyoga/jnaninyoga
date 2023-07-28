@@ -1,7 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { collection, getDocs, getFirestore, serverTimestamp, query, limit, where, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  serverTimestamp,
+  query,
+  orderBy,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -30,18 +40,21 @@ export const docSnap = async (collectionRef) => await getDocs(collectionRef);
 export const timestamp = serverTimestamp();
 
 // function that will ensure every document has timestamp field
-export const document = (doc) => { return {...doc, timestamp}};
+export const document = (doc) => { return {...doc, timestamp, deleted: false}};
 
 // fetch docs into array:
 // export const fetchDocs = async (collectionRef) => await docSnap(collectionRef).docs.map(doc => doc.data());
 
 // fetch docs with limits
-export const fetchDocs = (collectionRef, condition=[], order=[], limitNumber) => 
-query(
-  collectionRef,
-  where(condition[0], condition[1], condition[2]),
-  orderBy(order[0], order[1] || 'desc'),
-  limit(limitNumber)
-);
+export const fetchDocs = (collectionRef, ...queryConstraints) => query( collectionRef, ...queryConstraints);
+// get docs ordered by timestamp
+export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(collectionRef, ...queryConstraints, orderBy("timestamp", "desc"));
 
+//update doc
+export const updateDocument = async (collection, id, data) => await updateDoc(doc(DB, collection, id), {...data, updatedAt: timestamp});
 
+// delete doc
+export const deleteDocument = async (collection, id) => await updateDocument(collection, id, {deleted: true});
+
+// delete doc permanently
+export const deleteDocumentPermanently = async (collection, id) => await deleteDoc(doc(DB, collection, id));
