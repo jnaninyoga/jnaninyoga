@@ -14,8 +14,9 @@ DashboardProvider.propTypes = {
 export const DashboardContext = createContext();
 
 export default function DashboardProvider(props) {
-    const { loading } = useAdminAuth();
+    const { verifying } = useAdminAuth();
 
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState(
         Object.keys(collections).reduce((obj, collection) => {
             obj[collection] = [];
@@ -23,7 +24,7 @@ export default function DashboardProvider(props) {
         }, {})
     );
 
-    const DashBoard = useMemo(() => ({ data, setData }), [data, setData]);
+    const DashBoard = useMemo(() => ({ data, loading, setData }), [data, loading, setData]);
 
     useEffect(() => {
         Object.keys(collections).forEach(async (collection) => {
@@ -37,6 +38,7 @@ export default function DashboardProvider(props) {
                         setData((prevData) => ({ ...prevData, [collection]: querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) }));
                     });
                 }
+                setLoading(false);
             } catch (error) {
                 console.error(error);
             }}
@@ -44,7 +46,7 @@ export default function DashboardProvider(props) {
     }, []);
 
     // it the auth validation is not done yet, return a loading screen
-    if (loading) return <Suspens/>;
+    if (verifying) return <Suspens/>;
 
     return (
         <DashboardContext.Provider value={DashBoard}>

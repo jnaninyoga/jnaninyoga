@@ -10,7 +10,7 @@ import Alert from "../../layouts/Alert";
 import Stars from "../../components/Stars";
 
 export default function Reviews() {
-  const { data: { reviews } } = useData();
+  const { loading, data: { reviews } } = useData();
   const [pageSize, setPageSize] = useState(10);
   // message modal state
   const [modal, setModal] = useState();
@@ -70,6 +70,7 @@ export default function Reviews() {
     <Box className="w-full p-4 flex flex-col gap-4">
       <DataGrid
         className="h-fit bg-yoga-white text-lg"
+        loading={loading}
         rows={reviews}
         columns={columns}
         getRowId={(row) => row.id}

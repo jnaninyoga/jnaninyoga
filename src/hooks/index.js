@@ -45,7 +45,7 @@ export function usePathLanguage() {
 // Auth Hook that check if the user is logged in or not buy checking the token in the cokies 'jnaninyoga'
 export function useAdminAuth() {
     const [auth, setAuth] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [verifying, setVerifying] = useState(true);
     const navigte = useNavigate();
     const currentLang = useCurrentLanguage();
 
@@ -57,22 +57,22 @@ export function useAdminAuth() {
         // if not logged in redirect to login page
         if (!token || token.password !== admin.password) {
             navigte(`/lotus/${currentLang.code}/login`);
-            setLoading(false);
+            setVerifying(false);
             return;
         }
     
         if (token.password === admin.password) setAuth(true);
-        setLoading(false);
+        setVerifying(false);
         })();
     }, [currentLang.code, navigte]);
 
-    return { auth, loading };
+    return { auth, verifying };
 }
 
 // hook that serve the dashboard context
 export function useData(){
-    const {data, setData} = useContext(DashboardContext);
-    return { data, setData };
+    const {data, loading, setData} = useContext(DashboardContext);
+    return { data, loading, setData };
 }
 
 // hook the server the active board in the dashboard

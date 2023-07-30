@@ -10,7 +10,7 @@ import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
 
 export default function Contacts() {
-  const { data: { contacts } } = useData();
+  const { loading, data: { contacts } } = useData();
   const [pageSize, setPageSize] = useState(10);
   // message modal state
   const [modal, setModal] = useState();
@@ -101,6 +101,7 @@ export default function Contacts() {
     <Box className="w-full p-4 flex flex-col gap-4">
       <DataGrid
         className="h-fit bg-yoga-white text-lg"
+        loading={loading}
         rows={contacts}
         columns={columns}
         getRowId={(row) => row.id}
@@ -110,6 +111,9 @@ export default function Contacts() {
         checkboxSelection
         disableSelectionOnClick
         disableRowSelectionOnClick
+        // get selected rows
+        getSelectedRows={(rows) => console.log(rows)}
+
       />
     </Box>
     {/* message modal */}
