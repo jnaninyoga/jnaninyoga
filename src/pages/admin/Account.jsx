@@ -1,7 +1,6 @@
-import textureBG from "../../assets/imgs/spine/GreenMat.webp";
 import { useMemo, useState } from "react";
 import Form from "../../layouts/Form";
-import { accountFields, tokenCoder } from "../../utils";
+import { accountFields, tokenCoder, tokenDecoder } from "../../utils";
 import { useData } from "../../hooks";
 import { names } from "../../firebase/collections";
 import { updateDocument } from "../../firebase";
@@ -9,7 +8,7 @@ import Alert from "../../layouts/Alert";
 
 export default function Account() {
   const { data: { auth } } = useData();
-  const [account, setAccount] = useState({});
+  const [account, setAccount] = useState(tokenDecoder("yogacoach"));
   const [succesModal, setSuccesModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
 
@@ -35,8 +34,9 @@ export default function Account() {
 
   return (
     <section className="w-full p-4 flex flex-col gap-4">
-        <section className="w-full p-6 flex justify-center items-center" style={{backgroundImage: `url(${textureBG})`}}>
-          <Form 
+        <section className="w-full p-6 flex justify-center items-center bg-texture texture-h">
+          <Form
+          dark
           title={"Update Credentials"}
           state={[account, setAccount]}
           fields={AccountFields}
@@ -44,6 +44,7 @@ export default function Account() {
           resetBtn={"Default"}
           onEmpty={"Please fill out all fields."}
           onSubmit={updateAccount}
+          onReset={() => setAccount(tokenDecoder("yogacoach"))}
           />
         </section>
         {/* Account Updated Succesfully */}
