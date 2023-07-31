@@ -1,4 +1,5 @@
 import * as CryptoJS from "crypto-js";
+import * as XLSX from "xlsx";
 
 // Classes - Stock Images
 import C1 from "../assets/imgs/stock/classes-1.webp";
@@ -44,7 +45,7 @@ export const adminLoginFields = [
 
 export const accountFields = [
     // username
-    {type: 'text', name: 'username', placeholder: 'Username', defaultValue: 'admin', regex: /^[a-zA-Z]{5,12}$/, error: 'Username must be between 5 to 12 characters long, only letters [A-Z]'},
+    {type: 'text', name: 'username', placeholder: 'Username', defaultValue: 'admin', regex: /^[a-zA-Z]{5,16}$/, error: 'Username must be between 5 to 16 characters long, only letters [A-Z], no spaces or special characters'},
     // password
     {type: 'password', name: 'password', placeholder: 'Password', defaultValue: 'admin', regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,16}$/, error: 'Password must be between 8 and 16 characters, one uppercase letter, one lowercase letter, one number or one special character [!@#$%^&*]'},
 ];
@@ -122,6 +123,34 @@ export  function tokenCoder(secret, token){
     token.password = encodeURIComponent(CryptoJS.AES.encrypt(token.password, secret).toString());
     document.cookie = `${secret}=${JSON.stringify(token)}; expires=${date.toUTCString()}; path=/`;
     return token;
+}
+
+export function toXlsx(data, filename){
+    const wb = XLSX.utils.book_new();
+    wb.Props = {
+        Title: filename,
+        Subject: "Exported Data",
+    };
+    wb.SheetNames.push("Data");
+    const ws = XLSX.utils.json_to_sheet(data);
+    wb.Sheets["Data"] = ws;
+    const wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+    
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    function saveAs(blob, filename) {
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+    }
+
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), `${filename}.xlsx`);
 }
 
 export function copyright(hostname=window.location.hostname){
