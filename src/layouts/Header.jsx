@@ -60,7 +60,7 @@ export default function Header() {
       </div>
 
       <nav className={`bg-yoga-white lg:pt-0 sm:pt-0 pt-10 lg:h-full h-screen lg:w-auto w-screen lg:relative fixed z-[9999] top-0 flex items-center sm:justify-center justify-start gap-6 lg:flex-row flex-col texture-v lg:bg-none lg:before:bg-none lg:right-auto lg:left-auto ltr:lg:right-auto ltr:lg:left-auto rtl:lg:right-auto rtl:lg:left-auto transition-all ${isMenuHidden ? "ltr:-right-[120%] rtl:-left-[120%]" : "ltr:right-0 rtl:left-0"}`}>
-        <Link to={"/"} className="lg:h-full lg:hidden flex items-center gap-4 lg:flex-row flex-col">
+        <Link to={"/"} className="lg:h-full lg:hidden flex items-center gap-4 lg:flex-row flex-col z-[10]">
           <img className="lg:h-14 sm:h-60 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
           <h1 className="cinzel sm:text-4xl text-2xl text-center font-bold uppercase">Jnanin Yoga Studio</h1>
         </Link>
