@@ -50,14 +50,14 @@ export default function DashboardSidebar() {
     const showMenu = () => { 
         setIsMenuHidden(false)
         // PREVENT SCROLLING
-        document.body.style.overflow = "hidden";
+        // document.body.style.overflow = "hidden";
         // disable interacting with the page
       };
 
     const hideMenu = () => { 
         setIsMenuHidden(true)
         // ALLOW SCROLLING
-        document.body.style.overflow = "auto";
+        // document.body.style.overflow = "auto";
     };
 
     // hide menu when clicked outside
