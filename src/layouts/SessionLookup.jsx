@@ -124,7 +124,6 @@ export default function SessionLookup({id, session, onCancel, onConfirm, onDelet
                             placeholder='End Time'
                             value={isEndTime ? selectedSession?.end : ''}
                             onChange={e => setSelectedSession({...selectedSession, end: e.target.value})}
-                            defaultValue={selectedSession?.end}
                         />
                     </label>
                 </div>
