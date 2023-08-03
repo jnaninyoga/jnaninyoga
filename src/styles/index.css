@@ -196,6 +196,10 @@
       @apply scale-[1.02];
     }
 
+    .yoga-btn:active, .yoga-btn-sec:active{
+      @apply scale-[.98];
+    }
+
     .form-field{
       @apply w-full;
       @apply h-fit;

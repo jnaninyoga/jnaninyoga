@@ -6,6 +6,7 @@ import { docSnap } from "../firebase";
 import { DashboardContext } from "../context/dashboard";
 import { ActiveBoardContext } from "../context/activeboard";
 import collections from "../firebase/collections";
+import { ModalContext } from "../context/modal";
 
 export function useIntersectView(ref) {
     const [isIntersected, setIsintersected] = useState();
@@ -79,4 +80,10 @@ export function useData(){
 export function useActiveBoard() {
     const {activeBoard, setActiveBoard} = useContext(ActiveBoardContext);
     return { activeBoard, setActiveBoard };
+}
+
+// hook that return the modal active state
+export function useModalActiveState() {
+    const { activeModal, setActiveModal } = useContext(ModalContext);
+    return [ activeModal, setActiveModal ];
 }
