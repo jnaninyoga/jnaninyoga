@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { updateDocument } from '../../firebase';
 import { names } from '../../firebase/collections';
 import SessionCreation from '../../layouts/SessionCreation';
+// import backup from '../../backup';
 
 
 export default function Classes() {
@@ -50,7 +51,8 @@ export default function Classes() {
       // const index = sessions.findIndex((ses) => ses?.start?.split(":")[0]*1 > session.start.split(":")[0]*1)
       // insert the newSession in it's correspondent index
       // newSessions.splice(index, 0, session);
-      await updateDocument(names.classes, day, { sessions: newSessions.push(session) });
+      newSessions.push(session)
+      await updateDocument(names.classes, day, { sessions: newSessions });
       setSessionUpdated(true);
     } catch (error) {
       console.error(error);
