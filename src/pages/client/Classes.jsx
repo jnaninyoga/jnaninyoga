@@ -3,16 +3,22 @@ import Header from "../../layouts/Header";
 import OverLaped from "../../layouts/OverLaped";
 import banner from "../../assets/videos/yoga.mp4";
 import Session from "../../components/Session";
-import sessions from "../../constant/sessions.json"
+// import classes from "../../constant/sessions-new.json";
 import SessionRefernce from "../../components/SessionRefernce";
 import { useTranslation } from "react-i18next";
 import { standardDays, standardYogaCoursesTypes } from "../../utils";
 import Meta from "../../meta";
 import metadata from "../../meta/meta";
 import { useActivePage, usePathLanguage } from "../../hooks";
+import { useEffect, useState } from "react";
+import { onSnapshot, orderBy } from "firebase/firestore";
+import { fetchDocs } from "../../firebase";
+import collections from "../../firebase/collections";
 // import OGP from '../constant/ogp';
 
 export default function Classes() {
+    const [classes, setClasses] = useState([]);
+
     const { t } = useTranslation();
     const activePage = useActivePage();
     usePathLanguage();
@@ -22,6 +28,20 @@ export default function Classes() {
 
     const TDays = () => Array.isArray(days) ? days : standardDays;
     const TYogaCoursesTypes = () => Array.isArray(yogaCoursesTypes) ? yogaCoursesTypes : standardYogaCoursesTypes;
+
+    // load classes from firestore database
+    useEffect(() => {
+        (async () => {
+            try {
+                onSnapshot(fetchDocs(collections.classes, orderBy("order")), (querySnapshot) => {
+                    setClasses(querySnapshot.docs.map((doc) => ({ ...doc.data(), day: doc.id })));
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, []);
+
 
   return (
     <>
@@ -38,18 +58,21 @@ export default function Classes() {
                     </tr>
                 </thead>
                 <tbody>
-                    {sessions.map((sessionDay, sdidx) => (
-                        <tr key={sessionDay.day} className="h-[80px]">
-                            {sessionDay.data.map((session, sidx) => (
-                            <Session
-                                key={`${sdidx}${sidx}`}
-                                type={session.type}
-                                start={session.start}
-                                end={session.end}
-                                desc={session.desc}
-                                instructor={t("sessionInstructor", { course: TYogaCoursesTypes()[session.type - session.type === 0 ? 0 : 1].type, start: session.start, end: session.end })}
-                                alt={TYogaCoursesTypes()[session.type - session.type === 0 ? 0 : 1].type}
-                            />
+                    {/* getting the biggest session with elemnts like a: [1,2,3], b: [1,2,3,4]; the biggest one it's b */}
+                    {Array.from({ length: Math.max(...classes.map((sessionDay) => sessionDay.sessions.length)) })
+                    .map((_, sid) => (
+                        <tr key={sid} className="h-[80px]">
+                            {classes.map((sessionDay, sdidx) => (
+                                <td key={`${sdidx}${sid}`} className='h-[80px]'>
+                                    <Session
+                                        type={sessionDay.sessions[sid]?.type*1 || 0}
+                                        start={sessionDay.sessions[sid]?.start}
+                                        end={sessionDay.sessions[sid]?.end}
+                                        desc={sessionDay.sessions[sid]?.desc}
+                                        instructor={t("classes.sessionInstructor", { course: TYogaCoursesTypes()[sessionDay.sessions[sid]?.type - sessionDay.sessions[sid]?.type === 0 ? 0 : 1].type, start: sessionDay.sessions[sid]?.start, end: sessionDay.sessions[sid]?.end })}
+                                        alt={TYogaCoursesTypes()[sessionDay.sessions[sid]?.type - sessionDay.sessions[sid]?.type === 0 ? 0 : 1].type}
+                                    />
+                                </td>
                             ))}
                         </tr>
                     ))}
