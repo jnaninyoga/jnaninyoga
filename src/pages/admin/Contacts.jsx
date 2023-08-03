@@ -11,6 +11,7 @@ import Alert from "../../layouts/Alert";
 
 export default function Contacts() {
   const { loading, data: { contacts } } = useData();
+  
   const [pageSize, setPageSize] = useState(10);
 
   // selected contact
@@ -73,6 +74,14 @@ export default function Contacts() {
     return toXlsx(data, "jnaninyoga-contacts");
 
   }, [contacts]);
+
+  // close the model when click outside the modal in the parent element
+  const closeModal = e =>{
+    if(e.target === e.currentTarget){
+      setModal(null);
+      setDeleteModal(null)
+    }
+  }
 
   // contacts table columns
   const columns = useMemo(() => [
@@ -174,7 +183,7 @@ export default function Contacts() {
     </Box>
     {/* message modal */}
     {modal && (
-      <section onClick={() => setModal(null)} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
         <Lookup
           author={modal.fullname}
           {...modal}
@@ -190,7 +199,7 @@ export default function Contacts() {
     )}
     {/* delete modal */}
     {deleteModal && (
-      <section onClick={() => setDeleteModal(null)} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
         <Alert
           title={deleteModal === "deleteall" ? "Delete All Contacts" : "Delete Contact"}
           message={deleteModal === "deleteall" ? "Are you sure you want to delete all the contacts?" : "Are you sure you want to delete this contact?"}

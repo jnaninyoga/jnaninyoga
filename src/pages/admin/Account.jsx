@@ -32,6 +32,14 @@ export default function Account() {
     }
   }
 
+  // close the model when click outside the modal in the parent element
+  const closeModal = e =>{
+    if(e.target === e.currentTarget){
+      setSuccesModal(false);
+      setErrorModal(false);
+    }
+  }
+
   return (
     <section className="w-full p-4 flex flex-col gap-4">
         <section className="w-full p-6 flex justify-center items-center bg-texture texture-h">
@@ -49,7 +57,7 @@ export default function Account() {
         </section>
         {/* Account Updated Succesfully */}
         {succesModal && (
-          <section onClick={() => setSuccesModal(false)} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+          <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
             <Alert
             title={"Account Updated Successfully"}
             message={"Your account credentials have been updated successfully."}
@@ -60,7 +68,7 @@ export default function Account() {
         )}
         {/* Error Updating Account */}
         {errorModal && (
-          <section onClick={() => setErrorModal(false)} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+          <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
             <Alert
             title={"⛔ Error Updating Account Credentials ⛔"}
             message={"There was an error updating your account credentials. Please try again later."}

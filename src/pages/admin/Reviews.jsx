@@ -55,6 +55,14 @@ export default function Reviews() {
 
   }, [reviews]);
 
+    // close the model when click outside the modal in the parent element
+    const closeModal = e =>{
+      if(e.target === e.currentTarget){
+        setModal(null);
+        setDeleteModal(null)
+      }
+    }
+
   // reviews table columns
   const columns = useMemo(() => [
     { field: "fullname", headerName: "Full Name", width: 150,
@@ -130,7 +138,7 @@ export default function Reviews() {
     </Box>
     {/* message modal */}
     {modal && (
-      <section onClick={() => setModal(null)} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
         <Lockup
           author={modal.fullname}
           message={modal.review}
@@ -143,7 +151,7 @@ export default function Reviews() {
     )}
     {/* delete modal */}
     {deleteModal && (
-      <section onClick={() => setDeleteModal(null)} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
         <Alert
           title={deleteModal === "deleteall" ? "Delete All Reviews" : "Delete Review"}
           message={deleteModal === "deleteall" ? "Are you sure you want to delete all reviews?" : "Are you sure you want to delete this review?"}
