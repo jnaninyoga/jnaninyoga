@@ -89,6 +89,40 @@
             "onSuccess": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
             "sendBtn": "Envoyer",
             "resetBtn": "Annuler"
+        },
+        "thank":{
+            "title": "Merci '{{name}}' pour votre message",
+            "message": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
+            "btn": "Retour"
+        }
+    },
+    "booknow": {
+        "meta":{
+            "title":"Réservez maintenant - Jnanin Yoga Studio",
+            "description": "Réservez maintenant votre session de yoga en ligne au Jnain Yoga Studio. Veuillez remplir le formulaire de réservation et nous vous contacterons pour confirmer votre réservation. Merci de votre intérêt pour Jnain Yoga Studio; J'ai hâte de communiquer avec vous bientôt.",
+            "keywords": "Yoga studio, Réservez maintenant, réservation, session, formulaire de réservation, Jnain Yoga Studio."
+        },
+        "title": "Réservez maintenant",
+        "form":{
+            "fields": {
+                "fullname": "Nom Complet",
+                "email": "Email",
+                "phone": "Numéro de téléphone",
+                "interest": "quels sont vos centres d'intérêts en Yoga?"
+            },
+            "fieldserrors":{
+                "fullname": "Le Nom doit être au moins 2 caractères",
+                "email": "L'e-mail doit être une adresse e-mail valide",
+                "phone": "Le numéro de téléphone doit comporter 10 chiffres",
+                "interest": "Votre intérêt doit être d'au moins 10 caractères"
+            },
+            "sendBtn": "Réservez",
+            "resetBtn": "Annuler"
+        },
+        "thank":{
+            "title": "Merci '{{name}}' pour votre réservation",
+            "message": "Votre réservation a été envoyée avec succès, nous vous contacterons bientôt.",
+            "btn": "Retour"
         }
     },
     "classes": {
@@ -127,11 +161,6 @@
         "title": "Page non trouvée",
         "text": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
         "btn": "Retour à la page d'accueil"
-    },
-    "thankpage":{
-        "title": "Merci '{{mr}}' pour votre message",
-        "text": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
-        "btn": "Retour"
     },
     "adminauth":{
         "title": "Bienvenue Coach Ouarda",
