@@ -1,20 +1,17 @@
 import OverLaped from "./OverLaped";
 import Footer from "./Footer";
 import banner from  "../assets/imgs/stock/thankpage.webp"
-import { useTranslation } from "react-i18next";
-import { usePathLanguage } from "../hooks";
 import PropTypes from 'prop-types';
 import Icon from "../assets/svg";
 
 Thank.propTypes = {
-    mr: PropTypes.string,
-    onClick: PropTypes.func
+    title: PropTypes.string,
+    message: PropTypes.string,
+    btn: PropTypes.string,
+    onBack: PropTypes.func
 };
 
-export default function Thank({mr, onClick}) {
-  const { t } = useTranslation();
-  usePathLanguage();
-
+export default function Thank({title, message, btn="Go Back", onBack}) {
   return (
     <>
     <OverLaped banner={banner}>
@@ -25,11 +22,11 @@ export default function Thank({mr, onClick}) {
               src="https://cdn.lordicon.com/hvuelaml.json"
               colors={{oc: "#ffffff", pc: "#fdc5ba"}}
               />
-              <h1 className="cinzel sm:text-4xl text-4xl text-center text-yoga-white font-bold uppercase">{t("thankpage.title", {mr})}</h1>
+              <h1 className="cinzel sm:text-4xl text-4xl text-center text-yoga-white font-bold uppercase">{title}</h1>
             </div>
             <article className="w-full sm:p flex flex-1 justify-center items-center flex-col sm:gap-6 gap-4">
-              <p className="cinzel sm:text-2xl text-center text-yoga-white font-bold">{t("thankpage.text")}</p>
-              <button onClick={onClick} className="cinzel sm:text-2xl text-xl font-bold yoga-btn">{t("thankpage.btn")}</button>
+              <p className="cinzel sm:text-2xl text-center text-yoga-white font-bold">{message}</p>
+              <button onClick={onBack} className="cinzel sm:text-2xl text-xl font-bold yoga-btn">{btn}</button>
             </article>
         </section>
     </OverLaped>

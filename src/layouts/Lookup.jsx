@@ -2,11 +2,12 @@ import PropsTypes from 'prop-types';
 import { supportedLanguages } from '../utils';
 
 Lookup.propTypes = {
+    id: PropsTypes.string,
     author: PropsTypes.string,
     message: PropsTypes.string,
     email: PropsTypes.string,
     phone: PropsTypes.string,
-    lang: PropsTypes.oneOf(supportedLanguages),
+    lang: PropsTypes.oneOf(supportedLanguages.map(lang => lang.name)),
     date: PropsTypes.string,
     status: PropsTypes.bool,
     statusDisplay: PropsTypes.string,
@@ -19,9 +20,9 @@ Lookup.propTypes = {
     details: PropsTypes.bool,
 };
 
-export default function Lookup({author, message, email, phone, lang, date, status, statusDisplay, succes, abort, forSucces, forAbort, insertElement, details=true}) {
+export default function Lookup({id, author, message, email, phone, lang, date, status, statusDisplay, succes, abort, forSucces, forAbort, insertElement, details=true}) {
   return (
-    <section className='flex flex-col justify-center items-center p-6 gap-3 bg-yoga-white sm:w-[700px] w-[330px]'>
+    <section id={id} className='flex flex-col justify-center items-center p-6 gap-3 bg-yoga-white sm:w-[700px] w-[330px]'>
       <h4 className='cinzel sm:text-3xl text-2xl uppercase font-bold text-yoga-red-dark'>{author}</h4>
 
       <ul className='flex justify-center items-center gap-4 sm:flex-row flex-col'>

@@ -1,4 +1,5 @@
 import * as CryptoJS from "crypto-js";
+import * as XLSX from "xlsx";
 
 // Classes - Stock Images
 import C1 from "../assets/imgs/stock/classes-1.webp";
@@ -35,6 +36,14 @@ export const contactFields = [
     {type: 'textarea', name: 'message', placeholder: 'Message', regex: /^[\S\s]{2,}$/, error: 'Message must be at least 2 characters long and only letters, numbers, spaces and new lines'}
 ];
 
+export const bookNowFields = [
+    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
+    {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
+    {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
+    {type: 'textarea', name: 'interest', placeholder: 'what are your interests in Yoga?', regex: /^[\S\s]{10,}$/, error: 'Your interest must be at least 10 characters long and only letters, numbers, spaces and new lines'}
+];
+
 export const adminLoginFields = [
     // username
     {type: 'text', name: 'username', placeholder: 'Username', regex: /^[\S\s]{2,}$/, error: 'Username must be at least 6 characters long'},
@@ -44,7 +53,7 @@ export const adminLoginFields = [
 
 export const accountFields = [
     // username
-    {type: 'text', name: 'username', placeholder: 'Username', defaultValue: 'admin', regex: /^[a-zA-Z]{5,12}$/, error: 'Username must be between 5 to 12 characters long, only letters [A-Z]'},
+    {type: 'text', name: 'username', placeholder: 'Username', defaultValue: 'admin', regex: /^[a-zA-Z]{5,16}$/, error: 'Username must be between 5 to 16 characters long, only letters [A-Z], no spaces or special characters'},
     // password
     {type: 'password', name: 'password', placeholder: 'Password', defaultValue: 'admin', regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,16}$/, error: 'Password must be between 8 and 16 characters, one uppercase letter, one lowercase letter, one number or one special character [!@#$%^&*]'},
 ];
@@ -57,8 +66,8 @@ export const reviewsFields = [
 ];
 
 // Yoga Calander:
-export const standardNavbar = ["Home","About","Contact","Classes"];
-export const dashboardNavbar = ["Contacts","Reviews","Classes","Account"];
+export const standardNavbar = ["Home","About","Contact","Classes", "BookNow"];
+export const dashboardNavbar = ["Contacts","Reviews","Books","Classes","Account"];
 export const standardDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 export const standardYogaCoursesTypes = [
     {
@@ -82,6 +91,7 @@ export const standardYogaCoursesTypes = [
 export const dashboardNavicons = {
     contacts: "fi fi-ss-headset",
     reviews: "fi fi-sr-star-comment-alt",
+    books: "fi fi-sr-book-open-reader",
     classes: "fi fi-sr-calendar",
     account: "fi fi-sr-user-gear",
 }
@@ -122,6 +132,34 @@ export  function tokenCoder(secret, token){
     token.password = encodeURIComponent(CryptoJS.AES.encrypt(token.password, secret).toString());
     document.cookie = `${secret}=${JSON.stringify(token)}; expires=${date.toUTCString()}; path=/`;
     return token;
+}
+
+export function toXlsx(data, filename){
+    const wb = XLSX.utils.book_new();
+    wb.Props = {
+        Title: filename,
+        Subject: "Exported Data",
+    };
+    wb.SheetNames.push("Data");
+    const ws = XLSX.utils.json_to_sheet(data);
+    wb.Sheets["Data"] = ws;
+    const wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+    
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    function saveAs(blob, filename) {
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+    }
+
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), `${filename}.xlsx`);
 }
 
 export function copyright(hostname=window.location.hostname){

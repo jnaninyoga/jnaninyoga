@@ -26,6 +26,13 @@ export default {
         url: "https://jnaninyoga.com/contact",
         type: "website"
     },
+    booknow:{
+        description: "Book your yoga session at Jnain Yoga Studio through our online booking system. Select your preferred class, date, and time, and I will confirm your booking shortly. I look forward to guiding you on a transformative journey toward holistic well-being.",
+        keywords: "Yoga studio, Book now, booking, online booking, schedule, timetable, yoga sessions, Jnain Yoga Studio, session timing, calendar, availability.",
+        image: home,
+        url: "https://jnaninyoga.com/booknow",
+        type: "website"
+    },
     classes:{
         description: "Explore the Classes page of Jnain Yoga Studio, where you will embark on a holistic yoga journey. Delve into our carefully curated schedule, effortlessly enroll in your preferred classes, and begin your extraordinary path toward well-being and self-exploration.",
         keywords: "Yoga studio, Classes, schedule, timetable, yoga sessions, Jnain Yoga Studio, session timing, calendar, booking, availability.",

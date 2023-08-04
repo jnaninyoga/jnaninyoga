@@ -90,6 +90,40 @@
             "onSuccess": "Your message has been sent successfully we will contact you soon",
             "sendBtn": "Send",
             "resetBtn": "Reset"
+        },
+        "thank":{
+            "title": "Thank you '{{name}}' for your message",
+            "message": "Thanks for contacting us, we will contact you soon",
+            "btn": "Go Back"
+        }
+    },
+    "booknow": {
+        "meta":{
+            "title":"Book Now - Jnanin Yoga Studio",
+            "description": "Book your yoga session at Jnain Yoga Studio through our online booking system. Explore our schedule, select your preferred class, and effortlessly enroll in your desired session. I look forward to welcoming you to Jnain Yoga Studio and guiding you on your transformative journey toward holistic well-being.",
+            "keywords": "Yoga studio, Book now, online booking, schedule, timetable, yoga sessions, Jnain Yoga Studio, session timing, calendar, booking, availability."
+        },
+        "title": "Book Now",
+        "form":{
+            "fields": {
+                "fullname": "Full Name",
+                "email": "Email",
+                "phone": "Phone Number",
+                "interest": "what are your interests in yoga?"
+            },
+            "fieldserrors":{
+                "fullname": "Name must be at least 2 characters long",
+                "email": "Email must be a valid email address",
+                "phone": "Phone must be 10 digit long",
+                "interest": "Your interest must be at least 10 characters long"
+            },
+            "sendBtn": "Book Now",
+            "resetBtn": "Reset"
+        },
+        "thank":{
+            "title": "Thank you {{name}} for booking with us!",
+            "message": "Thank you for booking with us, we will contact you soon",
+            "btn": "Go Back"
         }
     },
     "classes": {
@@ -127,11 +161,6 @@
         },
         "title": "Page Not Found",
         "text": "The page you are looking for does not exist. Please check the URL or go to the home page.",
-        "btn": "Go Back"
-    },
-    "thankpage":{
-        "title": "Thank you '{{mr}}' for your message",
-        "text": "Thanks for contacting us, we will contact you soon",
         "btn": "Go Back"
     },
     "adminauth":{

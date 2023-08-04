@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://jnaninyoga.com/</loc>
+    </url>
+
+    <!-- About Page -->
+    <url>
+        <loc>https://jnaninyoga.com/about</loc>
+    </url>
+
+    <!-- Contact Page -->
+    <url>
+        <loc>https://jnaninyoga.com/contact</loc>
+    </url>
+
+    <!-- Classes Page -->
+    <url>
+        <loc>https://jnaninyoga.com/classes</loc>
+    </url>
+
+    <!-- Book Now Page -->
+    <url>
+        <loc>https://jnaninyoga.com/booknow</loc>
+    </url>
+
+    <!-- Language variations for client side -->
+    <url>
+        <loc>https://jnaninyoga.com/en/</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/fr/</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/ar/</loc>
+    </url>
+
+    <!-- About Page - Language variations -->
+    <url>
+        <loc>https://jnaninyoga.com/en/about</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/fr/about</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/ar/about</loc>
+    </url>
+
+    <!-- Contact Page - Language variations -->
+    <url>
+        <loc>https://jnaninyoga.com/en/contact</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/fr/contact</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/ar/contact</loc>
+    </url>
+
+    <!-- Classes Page - Language variations -->
+    <url>
+        <loc>https://jnaninyoga.com/en/classes</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/fr/classes</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/ar/classes</loc>
+    </url>
+
+    <!-- Book Now Page - Language variations -->
+    <url>
+        <loc>https://jnaninyoga.com/en/booknow</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/fr/booknow</loc>
+    </url>
+    <url>
+        <loc>https://jnaninyoga.com/ar/booknow</loc>
+    </url>
+
+</urlset>

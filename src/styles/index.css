@@ -174,7 +174,6 @@
       @apply px-6;
       @apply py-3;
       @apply transition-all;
-      @apply duration-300;
       @apply ease-in-out;
       @apply outline;
       @apply outline-2;
@@ -194,6 +193,10 @@
     .yoga-btn:hover, .yoga-btn:focus, .yoga-btn:active, .yoga-btn-sec:hover, .yoga-btn-sec:focus, .yoga-btn-sec:active{
       box-shadow: 5px 5px 0 0 var(--yoga-green);
       @apply scale-[1.02];
+    }
+
+    .yoga-btn:active, .yoga-btn-sec:active{
+      @apply scale-[.98];
     }
 
     .form-field{
