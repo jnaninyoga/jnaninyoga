@@ -2,6 +2,7 @@ import { useActiveBoard } from "../../hooks"
 import { dashboardNavicons } from "../../utils";
 // Board Components
 import Account from "./Account";
+import Books from "./Books";
 import Classes from "./Classes";
 import Contacts from "./Contacts";
 import Reviews from "./Reviews";
@@ -15,6 +16,7 @@ export default function Switchboard() {
             case "account": return <Account />;
             case "classes": return <Classes />;
             case "contacts": return <Contacts />;
+            case "books": return <Books />;
             case "reviews": return <Reviews />;
             default: return <Contacts />;
         }

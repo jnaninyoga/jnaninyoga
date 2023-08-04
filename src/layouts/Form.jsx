@@ -81,7 +81,7 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
   return (
     <form ref={formRef} action="" onSubmit={submitForm} className='lg:w-[50vw] w-full lg:px-20 sm:px-10 px-2 flex items-center gap-1 flex-col'>
         <img src={icon} className={`${isFormIntersected ? "scale-1" : "scale-0"} sm:h-16 sm:w-16 h-12 w-12 transition-all duration-500 select-none`} alt="Red/pink lotus icon" />
-        <h1 className={`${isFormIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel ${!dark && "text-yoga-white"} text-center sm:text-3xl text-2xl font-bold uppercase transition-all duration-500`}>{title}</h1>
+        <h1 className={`${isFormIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel ${!dark && "text-yoga-white"} text-center text-3xl font-bold uppercase transition-all duration-500`}>{title}</h1>
         {insertElement && <div className={`${isFormIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} my-4 transition-all duration-500 delay-200`}>
             {insertElement}
         </div>}
@@ -93,7 +93,7 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
             <textarea
                 onChange={setFormField}
                 // expand the textarea as the user types new lines
-                rows={form[field.name] ? form[field.name].split('\n').length : 1}
+                rows={form[field.name] ? form[field.name].split('\n').length : 2}
                 className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} resize-y delay-[${ 100 * index + 100 }ms] `}
                 name={field.name}
                 placeholder={field.placeholder.toLowerCase().toCapitalCase()}
@@ -130,7 +130,7 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
             </div>
             )}
         </div>
-        <div dir='ltr' ref={btnsRef} className='w-full my-4 flex justify-around items-center overflow-hidden'>
+        <div dir='ltr' ref={btnsRef} className='w-full my-4 flex justify-around items-center overflow-x-hidden'>
             {resetBtn && <button type="reset" onClick={resetForm} className={`${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[-100%] opacity-0'} yoga-btn-sec hover:yoga-btn`}>{resetBtn}</button> }
             <button type="submit" className={`${resetBtn ? `${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[100%] opacity-0'}` : `${isBtnsIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'}`} ${!resetBtn ? "w-[65%]" : ''} yoga-btn`}>{sendBtn}</button>
         </div>

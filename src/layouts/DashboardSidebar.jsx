@@ -1,7 +1,7 @@
 import "handyscript/lib/string";
 import logo from "../assets/imgs/spine/logo.webp";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import { dashboardNavbar, dashboardNavicons } from "../utils";
 import { Link } from "react-router-dom";
 import { useActiveBoard, useData } from "../hooks";
@@ -12,8 +12,8 @@ export default function DashboardSidebar() {
     const { activeBoard, setActiveBoard } = useActiveBoard();
     const [isMenuHidden, setIsMenuHidden] = useState(true);
 
-    const { t } = useTranslation();
-    const dashboardnavbar = t(`dashboardNavbar`, { returnObjects: true });
+    // const { t } = useTranslation();
+    // const dashboardnavbar = t(`dashboardNavbar`, { returnObjects: true });
 
     const dashboardSidebar = useRef(null);
 
@@ -39,7 +39,7 @@ export default function DashboardSidebar() {
     // }, [reviews, contacts]);
 
     // check if navbar is an array
-    const Tnavbar = () => Array.isArray(dashboardnavbar) ? dashboardnavbar : dashboardNavbar;
+    // const Tnavbar = () => Array.isArray(dashboardnavbar) ? dashboardnavbar : dashboardNavbar;
 
     // getting golbal rate from reviews
     const globalRate = () => {
@@ -89,7 +89,7 @@ export default function DashboardSidebar() {
 
             <ul className="w-full flex items-center flex-col">
             {
-                Tnavbar().map((link, index) => (
+                dashboardNavbar.map((link, index) => (
                 <li key={index} onClick={() => { hideMenu(); setActiveBoard(dashboardNavbar[index].toLowerCase()); }} className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
                     <i className={`flex items-center ${Object.values(dashboardNavicons)[index]} transition-all group-hover:text-yoga-green-dark ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
                     <button className={`text-center font-medium capitalize`}>{ link }</button>
