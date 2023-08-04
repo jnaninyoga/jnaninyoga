@@ -174,7 +174,6 @@
       @apply px-6;
       @apply py-3;
       @apply transition-all;
-      @apply duration-300;
       @apply ease-in-out;
       @apply outline;
       @apply outline-2;

@@ -64,16 +64,19 @@ export default function Header() {
           <img className="lg:h-14 sm:h-60 h-40" src={logo} alt="Jnanin Yoga Studio Logo" />
           <h1 className="cinzel sm:text-4xl text-2xl text-center font-bold uppercase">Jnanin Yoga Studio</h1>
         </Link>
-        <ul className="flex items-center lg:text-lg sm:text-2xl text-xl font-bold lg:gap-4 sm:gap-8 gap-4 lg:flex-row flex-col">
+        <ul className="flex items-center lg:gap-4 sm:gap-8 gap-4 lg:flex-row flex-col z-[40]">
           {
             Tnavbar().map((link, index) => (
               <li key={index} onClick={hideMenu}>
                 <Link to={`${lang ? `/${currentLanguage.code}/` : '/'}${link.toLowerCase() === navbar[0].toLowerCase() ? "" : `${standardNavbar[index].toLowerCase()}`}`}
-                className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase outline-none focus:before:w-full focus:text-yoga-green ${activeLink(standardNavbar[index].toLowerCase())}`}>
+                className={`relative lg:text-lg sm:text-2xl text-xl font-bold transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase outline-none focus:before:w-full focus:text-yoga-green ${activeLink(standardNavbar[index].toLowerCase())}`}>
                 { link.toCapitalCase() }
                 </Link>
               </li>
           ))}
+          <li onClick={hideMenu}>
+            <Link className="yoga-btn" to={`${lang ? `/${currentLanguage.code}/` : '/'}booknow`}>{t('booknow.title')}</Link>
+          </li>
           <Lang className="lg:text-xl sm:text-2xl text-xl mt-4"/>
         </ul>
         <button onClick={hideMenu} className="absolute top-6 ltr:right-6 rtl:left-6 sm:text-3xl text-2xl text-yoga-red lg:hidden"><i className="fi fi-bs-cross"></i></button>

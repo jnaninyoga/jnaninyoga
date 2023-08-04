@@ -6,6 +6,7 @@ import { useActivePage } from '../hooks';
 export default function Hero() {
   const { t } = useTranslation();
   const activePage = useActivePage();
+  
 
   return (
     <section className='relative flex flex-1 items-center justify-center flex-col'>
@@ -14,6 +15,8 @@ export default function Hero() {
         twStyle={'sm:-translate-y-28 -translate-y-14'} 
         title={t(`${activePage}.hero.title`)}
         text={t(`${activePage}.hero.text`)}
+        btn={t(`booknow.title`)}
+        linkTo='/booknow'
         />
     </section>
   )

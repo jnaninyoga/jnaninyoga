@@ -6,6 +6,7 @@ import Classes from "./pages/client/Classes";
 import NotFound from "./layouts/404";
 import Auth from "./pages/admin/Auth";
 import Dashboard from "./pages/admin/Dashboard";
+import BookNow from "./pages/client/BookNow";
 
 export default function Router() {
   return (
@@ -16,11 +17,13 @@ export default function Router() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/classes" element={<Classes />} />
+        <Route path="/booknow" element={<BookNow />} />
         {/* Client Pages localization path */}
         <Route path="/:lang" element={<Home />} index />
         <Route path="/:lang/about" element={<About />} />
         <Route path="/:lang/contact" element={<Contact />} />
         <Route path="/:lang/classes" element={<Classes />} />
+        <Route path="/:lang/booknow" element={<BookNow />} />
 
         {/* Admin Routes */}
         <Route path="/lotus/login" element={<Auth />} />

@@ -59,6 +59,8 @@ export default function DashboardProvider(props) {
         );
     }, []);
 
+    // console.log("DASHBOARD DATA:", data);
+
     // it the auth validation is not done yet, return a loading screen
     if (verifying) return <Suspens/>;
 

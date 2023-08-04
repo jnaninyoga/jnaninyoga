@@ -36,6 +36,14 @@ export const contactFields = [
     {type: 'textarea', name: 'message', placeholder: 'Message', regex: /^[\S\s]{2,}$/, error: 'Message must be at least 2 characters long and only letters, numbers, spaces and new lines'}
 ];
 
+export const bookNowFields = [
+    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
+    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
+    {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
+    {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
+    {type: 'textarea', name: 'interest', placeholder: 'what are your interests in Yoga?', regex: /^[\S\s]{10,}$/, error: 'Your interest must be at least 10 characters long and only letters, numbers, spaces and new lines'}
+];
+
 export const adminLoginFields = [
     // username
     {type: 'text', name: 'username', placeholder: 'Username', regex: /^[\S\s]{2,}$/, error: 'Username must be at least 6 characters long'},
@@ -58,8 +66,8 @@ export const reviewsFields = [
 ];
 
 // Yoga Calander:
-export const standardNavbar = ["Home","About","Contact","Classes"];
-export const dashboardNavbar = ["Contacts","Reviews","Classes","Account"];
+export const standardNavbar = ["Home","About","Contact","Classes", "BookNow"];
+export const dashboardNavbar = ["Contacts","Reviews","Books","Classes","Account"];
 export const standardDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 export const standardYogaCoursesTypes = [
     {
@@ -83,6 +91,7 @@ export const standardYogaCoursesTypes = [
 export const dashboardNavicons = {
     contacts: "fi fi-ss-headset",
     reviews: "fi fi-sr-star-comment-alt",
+    books: "fi fi-sr-book-open-reader",
     classes: "fi fi-sr-calendar",
     account: "fi fi-sr-user-gear",
 }
