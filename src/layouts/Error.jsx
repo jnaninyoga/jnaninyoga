@@ -21,7 +21,7 @@ export default function Error({error}) {
           src="https://cdn.lordicon.com/hvuelaml.json"
           colors={{oc: "#ffffff", pc: "#fdc5ba"}}
         />
-        <h1 className="cinzel sm:text-8xl text-4xl text-yoga-white animate-pulse">Erro Loading The Data</h1>
+        <h1 className="cinzel text-center sm:text-8xl text-4xl text-yoga-white animate-pulse">🛑 Something Went Wrong 🛑!</h1>
         {error && <p className="text-yoga-white mt-2">{error}</p>}
         <button onClick={refreshPage} className="yoga-btn mt-4">Try Again</button>
       </section>

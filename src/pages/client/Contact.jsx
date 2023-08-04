@@ -52,7 +52,12 @@ export default function Contact() {
   }, [showThankPage]);
 
   // if the contact form is sent successfully, it will render the thank you page
-  if (showThankPage) return <Thank mr={contact.fullname} onClick={() => { setShowThankPage(false); setContact({}); }}/>
+  if (showThankPage) return <Thank
+    title={t('contact.thank.title', {name: contact.fullname})}
+    message={t('contact.thank.message')}
+    btn={t('contact.thank.btn')}
+    onBack={() => { setShowThankPage(false); setContact({}); }}
+  />
 
   return (
     <>
