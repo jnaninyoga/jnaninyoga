@@ -65,6 +65,7 @@ export default function Contacts() {
         "Email": contact.email,
         "Phone Number": contact.phone,
         "Language": contact.lang,
+        "Message": contact.message,
         "Answered": contact.answered ? "Yes" : "No",
         "Created At": dateFormater(contact.timestamp)
       }
@@ -192,8 +193,8 @@ export default function Contacts() {
           date={dateFormater(modal.timestamp)}
           succes="Answered"
           abort="Not Answered"
-          forSucces={() => updateContact(modal.id, { answered: true })}
-          forAbort={() => { updateContact(modal.id, { answered: false }); setModal(null) }}
+          forSucces={() => { updateContact(modal.id, { answered: true }); setModal(null)}}
+          forAbort={() => { updateContact(modal.id, { answered: false }); setModal(null)}}
         />
       </section>
     )}
