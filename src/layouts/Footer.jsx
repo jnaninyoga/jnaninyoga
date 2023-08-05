@@ -52,7 +52,7 @@ export default function Footer() {
             </a>
           </li>
           <li>
-            <a itemProp="url" className="flex items-center gap-4" href="https://wa.me//212661286464" title="Whatsapp Contact" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+            <a itemProp="url" className="flex items-center gap-4" href="https://wa.me/212661286464" title="Whatsapp Contact" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-brands-whatsapp"></i>
               <h4 className="underline-offset-4 underline">212 661 286 464</h4>
             </a>
