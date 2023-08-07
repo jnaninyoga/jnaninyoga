@@ -12,7 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.2",
+    "@mui/material": "^5.14.3",
     "@mui/x-data-grid": "^6.10.2",
     "crypto-js": "^4.1.1",
     "firebase": "^10.0.0",
