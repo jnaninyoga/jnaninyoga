@@ -67,7 +67,8 @@ export const reviewsFields = [
 
 // Yoga Calander:
 export const standardNavbar = ["Home","About","Contact","Classes", "BookNow"];
-export const dashboardNavbar = ["Contacts","Reviews","Books","Classes","Account"];
+export const dashboardNavbar = ["Contacts","Reviews","Books"];
+export const usersDashboardNavbar = ["Users","Carnets","Classes"];
 export const standardDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 export const standardYogaCoursesTypes = [
     {
@@ -94,6 +95,8 @@ export const dashboardNavicons = {
     books: "fi fi-sr-book-open-reader",
     classes: "fi fi-sr-calendar",
     account: "fi fi-sr-user-gear",
+    users: "fi fi-sr-users-alt",
+    carnets: "fi fi-sr-address-book",
 }
 
 // export const dashboardNavicons = {
