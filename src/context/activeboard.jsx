@@ -6,10 +6,10 @@ ActiveBoardProvider.propTypes = {
     children: PropTypes.any,
 };
 
-export const ActiveBoardContext = createContext(localStorage.getItem("activeBoard") || "contacts");
+export const ActiveBoardContext = createContext(localStorage.getItem("activeBoard") || "users");
 
 export default function ActiveBoardProvider(props) {
-    const [activeBoard, setActiveBoard] = useState(localStorage.getItem("activeBoard") || "contacts");
+    const [activeBoard, setActiveBoard] = useState(localStorage.getItem("activeBoard") || "users");
     // set the active board in local storage
     const ActiveBoard = useMemo(() => ({ activeBoard, setActiveBoard }), [activeBoard, setActiveBoard]);
     useMemo(() => localStorage.setItem("activeBoard", activeBoard), [activeBoard]);
