@@ -101,7 +101,7 @@ export default function Classes() {
         <i className="fi fi-sr-plus text-yoga-dark flex justify-center items-center"></i> <span className="ml-4 uppercase">Add A New Session</span>
       </button>
 
-      <section className="h-full pb-4 overflow-x-scroll scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
+      <section className="h-full pb-4 overflow-x-scroll lg:overflow-y-hidden scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
         <table className="table-fixed sm:rotate-0 border-separate border-spacing-2">
             <thead>
                 <tr className="text-yoga-white w-full">
