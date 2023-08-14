@@ -113,9 +113,11 @@ export const supportedLanguages = [
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
 
-// formate date to `0000 mon 00, 00:00:00`
-export function dateFormater(date){
-    return new Date(date?.seconds * 1000).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+// formate date to look like this 'monday 26 july 2021 10:30:00'
+export function dateFormater(date, withTime=true, local="en-US"){
+    const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withTime && timeOptions)})
 }
 
 export function tokenDecoder(secret){
