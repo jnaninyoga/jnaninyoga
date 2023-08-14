@@ -40,7 +40,7 @@ export const docSnap = async (collectionRef) => await getDocs(collectionRef);
 export const timestamp = serverTimestamp();
 
 // function that will ensure every document has timestamp field
-export const document = (doc) => { return {...doc, timestamp, deleted: false}};
+export const document = (doc) => { return {...doc, createdAt: timestamp, deleted: false}};
 
 // fetch docs into array:
 // export const fetchDocs = async (collectionRef) => await docSnap(collectionRef).docs.map(doc => doc.data());
@@ -48,7 +48,7 @@ export const document = (doc) => { return {...doc, timestamp, deleted: false}};
 // fetch docs with limits
 export const fetchDocs = (collectionRef, ...queryConstraints) => query( collectionRef, ...queryConstraints);
 // get docs ordered by timestamp
-export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(collectionRef, ...queryConstraints, orderBy("timestamp", "desc"));
+export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(collectionRef, ...queryConstraints, orderBy("createdAt", "desc"));
 
 //update doc
 export const updateDocument = async (collection, id, data) => await updateDoc(doc(DB, collection, id), {...data, updatedAt: timestamp});
