@@ -46,7 +46,7 @@ export default function Reviews() {
         "Rate": "⭐".repeat(review.rate) + "☆".repeat(5 - review.rate) + ` (${review.rate}/5)`,
         "Review": review.review,
         "Language": review.lang,
-        "Date": dateFormater(review.timestamp),
+        "Date": dateFormater(review.createdAt),
       }
     });
 
@@ -87,7 +87,7 @@ export default function Reviews() {
       valueOptions: supportedLanguages.map((lang) => lang.name),
     },
 
-    { field: "timestamp", headerName: "Date", width: 170,
+    { field: "createdAt", headerName: "Date", width: 260,
       type: "dateTime",
       // formating the date to be like this: 2021 Sep 30 12:00:00
       valueFormatter: ({ value }) => dateFormater(value)

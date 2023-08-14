@@ -67,7 +67,7 @@ export default function Contacts() {
         "Language": contact.lang,
         "Message": contact.message,
         "Answered": contact.answered ? "Yes" : "No",
-        "Created At": dateFormater(contact.timestamp)
+        "Created At": dateFormater(contact.createdAt)
       }
     });
 
@@ -118,7 +118,7 @@ export default function Contacts() {
       valueOptions: supportedLanguages.map((lang) => lang.name),
     },
 
-    { field: "timestamp", headerName: "Date", width: 170,
+    { field: "createdAt", headerName: "Date", width: 260,
       type: "dateTime",
       // formating the date to be like this: 2021 Sep 30 12:00:00
       valueFormatter: ({ value }) => dateFormater(value)

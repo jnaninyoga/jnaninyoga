@@ -58,7 +58,7 @@ export default function Books() {
   }, [selection]);
 
   const exportToXLSX = useCallback(() => {
-    const data = Books.map((book) => {
+    const data = books.map((book) => {
       // formating the data to be readable
       return {
         "Full Name": book.fullname,
@@ -67,14 +67,14 @@ export default function Books() {
         "Language": book.lang,
         "Interest": book.interest,
         "Confirmed": book.confirmed ? "Yes" : "No",
-        "Created At": dateFormater(book.timestamp)
+        "Created At": dateFormater(book.createdAt)
       }
     });
 
     // exporting the data to xlsx
     return toXlsx(data, "jnaninyoga-booked-sessions");
 
-  }, []);
+  }, [books]);
 
   // close the model when click outside the modal in the parent element
   const closeModal = e =>{
@@ -118,7 +118,7 @@ export default function Books() {
       valueOptions: supportedLanguages.map((lang) => lang.name),
     },
 
-    { field: "timestamp", headerName: "Date", width: 170,
+    { field: "createdAt", headerName: "Date", width: 260,
       type: "dateTime",
       // formating the date to be like this: 2021 Sep 30 12:00:00
       valueFormatter: ({ value }) => dateFormater(value)
