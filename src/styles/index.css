@@ -21,7 +21,8 @@
   /* Dark  Backgrounds*/
   --yoga-dark-red: #eca394;
   --yoga-dark-green: #13a9b1;
-  --yoga-dark-white: #f7efef;
+  /* --yoga-dark-white: #f7efef; */
+  --yoga-dark-white: #f6f1ee;
 
   /* Yoga Colors for the Calander */
   --yoga-type-1: var(--yoga-red);
@@ -142,7 +143,7 @@
       @apply bg-yoga-white;
     }
 
-    .texture-h::before, .texture-v::before{
+    .texture-h::before, .texture-h-1::before, .texture-v::before, .texture-v-1::before{
       @apply content-[''];
       @apply absolute;
       @apply inset-0;
@@ -160,8 +161,16 @@
       background-image: url('/src/assets/imgs/spine/texture-horizontal.webp');
     }
 
+    .texture-h-1::before{
+      background-image: url('/src/assets/imgs/spine/texture-1-horizontal.jpg');
+    }
+
     .texture-v::before{
       background-image: url('/src/assets/imgs/spine/texture-vertical.webp');
+    }
+
+    .texture-v-1::before{
+      background-image: url('/src/assets/imgs/spine/texture-1-vertical.jpg');
     }
 
     .yoga-btn, .yoga-btn-sec{
