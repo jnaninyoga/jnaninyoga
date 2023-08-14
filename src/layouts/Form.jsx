@@ -94,7 +94,7 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
                 onChange={setFormField}
                 // expand the textarea as the user types new lines
                 rows={form[field.name] ? form[field.name].split('\n').length : 2}
-                className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} resize-y delay-[${ 100 * index + 100 }ms] `}
+                className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} ${dark && "drop-shadow"} resize-y delay-[${ 100 * index + 100 }ms] `}
                 name={field.name}
                 placeholder={field.placeholder.toLowerCase().toCapitalCase()}
                 defaultValue={field.defaultValue}
@@ -111,7 +111,7 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
             <div key={index} className='relative w-full h-fit flex flex-col gap-1'>
             <input
                 onChange={setFormField}
-                className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} delay-[${ 100 * index + 100 }ms]`}
+                className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${isEmptyError || onError || emptyError[field.name] || error[field.name] ? "form-field-error" : ""} ${dark && "drop-shadow"} delay-[${ 100 * index + 100 }ms]`}
                 type={field.type.toLowerCase() === 'password' ? showPassword ? 'text' : 'password' : field.type.toLowerCase()}
                 name={field.name.toLowerCase()}
                 placeholder={field.placeholder.toLowerCase().toCapitalCase()}
@@ -130,9 +130,9 @@ export default function Form({title, state, fields, sendBtn, resetBtn, onEmpty, 
             </div>
             )}
         </div>
-        <div dir='ltr' ref={btnsRef} className='w-full my-4 flex justify-around items-center overflow-x-hidden'>
-            {resetBtn && <button type="reset" onClick={resetForm} className={`${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[-100%] opacity-0'} yoga-btn-sec hover:yoga-btn`}>{resetBtn}</button> }
-            <button type="submit" className={`${resetBtn ? `${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[100%] opacity-0'}` : `${isBtnsIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'}`} ${!resetBtn ? "w-[65%]" : ''} yoga-btn`}>{sendBtn}</button>
+        <div dir='ltr' ref={btnsRef} className='w-full my-4 flex justify-around items-center overflow-x-hidden overflow-y-visible'>
+            {resetBtn && <button type="reset" onClick={resetForm} className={`${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[-100%] opacity-0'} ${dark && "drop-shadow"} yoga-btn-sec hover:yoga-btn`}>{resetBtn}</button> }
+            <button type="submit" className={`${resetBtn ? `${isBtnsIntersected ? "translate-x-0 opacity-100" : 'translate-x-[100%] opacity-0'}` : `${isBtnsIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'}`} ${!resetBtn ? "w-[65%]" : ''} ${dark && "drop-shadow"} yoga-btn`}>{sendBtn}</button>
         </div>
     </form>
   )
