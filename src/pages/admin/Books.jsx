@@ -119,7 +119,7 @@ export default function Books() {
     },
 
     { field: "createdAt", headerName: "Date", width: 260,
-      type: "dateTime",
+      type: "date",
       // formating the date to be like this: 2021 Sep 30 12:00:00
       valueFormatter: ({ value }) => dateFormater(value)
     },
