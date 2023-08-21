@@ -23,7 +23,7 @@ export default function Home() {
   
   return (
     <>
-      <Meta title={t('home.meta.title')} {...metadata.home}/>
+      <Meta title={t('home.metaTitle')} {...metadata.home}/>
       <Header/>
       <Wrapper>
         <Hero/>

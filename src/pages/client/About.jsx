@@ -26,7 +26,7 @@ export default function About() {
   
   return (
   <>
-  <Meta title={t('about.meta.title')} {...metadata.about}/>
+  <Meta title={t('about.metaTitle')} {...metadata.about}/>
   <Header/>
 
   <OverLaped banner={banner} type={"video"}>

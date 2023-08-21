@@ -1,17 +1,17 @@
 import Rating from '../components/Rating'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import GreenMat from "../assets/imgs/spine/GreenMat.webp";
 import icon from '../assets/imgs/icons/lotus.webp';
 import Review from '../components/Review';
 import Form from "./Form";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Mousewheel, A11y } from 'swiper/modules';
-import { reviewsFields } from "../utils";
+import { reviewsFields } from "../utils/form";
 import { useTranslation } from 'react-i18next';
 import { useActivePage, useCurrentLanguage, useIntersectView } from '../hooks';
-import { addDoc, onSnapshot, limit, where, orderBy } from "firebase/firestore";
-import { document, fetchDocs } from '../firebase';
-import collections from '../firebase/collections';
+import { onSnapshot, limit, where, orderBy } from "firebase/firestore";
+import { addDocument, fetchDocs } from '../firebase';
+import collections, { names } from '../firebase/collections';
 
 // Styles
 import 'swiper/css';
@@ -29,6 +29,7 @@ export default function Reviews() {
     const [rate, setRate] = useState(5);
     const [isFormActive, setIsFormActive] = useState(false);
     const [thankPage, setThankPage] = useState(false);
+    const [error, setError] = useState(false);
 
     const reviewsRef = useRef(null);
     const isReviewsIntersected = useIntersectView(reviewsRef);
@@ -36,20 +37,24 @@ export default function Reviews() {
     const TFields = t(`${activePage}.reviews.form.fields`, {returnObjects: true});
     const TFieldsErrors = t(`${activePage}.reviews.form.fieldserrors`, {returnObjects: true});
   
-    reviewsFields.forEach((field) => {
-      field.placeholder = TFields[field.name.toLowerCase()] || field.placeholder;
-      field.error = TFieldsErrors[field.name.toLowerCase()] || field.error;
-      field.emptyError = t('contact.form.empty', {field: field.placeholder});
-    });
-
+    const ReviewsFields = useMemo(() => reviewsFields.map(field => {
+        field.placeholder = TFields[field.name.toLowerCase()] || field.placeholder;
+        field.error = TFieldsErrors[field.name.toLowerCase()] || field.error;
+        field.empty = t('GlobalForm.emptyField', {field: field.placeholder});
+        return field;
+    }), [TFields, TFieldsErrors, t]);
 
     // submitting the review form to firebase collection called "reviews"
     const sendReview = async (reviewdata) => {
         try {
-            await addDoc(collections.reviews, document({...reviewdata, rate, lang: currentLanguage.name}));
+            // clear the error message
+            setError(false);
+            // await addDoc(collections.reviews, document({...reviewdata, rate, lang: currentLanguage.name}));
+            await addDocument(names.reviews, {...reviewdata, rate, lang: currentLanguage.name});
             if (reviewdata.rate >= 4) setReviews([...reviews, reviewdata]);
             setThankPage(true);
         } catch (e) {
+            setError(true);
             console.error(e);
         }
     }
@@ -76,6 +81,15 @@ export default function Reviews() {
         return () => clearTimeout(timeout);
     }, [isFormActive, thankPage]);
 
+    // effect to clear custom error messages
+    useEffect(() => {
+        if(!error) return
+        const timeout = setTimeout(() => {
+            setError(false);
+        }, 5000);
+        return () => clearTimeout(timeout);
+    }, [error]);
+
   
   return (
     <section id="reviews" className="container min-h-[400px] relative mt-14 py-8 flex flex-1 justify-center items-center flex-col gap-6 sm:mt-20 overflow-hidden" style={{backgroundImage: `url(${GreenMat})`}}>
@@ -88,15 +102,18 @@ export default function Reviews() {
         </article>
     :
         <Form
+        animatedIcon
         title={"Add Your Review"}
         onSubmit={sendReview}
-        insertElement={<Rating  className='h-8 w-8 cursor-pointer' rate={rate} setRate={setRate}/>}
         state={[reviewData, setReviewData]}
-        fields={reviewsFields}
-        sendBtn={t('contact.form.sendBtn')}
+        fields={ReviewsFields}
+        submitBtn={t('contact.form.submitBtn')}
         resetBtn={t(`${activePage}.reviews.form.resetBtn`)}
-        onEmpty={t('contact.form.onEmpty')}
+        EmptyErrorMessage={t('GlobalForm.emptyFields')}
+        ErrorMessage={t('GlobalError.text')}
+        errorTrigger={error}
         onReset={() => {setIsFormActive(false); setRate(5)}}
+        insertElement={<Rating  className='h-8 w-8 cursor-pointer' rate={rate} setRate={setRate}/>}
         />
     }
     </section> :
