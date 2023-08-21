@@ -10,6 +10,7 @@ import {
   orderBy,
   updateDoc,
   doc,
+  addDoc,
   deleteDoc,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -42,13 +43,19 @@ export const timestamp = serverTimestamp();
 // function that will ensure every document has timestamp field
 export const document = (doc) => { return {...doc, createdAt: timestamp, deleted: false}};
 
-// fetch docs into array:
-// export const fetchDocs = async (collectionRef) => await docSnap(collectionRef).docs.map(doc => doc.data());
+// return the doc ref
+export const getDocRef = (collection, id) => doc(DB, collection, id);
 
 // fetch docs with limits
 export const fetchDocs = (collectionRef, ...queryConstraints) => query( collectionRef, ...queryConstraints);
 // get docs ordered by timestamp
 export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(collectionRef, ...queryConstraints, orderBy("createdAt", "desc"));
+
+// document refence
+export const addRefDocument = (collection, data, refCollection, refID) => addDoc(collectionDB(collection), document({...data, ref: getDocRef(refCollection, refID)}));
+
+// add/create doc
+export const addDocument = async (collection, data) => await addDoc(collectionDB(collection), document(data));
 
 //update doc
 export const updateDocument = async (collection, id, data) => await updateDoc(doc(DB, collection, id), {...data, updatedAt: timestamp});
