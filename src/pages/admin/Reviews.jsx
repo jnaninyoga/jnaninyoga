@@ -3,11 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
 import { useCallback, useMemo, useState } from "react";
 import Lockup from "../../layouts/Lookup";
-import { dateFormater, supportedLanguages, toXlsx } from "../../utils";
+import { dateFormater, supportedLanguages, toXlsx, alertMessage } from "../../utils";
 import { names } from "../../firebase/collections";
-import { deleteDocument } from "../../firebase";
+import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
 import Stars from "../../components/Stars";
+import Error from "../../layouts/Error";
 
 export default function Reviews() {
   const { loading, data: { reviews } } = useData();
@@ -18,28 +19,42 @@ export default function Reviews() {
 
   // message modal state
   const [modal, setModal] = useState();
-  const [deleteModal, setDeleteModal] = useState();
+  const [alert, setAlert] = useState({});
+
+  // Alert Action
+  const alertAction = useCallback((onAction, closeAlert=true) => {
+    onAction && onAction(); // run the action if it's exist
+    closeAlert && setAlert({}); // close the alert
+  }, []);
 
   // delete review
-  const deleteReview = async (id) => {
+  const deleteReview = useCallback(async (id) => {
     try {
       await deleteDocument(names.reviews, id);
+      const restoreReview = async () => await updateDocument(names.reviews, id, {deleted: false});
+      setAlert({...alertMessage("D", "Review", true), onConfirm: () => alertAction(restoreReview), onCancel: alertAction, confirm: "Restore"})
     } catch (error) {
       console.error(error);
+      // throw an alert error
+      setAlert({ ...alertMessage("E", "Review", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(() => deleteReview(id)), onCancel: alertAction })
     }
-  }
+  }, [alertAction]);
 
   // delete all reviews
-  const deleteAllReviews = useCallback(async () => {
+  const deleteMultiReviews = useCallback(async () => {
     try {
       await Promise.all(selection.map((id) => deleteReview(id)));
+      const restoreReviews = async () => await Promise.all(selection.map((id) => updateDocument(names.reviews, id, {deleted: false})));
+      setAlert({...alertMessage("DA", "Review", true), onConfirm: () => alertAction(restoreReviews), onCancel: alertAction, confirm: "Restore All"})
     } catch (error) {
       console.error(error);
+      // throw an alert error
+      setAlert({ ...alertMessage("E", "Reviews", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(deleteMultiReviews), onCancel: alertAction })
     }
-  }, [selection]);
+  }, [selection, deleteReview, alertAction]);
 
   const exportToXLSX = useCallback(() => {
-    const data = reviews.map((review) => {
+    const data = (selection.length > 0 ? selection : reviews).map((review) => {
       // formating the data to be readable
       return {
         "Full Name": review.fullname,
@@ -53,13 +68,13 @@ export default function Reviews() {
     // creating the excel file
     return toXlsx(data, "jnaninyoga-reviews");
 
-  }, [reviews]);
+  }, [reviews, selection]);
 
     // close the model when click outside the modal in the parent element
     const closeModal = e =>{
       if(e.target === e.currentTarget){
         setModal(null);
-        setDeleteModal(null)
+        setAlert({})
       }
     }
 
@@ -97,7 +112,7 @@ export default function Reviews() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`} onClick={() => { setModal(row); }}>Show</button>
+        <button onClick={() => { setModal(row); }} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
       )
     },
     // field for making a contact as deleted
@@ -105,10 +120,13 @@ export default function Reviews() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} onClick={() => { setDeleteModal(row); }}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
+        <button onClick={() => setAlert({...alertMessage("D", "Review"), onConfirm: () => alertAction(() => deleteReview(row.id)), onCancel: alertAction})} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
-  ], []);
+  ], [alertAction, deleteReview]);
+
+  // if there is error loading the data
+  if (!reviews) return <Error title={"Error Loading reviews Data"} error={"There was an error loading your reviews data dashboard. Please try again later."} />
 
   return (
     <>
@@ -116,8 +134,8 @@ export default function Reviews() {
 
       <div className={`flex items-center gap-20`}>
         <div className="flex justify-center items-center gap-4">
-          <button className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`} onClick={exportToXLSX}>Export To Excel</button>
-          <button className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} onClick={() => setDeleteModal("deleteall")}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">Delete All</span></button>
+          <button onClick={exportToXLSX} className={`cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < reviews.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+          <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiReviews), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < reviews.length) ? "Delete Selected" : "Delete All"}</span></button>
         </div>
       </div>
 
@@ -149,17 +167,10 @@ export default function Reviews() {
         />
       </section>
     )}
-    {/* delete modal */}
-    {deleteModal && (
+    {/* alert modal */}
+    {alert.title && (
       <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
-        <Alert
-          title={deleteModal === "deleteall" ? "Delete All Reviews" : "Delete Review"}
-          message={deleteModal === "deleteall" ? "Are you sure you want to delete all reviews?" : "Are you sure you want to delete this review?"}
-          confirm="Delete"
-          cancel="Cancel"
-          onConfirm={() => { deleteModal === "deleteall" ? deleteAllReviews() : deleteReview(deleteModal.id); setDeleteModal(null); }}
-          onCancel={() => setDeleteModal(null)}
-        />
+        <Alert {...alert} />
       </section>
     )}
     </>
