@@ -86,7 +86,7 @@ const router = [
     errorElement: <Error/>
   },
   {
-    path: "/lotus/:lang",
+    path: "/lotus/:board",
     element: <Dashboard />,
     errorElement: <Error/>
   },
