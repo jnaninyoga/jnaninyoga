@@ -30,12 +30,17 @@ export default function DashboardProvider(props) {
 
     useEffect(() => {
         Object.keys(collections).forEach(async (collection) => {
-            try {
-                if(collection === names.auth){
+            if(collection === names.auth){
+                try {
                     const admin = (await docSnap(collections.auth)).docs[0];
                     setData((prevData) => ({ ...prevData, [collection]: { ...admin.data(), id: admin.id } }));
+                } catch (error) {
+                    console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                    setError(error);
+                }
 
-                } else if(collection === names.classes){
+            } else if(collection === names.classes){
+                try {
                     onSnapshot(fetchDocs(collections[collection], orderBy("order")), (querySnapshot) => {
                         // set the documents in the collection state with there ids
                         // order the sessions by there time that session is starting, the start time is like this: sessions = [{type: number, start: string = "hh:mm"}, {type: number, start: string = "hh:mm"}]
@@ -44,19 +49,24 @@ export default function DashboardProvider(props) {
                         // console.log("classes", data.classes);
                         setData((prevData) => ({ ...prevData, [collection]: querySnapshot.docs.map((doc) => ({ ...doc.data(), day: doc.id })) }));
                     });
+                } catch (error) {
+                    console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                    setError(error);
+                }
 
-                } else {
+            } else {
+                try{
                     onSnapshot(fetchDescDocs(collections[collection], where("deleted", "==", false)), (querySnapshot) => {
                         // set the documents in the collection state with there ids
                         setData((prevData) => ({ ...prevData, [collection]: querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) }));
                     });
+                } catch (error) {
+                    console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                    setError(error);
                 }
                 setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setError(error);
-            }}
-        );
+            } 
+        });
     }, []);
 
     // console.log("DASHBOARD DATA:", data);
