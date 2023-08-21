@@ -73,7 +73,7 @@ export default function Footer() {
             </li>
           ))}
           <li className="list-item sm:hidden">
-            <Link className="yoga-btn" to={`${lang ? `/${currentLanguage.code}/` : '/'}booknow`}>{t('booknow.form.sendBtn')}</Link>
+            <Link className="yoga-btn" to={`${lang ? `/${currentLanguage.code}/` : '/'}booknow`}>{t('booknow.form.submitBtn')}</Link>
           </li>
         </ul>
       </section>
