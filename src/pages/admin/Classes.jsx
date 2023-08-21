@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { updateDocument } from '../../firebase';
 import { names } from '../../firebase/collections';
 import SessionCreation from '../../layouts/SessionCreation';
+import Error from '../../layouts/Error';
 // import backup from '../../backup';
 
 
@@ -93,6 +94,9 @@ export default function Classes() {
     }
   }
 
+  // if there is error loading the data
+  if (!classes) return <Error title={"Error Loading Classes Data"} error={"There was an error loading your classes data dashboard. Please try again later."} />
+
 
   return (
     <div className='flex gap-5 flex-col px-4 py-4 h-full w-full' style={{backgroundImage: `url(${BG})`}}>
@@ -101,7 +105,7 @@ export default function Classes() {
         <i className="fi fi-sr-plus text-yoga-dark flex justify-center items-center"></i> <span className="ml-4 uppercase">Add A New Session</span>
       </button>
 
-      <section className="h-full pb-4 overflow-x-scroll lg:overflow-y-hidden scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
+      <section className="h-full pb-4 overflow-x-scroll lg:overflow-y-auto scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
         <table className="table-fixed sm:rotate-0 border-separate border-spacing-2">
             <thead>
                 <tr className="text-yoga-white w-full">
