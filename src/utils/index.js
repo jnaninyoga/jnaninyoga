@@ -26,45 +26,6 @@ export const OverviewStockImgs = {
     yoga: [Y1, Y2, Y3, Y4, Y5]
 };
 
-// Form Fields:
-export const contactFields = [
-    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
-    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
-    {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
-    {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
-    // the message field is string at least 2 chars long alow new lines and spaces
-    {type: 'textarea', name: 'message', placeholder: 'Message', regex: /^[\S\s]{2,}$/, error: 'Message must be at least 2 characters long and only letters, numbers, spaces and new lines'}
-];
-
-export const bookNowFields = [
-    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
-    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
-    {type: 'email', name: 'email', placeholder: 'Email', regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, error: 'Email must be a valid email address'},
-    {type: 'tel', name: 'phone', placeholder: 'Phone Number', regex: /^[0-9]{10}$/, error: 'Phone number must be 10 digits long'},
-    {type: 'textarea', name: 'interest', placeholder: 'what are your interests in Yoga?', regex: /^[\S\s]{10,}$/, error: 'Your interest must be at least 10 characters long and only letters, numbers, spaces and new lines'}
-];
-
-export const adminLoginFields = [
-    // username
-    {type: 'text', name: 'username', placeholder: 'Username', regex: /^[\S\s]{2,}$/, error: 'Username must be at least 6 characters long'},
-    // password
-    {type: 'password', name: 'password', placeholder: 'Password', regex: /^[\S\s]{6,}$/, error: 'Invalid Password'}
-];
-
-export const accountFields = [
-    // username
-    {type: 'text', name: 'username', placeholder: 'Username', defaultValue: 'admin', regex: /^[a-zA-Z]{5,16}$/, error: 'Username must be between 5 to 16 characters long, only letters [A-Z], no spaces or special characters'},
-    // password
-    {type: 'password', name: 'password', placeholder: 'Password', defaultValue: 'admin', regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,16}$/, error: 'Password must be between 8 and 16 characters, one uppercase letter, one lowercase letter, one number or one special character [!@#$%^&*]'},
-];
-
-export const reviewsFields = [
-    // the fullname field is string at least 6 chars long only letters and alow spaces no special chars
-    {type: 'text', name: 'fullname', placeholder: 'Full Name', regex: /^[a-zA-Z\u0600-\u06FF\s]{2,}$/, error: 'Full Name must be at least 2 characters long and only letters and spaces'},
-    // the message field is string at least 2 chars long alow new lines and spaces
-    {type: 'textarea', name: 'review', placeholder: 'Your Review', regex: /^[\S\s]{10,500}$/, maxChars: 500, error: 'review must be at least 10 characters long'}
-];
-
 // Yoga Calander:
 export const standardNavbar = ["Home","About","Contact","Classes", "BookNow"];
 export const dashboardNavbar = ["Contacts","Reviews","Books"];
@@ -89,6 +50,9 @@ export const standardYogaCoursesTypes = [
     }
 ];
 
+/// Dashboard allowed search fields
+export const usersSearchFields = ["firstname", "lastname", "job",  "phone", "address", "date"];
+
 export const dashboardNavicons = {
     contacts: "fi fi-ss-headset",
     reviews: "fi fi-sr-star-comment-alt",
@@ -99,25 +63,71 @@ export const dashboardNavicons = {
     carnets: "fi fi-sr-address-book",
 }
 
-// export const dashboardNavicons = {
-//     reviews: {
-//         icon: "https://cdn.lordicon.com/mdgrhyca.json",
-//         colors: {pc: ":#13a9b1"}
-//     },
-
-// }
-
 export const supportedLanguages = [
     {name: 'English', code: 'en', dir: 'ltr'},
     {name: 'Français', code: 'fr', dir: 'ltr'},
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
 
+// alert message generator based on crud operations "CRUD" & DA: Delete All
+export function alertMessage(operation, topic, finished=false, operationDescription="Operating on"){
+    const alert = {title: "", message: "", confirm: "ok", cancel: "close", type: "info"};
+    // Alert UI types: "info", "success", "warning", "error"
+
+    switch(operation.toUpperCase()){
+        case "C":
+            alert.title = finished ? `${topic} Added` : `Add ${topic}`;
+            alert.message = finished ? `The ${topic} has been added successfully` : `Do you want to add the ${topic}?`;
+            alert.confirm = finished ? "ok" : "add";
+            alert.type = finished ? "success" : "info";
+            break;
+        case "R":
+            alert.title = `${topic} Details`;
+            alert.message = `Here are the details of the ${topic}`;
+            break;
+        case "U":
+            alert.title = finished ? `${topic} Updated` : `Update ${topic}`;
+            alert.message = finished ? `The ${topic} has been updated successfully` : `Are you sure you want to update this ${topic}?`;
+            alert.confirm = finished ? "ok" : "update";
+            alert.type = finished ? "success" : "info";
+            break;
+        case "UA":
+            alert.title = finished ? `${topic}s Updated` : `Update Selected ${topic}s`;
+            alert.message = finished ? `All the selected ${topic}s has been updated successfully` : `Are you sure you want to update all the selected ${topic}s?`;
+            alert.confirm = finished ? "ok" : "update all";
+            alert.type = finished ? "success" : "info";
+            break;
+        case "D":
+            alert.title = finished ? `${topic} Deleted` : `Delete ${topic}`;
+            alert.message = finished ? `The ${topic} has been deleted successfully` : `Are you sure you want to delete this ${topic}?`;
+            alert.confirm = finished ? "ok" : "delete";
+            alert.type = finished ? "success" : "warning";
+            break;
+        case "DA":
+            alert.title = finished ? `${topic}s Deleted` : `Delete Selected ${topic}s`;
+            alert.message = finished ? `All the selected ${topic}s has been deleted successfully` : `Are you sure you want to delete all the selected ${topic}s?`;
+            alert.confirm = finished ? "ok" : "delete";
+            alert.type = finished ? "success" : "warning";
+            break;
+        // Error Alert
+        case "E":
+            alert.title = `Error ${operationDescription} ${topic}`;
+            alert.message = `An error has occured while ${operationDescription} the ${topic}`
+            alert.type = "error";
+            break;
+        default:
+            alert.title = `Unknown Operation`;
+            alert.message = `The operation is unknown`;
+            break;
+    }
+    return alert;
+}      
+
 // formate date to look like this 'monday 26 july 2021 10:30:00'
-export function dateFormater(date, withTime=true, local="en-US"){
+export function dateFormater(date, withTime=true, withDay=true, local="en-US"){
     const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
-    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withTime && timeOptions)})
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(typeof date == "string" ? date : date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withDay && {weekday: 'long'}), ...(withTime && timeOptions)})
 }
 
 export function tokenDecoder(secret){
@@ -133,7 +143,7 @@ export  function tokenCoder(secret, token){
     const date = new Date()
     date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
     // hash the admin password before saving it in the cookie using crypto-js
-    // normaliz the hashed password to avoid '=' in the cookie
+    // normali the hashed password to avoid '=' in the cookie
     token.password = encodeURIComponent(CryptoJS.AES.encrypt(token.password, secret).toString());
     document.cookie = `${secret}=${JSON.stringify(token)}; expires=${date.toUTCString()}; path=/`;
     return token;
