@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
 import { useCallback, useMemo, useState } from "react";
 import Lookup from "../../layouts/Lookup";
-import { dateFormater, supportedLanguages, toXlsx, alertMessage } from "../../utils";
+import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } from "../../utils";
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
@@ -120,7 +120,7 @@ export default function Contacts() {
 
     { field: "phone", headerName: "Phone", width: 100,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={`https://wa.me/${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
+      renderCell: ({ value }) => ( <a href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "message", headerName: "Message", width: 200,

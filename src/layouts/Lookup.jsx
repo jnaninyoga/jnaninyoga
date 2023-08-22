@@ -1,5 +1,5 @@
 import PropsTypes from 'prop-types';
-import { supportedLanguages } from '../utils';
+import { supportedLanguages, whatsappLink } from '../utils';
 
 Lookup.propTypes = {
     id: PropsTypes.string,
@@ -47,7 +47,7 @@ export default function Lookup({id, author, message, email, phone, lang, date, s
           </li>
           <li className='flex items-center justify-center gap-2'>
             <i className="flex items-center justify-center text-yoga-green-dark fi fi-brands-whatsapp"></i>
-            <a href={`https://wa.me/${phone}`}>{phone}</a>
+            <a href={whatsappLink(phone)}>{phone}</a>
           </li>
         </ul>
       )}

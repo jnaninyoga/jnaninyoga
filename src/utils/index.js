@@ -1,5 +1,6 @@
 import * as CryptoJS from "crypto-js";
 import * as XLSX from "xlsx";
+import parsePhoneNumber from 'libphonenumber-js';
 
 // Classes - Stock Images
 import C1 from "../assets/imgs/stock/classes-1.webp";
@@ -128,6 +129,12 @@ export function dateFormater(date, withTime=true, withDay=true, local="en-US"){
     const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(typeof date == "string" ? date : date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withDay && {weekday: 'long'}), ...(withTime && timeOptions)})
+}
+
+// format a phone number to wa.me link from any phone region using libphonenumber-js
+export function whatsappLink(phone){
+    const phoneNumber = parsePhoneNumber(phone).formatInternational().replace(/\s/g, '');
+    return `https://wa.me/${phoneNumber}`;
 }
 
 export function tokenDecoder(secret){
