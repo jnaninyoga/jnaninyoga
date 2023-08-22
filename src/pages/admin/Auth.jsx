@@ -7,7 +7,7 @@ import { adminLoginFields } from "../../utils/form";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { useTranslation } from "react-i18next";
 import { docSnap } from "../../firebase";
-import { useAdminAuth, useCurrentLanguage, usePathLanguage } from "../../hooks";
+import { useAdminAuth, usePathLanguage } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import collections from "../../firebase/collections";
 
@@ -15,11 +15,10 @@ export default function Auth() {
     const { t } = useTranslation();
     const token = useAdminAuth();
     const navigate = useNavigate();
-    const currentLanguage = useCurrentLanguage();
     usePathLanguage();
 
     // if the user is logged in, redirect to the dashboard
-    if(!token.loading && token.auth) navigate(`/lotus/${currentLanguage.code}`);
+    if(!token.loading && token.auth) navigate(`/lotus`);
 
     const [auth, setAuth] = useState({});
     // error messages for the login form
