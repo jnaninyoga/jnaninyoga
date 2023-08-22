@@ -7,7 +7,7 @@ import { adminLoginFields } from "../../utils/form";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { useTranslation } from "react-i18next";
 import { docSnap } from "../../firebase";
-import { useAdminAuth, usePathLanguage } from "../../hooks";
+import { useAdminAuth, usePathLanguage, useSearchParamsSerializer } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import collections from "../../firebase/collections";
 
@@ -17,8 +17,11 @@ export default function Auth() {
     const navigate = useNavigate();
     usePathLanguage();
 
+    // check if the if redericted to the login page with `error` search  param
+    const searchParams = useSearchParamsSerializer();
+
     // if the user is logged in, redirect to the dashboard
-    if(!token.loading && token.auth) navigate(`/lotus`);
+    if(!token.verifying && token.auth) navigate(`/lotus`);
 
     const [auth, setAuth] = useState({});
     // error messages for the login form
@@ -46,12 +49,18 @@ export default function Auth() {
           tokenCoder("yogacoach", authdata);
           navigate(`/lotus`);
         } else {
-          setError(true);
+          setError(t('adminauth.form.error'));
         }
       }catch(error){
         console.error(error);
       }
     }
+
+    // set error based on serch param error
+    useEffect(() => {
+      if(!searchParams.error) return;
+      setError(searchParams.error);
+    }, [searchParams]);
 
     // effect to clear custom error messages
     useEffect(() => {
@@ -74,7 +83,7 @@ export default function Auth() {
         onSubmit={validateAuth}
         submitBtn={t('adminauth.form.login')}
         EmptyErrorMessage={t('adminauth.form.error')}
-        ErrorMessage={t('adminauth.form.error')}
+        ErrorMessage={error}
         errorTrigger={error}
         />
     </OverLaped>
