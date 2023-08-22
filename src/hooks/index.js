@@ -1,5 +1,5 @@
 import i18next, { changeLanguage } from "i18next";
-import { useState, useEffect, useContext} from "react";
+import { useState, useEffect, useContext, useMemo} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
 import { standardNavbar, supportedLanguages, tokenDecoder } from "../utils";
 import { docSnap } from "../firebase";
@@ -41,6 +41,19 @@ export function usePathLanguage() {
 
     if (currentLang.code !== pathLang) changeLanguage(pathLang);
     return pathLang;
+}
+
+// a search params serializer hook, from: ?uid=helloworld&hi=hola' -> to: {uid: "helloworld", hi: "hola"}
+export function useSearchParamsSerializer(){
+    const location = useLocation();
+    return useMemo(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const params = {};
+        for (const [key, value] of searchParams.entries()) {
+            params[key] = value;
+        }
+        return params;
+    }, [location]);
 }
 
 // Auth Hook that check if the user is logged in or not buy checking the token in the cokies 'jnaninyoga'
