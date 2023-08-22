@@ -60,6 +60,10 @@
   color: var(--yoga-black);
 }
 
+*:focus, *::before:focus, *::after:focus {
+  outline-color: var(--yoga-green);
+}
+
 *::selection{
   background-color: var(--yoga-green);
   color: var(--yoga-white);

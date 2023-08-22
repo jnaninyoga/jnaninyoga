@@ -3,7 +3,10 @@ import { useCurrentLanguage, useIntersectView } from '../hooks';
 import icon from '../assets/imgs/icons/lotus.webp';
 import PropsTypes from 'prop-types';
 import DropdownMenu from './DropdownMenu';
+import PhoneInput from 'react-phone-number-input';
 import Icon from '../assets/svg';
+
+import 'react-phone-number-input/style.css';
 
 Form.propTypes = {
     title: PropsTypes.string,
@@ -50,6 +53,8 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
         if (field.required) {
             value ? setErrors({...errors, [name]: !regex.test(value.trim()) ? field.error || `Invalid '${field.placeholder}'` : ''}) : setErrors({...errors, [name]: field.empty ||  `${field.placeholder} is required`});
         }
+
+        console.log("FORM DATA: ", form);
     }
 
     const submitForm = async e =>{
@@ -185,6 +190,20 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                         }
                 </div> :
 
+                // input type phone
+                field.type === 'tel' ?
+                <div className='relative w-full h-fit flex gap-1'>
+                    <PhoneInput
+                        defaultCountry='MA'
+                        name={field.name}
+                        onChange={value => setFormField(null, {name: field.name, value}) }
+                        className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
+                        placeholder={field.required ? "*"+field.placeholder : field.placeholder}
+                        value={form[field.name] || field.defaultValue}
+                        required={field.required}
+                    />
+                </div> :
+
                 // default input element
                 <div className='relative w-full h-fit flex flex-col gap-1'>
                     <input
@@ -195,7 +214,6 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                         placeholder={field.required ? "*"+field.placeholder : field.placeholder}
                         defaultValue={form[field.name] || field.defaultValue}
                         required={field.required}
-                        key={index}
                     />
                     {// if the field is type of password, show the show/hide password button
                         (field.type.toLowerCase() === 'password') && (

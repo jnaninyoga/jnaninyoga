@@ -22,8 +22,6 @@ export const contactFields = [
     type: "tel",
     name: "phone",
     placeholder: "Phone Number",
-    regex: /^[0-9]{10}$/,
-    error: "Phone number must be 10 digits long",
   },
   // the message field is string at least 2 chars long alow new lines and spaces
   {
@@ -58,8 +56,6 @@ export const bookNowFields = [
     type: "tel",
     name: "phone",
     placeholder: "Phone Number",
-    regex: /^[0-9]{10}$/,
-    error: "Phone number must be 10 digits long",
   },
   {
     type: "textarea",
@@ -173,8 +169,6 @@ export const userFields = [
     type: "tel",
     name: "phone",
     placeholder: "Phone Number",
-    regex: /^[0-9]{10}$/,
-    error: "Phone number must be 10 digits long",
   },
   // mail field
   {
