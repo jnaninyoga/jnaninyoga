@@ -144,8 +144,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                         <label key={index} className={`flex items-center gap-1`}>
                             <span className='capitalize'>{option}</span>
                             <input
-                                defaultChecked={field?.defaultValue === option}
-                                // onChange={() => setFormField(null, {name: field.name, value: field.defaultValue || option}) }
+                                defaultChecked={(form[field.name] === option) || (field?.defaultValue === option)}
                                 onChange={setFormField}
                                 className='accent-cyan-600 p-1 rounded-full focus:outline-red-300'
                                 type='radio'
@@ -164,7 +163,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                     options={field.options}
                     placeholder={field.placeholder}
                     onSelect={selected => setFormField(null, {name: field.name, value: selected}) }
-                    defaultSelected={typeof field.defaultValue == 'number' ? field.defaultValue : field.options.indexOf(field.defaultValue) || 0}
+                    defaultSelected={typeof field.defaultValue == 'number' ? form[field.name] || field.defaultValue : field.options.indexOf(form[field.name] || field.defaultValue) || 0}
                 /> :
 
                 // Testarea element
@@ -177,7 +176,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                         className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} resize-y placeholder:capitalize delay-[${ 100 * index + 100 }ms] `}
                         name={field.name}
                         placeholder={field.required ? "*"+field.placeholder : field.placeholder}
-                        defaultValue={field.defaultValue}
+                        defaultValue={form[field.name] || field.defaultValue}
                         required={field.required}
                         />
                         {// check if the textarea have a maxChars rule like maxChars = 500
@@ -194,7 +193,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                         type={field.type.toLowerCase() === 'password' ? showPassword ? 'text' : 'password' : field.type.toLowerCase()}
                         name={field.name.toLowerCase()}
                         placeholder={field.required ? "*"+field.placeholder : field.placeholder}
-                        defaultValue={field.defaultValue}
+                        defaultValue={form[field.name] || field.defaultValue}
                         required={field.required}
                         key={index}
                     />
