@@ -133,8 +133,8 @@ export function dateFormater(date, withTime=true, withDay=true, local="en-US"){
 
 // format a phone number to wa.me link from any phone region using libphonenumber-js
 export function whatsappLink(phone){
-    const phoneNumber = parsePhoneNumber(phone).formatInternational().replace(/\s/g, '');
-    return `https://wa.me/${phoneNumber}`;
+    const parsedPhoneNumber = parsePhoneNumber(phone, "MA")?.formatInternational();
+    return `https://wa.me/${parsedPhoneNumber?.replace(/\s/g, '') || phone}`;
 }
 
 export function tokenDecoder(secret){
