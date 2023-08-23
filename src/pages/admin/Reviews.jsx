@@ -81,7 +81,7 @@ export default function Reviews() {
   // reviews table columns
   const columns = useMemo(() => [
     { field: "fullname", headerName: "Full Name", width: 150,
-      renderCell: ({ value }) => <h1 className="cinzel font-semibold">{value}</h1>
+      renderCell: ({ value }) => <h1 title={value} className="cinzel font-semibold">{value}</h1>
     },
 
     { field: "rate", headerName: "Rate", width: 160,
@@ -112,7 +112,7 @@ export default function Reviews() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => { setModal(row); }} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
+        <button onClick={() => { setModal(row); }} title={"Show Review Detailes"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
       )
     },
     // field for making a contact as deleted
@@ -120,7 +120,7 @@ export default function Reviews() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => setAlert({...alertMessage("D", "Review"), onConfirm: () => alertAction(() => deleteReview(row.id)), onCancel: alertAction})} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
+        <button onClick={() => setAlert({...alertMessage("D", "Review"), onConfirm: () => alertAction(() => deleteReview(row.id)), onCancel: alertAction})} title={"Delete This Review"} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
   ], [alertAction, deleteReview]);

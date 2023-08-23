@@ -109,19 +109,19 @@ export default function Books() {
       editable: false,
       // formate the value to be a readable format of "Yes" or "No"
       type: "boolean",
-      renderCell: ({ value }) => <div className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
+      renderCell: ({ value }) => <div title={value ? "Confirmed" : "Not Confirmed"} className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
     },
     { field: "fullname", headerName: "Full Name", width: 150, 
-      renderCell: ({ value }) => <h1 className="cinzel font-semibold">{value}</h1>
+      renderCell: ({ value }) => <h1 title={value} className="cinzel font-semibold">{value}</h1>
     },
     { field: "email", headerName: "Email", width: 180,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
+      renderCell: ({ value }) => ( <a title={value} href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "phone", headerName: "Phone", width: 100,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
+      renderCell: ({ value }) => ( <a title={value} href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "interest", headerName: "User Interest", width: 200,
@@ -148,8 +148,8 @@ export default function Books() {
       filterable: false,
       renderCell: ({ row }) => (
         <div className="flex justify-center items-center gap-4">
-          <button onClick={() => updateBook(row.id, { confirmed: true })} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Confirmed</button>
-          <button onClick={() => updateBook(row.id, { confirmed: false })} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Not Confirmed</button>
+          <button onClick={() => updateBook(row.id, { confirmed: true })} title={"Mark This Booked Session as Confirmed"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Confirmed</button>
+          <button onClick={() => updateBook(row.id, { confirmed: false })} title={"Mark This Booked Session as Not Confirmed"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Not Confirmed</button>
         </div>
       )
     },
@@ -158,7 +158,7 @@ export default function Books() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => { setModal(row); }} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
+        <button onClick={() => { setModal(row); }} title={"Show Booked Form Detailes"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
       )
     },
     // field for making a Book as deleted
@@ -166,7 +166,7 @@ export default function Books() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => setAlert({...alertMessage("D", "Book"), onConfirm: () => alertAction(() => deleteBook(row.id)), onCancel: alertAction})} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
+        <button onClick={() => setAlert({...alertMessage("D", "Book"), onConfirm: () => alertAction(() => deleteBook(row.id)), onCancel: alertAction})} title={"Delete This Booked Form"} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
   ], [updateBook, deleteBook, alertAction]);
@@ -184,8 +184,8 @@ export default function Books() {
           <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiBooks), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < books.length) ? "Delete Selected" : "Delete All"}</span></button>
         </div>
         <div className="flex justify-center items-center gap-4">
-          <button onClick={() => updateMultiBooks({ confirmed: true })} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Confirmed</button>
-          <button onClick={() => updateMultiBooks({ confirmed: false })} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Confirmed</button>
+          <button onClick={() => updateMultiBooks({ confirmed: true })} title={"Mark This Booked Sessions as Confirmed"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Confirmed</button>
+          <button onClick={() => updateMultiBooks({ confirmed: false })} title={"Mark This Booked Sessions as Not Confirmed"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Confirmed</button>
         </div>
       </div>
 

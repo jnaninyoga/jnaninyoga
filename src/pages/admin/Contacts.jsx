@@ -108,19 +108,19 @@ export default function Contacts() {
       editable: false,
       // formate the value to be a readable format of "Yes" or "No"
       type: "boolean",
-      renderCell: ({ value }) => <div className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
+      renderCell: ({ value }) => <div title={value ? "Answered" : "Not Answered"} className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
     },
     { field: "fullname", headerName: "Full Name", width: 150, 
-      renderCell: ({ value }) => <h1 className="cinzel font-semibold">{value}</h1>
+      renderCell: ({ value }) => <h1 title={value} className="cinzel font-semibold">{value}</h1>
     },
     { field: "email", headerName: "Email", width: 180,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
+      renderCell: ({ value }) => ( <a title={value} href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "phone", headerName: "Phone", width: 100,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
+      renderCell: ({ value }) => ( <a title={value} href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "message", headerName: "Message", width: 200,
@@ -147,8 +147,8 @@ export default function Contacts() {
       filterable: false,
       renderCell: ({ row }) => (
         <div className="flex justify-center items-center gap-4">
-          <button onClick={() => updateContact(row.id, { answered: true })} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Answered</button>
-          <button onClick={() => updateContact(row.id, { answered: false })} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Not Answered</button>
+          <button onClick={() => updateContact(row.id, { answered: true })} title={"Mark This Contact as Answered"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Answered</button>
+          <button onClick={() => updateContact(row.id, { answered: false })} title={"Mark This Contact as Not Answered"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Not Answered</button>
         </div>
       )
     },
@@ -157,7 +157,7 @@ export default function Contacts() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => { setModal(row); }} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
+        <button onClick={() => { setModal(row); }} title={"show Contact Detailes"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
       )
     },
     // field for making a contact as deleted
@@ -165,7 +165,7 @@ export default function Contacts() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => setAlert({...alertMessage("D", "Contact"), onConfirm: () => alertAction(() => deleteContact(row.id)), onCancel: alertAction})} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
+        <button onClick={() => setAlert({...alertMessage("D", "Contact"), onConfirm: () => alertAction(() => deleteContact(row.id)), onCancel: alertAction})} title={"Delete This Contact"} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
   ], [updateContact, deleteContact, alertAction]);
@@ -183,8 +183,8 @@ export default function Contacts() {
           <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiContacts), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < contacts.length) ? "Delete Selected" : "Delete All"}</span></button>
         </div>
         <div className="flex justify-center items-center gap-4">
-          <button onClick={() => updateMultiContacts({ answered: true })} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Answered</button>
-          <button onClick={() => updateMultiContacts({ answered: false })} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Answered</button>
+          <button onClick={() => updateMultiContacts({ answered: true })} title={"Mark This Contact as Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Answered</button>
+          <button onClick={() => updateMultiContacts({ answered: false })} title={"Mark This Contact as Not Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Answered</button>
         </div>
       </div>
 
