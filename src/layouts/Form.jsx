@@ -48,13 +48,11 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
         const field = fields.find(field => field.name === name);
         const regex = new RegExp(field.regex);
         
-        setForm({ ...form, [name]: field.valueFormatter ? field.valueFormatter(value.trim()) : value.trim() });
+        setForm({ ...form, [name]: field.valueFormatter ? field.valueFormatter(value?.trim()) : value?.trim() });
         // check if the field is required
         if (field.required) {
-            value ? setErrors({...errors, [name]: !regex.test(value.trim()) ? field.error || `Invalid '${field.placeholder}'` : ''}) : setErrors({...errors, [name]: field.empty ||  `${field.placeholder} is required`});
+            value ? setErrors({...errors, [name]: !regex.test(value?.trim()) ? field.error || `Invalid '${field.placeholder}'` : ''}) : setErrors({...errors, [name]: field.empty ||  `${field.placeholder} is required`});
         }
-
-        console.log("FORM DATA: ", form);
     }
 
     const submitForm = async e =>{
