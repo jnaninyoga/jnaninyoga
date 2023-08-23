@@ -105,9 +105,9 @@ export default function DashboardSidebar() {
                 <ul className="w-full flex items-center flex-col">
                 {
                     usersDashboardNavbar.map((link, index) => (
-                    <li key={index} onClick={() => dashboardNavigation(usersDashboardNavbar[index].toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red ${activeBoard?.toLowerCase() === usersDashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                        <i className={`flex items-center ${dashboardNavicons[link.toLowerCase()]} transition-all group-hover:text-yoga-green-dark ${activeBoard?.toLowerCase() === usersDashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
-                        <button className={`text-center font-medium capitalize`}>{ link }</button>
+                    <li tabIndex={1} key={index} onClick={() => dashboardNavigation(usersDashboardNavbar[index].toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === usersDashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
+                        <i className={`flex items-center ${dashboardNavicons[link.toLowerCase()]} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === usersDashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
+                        <span className={`text-center font-medium capitalize`}>{ link }</span>
                     </li>
                 ))}
                 </ul>
@@ -115,9 +115,9 @@ export default function DashboardSidebar() {
                 <ul className="w-full flex items-center flex-col">
                 {
                     dashboardNavbar.map((link, index) => (
-                    <li key={index} onClick={() => dashboardNavigation(dashboardNavbar[index].toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                        <i className={`flex items-center ${dashboardNavicons[link.toLowerCase()]} transition-all group-hover:text-yoga-green-dark ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
-                        <button className={`text-center font-medium capitalize`}>{ link }</button>
+                    <li tabIndex={1} key={index} onClick={() => dashboardNavigation(dashboardNavbar[index].toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
+                        <i className={`flex items-center ${dashboardNavicons[link.toLowerCase()]} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
+                        <span className={`text-center font-medium capitalize`}>{ link }</span>
                         {/* Notification Counter */}
                         {/* { notifications[dashboardNavbar[index].toLowerCase()] > 0 && activeBoard?.toLowerCase() !== dashboardNavbar[index].toLowerCase() && <span className="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 flex items-center justify-center text-xs text-white bg-yoga-green rounded-full">{ notifications[dashboardNavbar[index].toLowerCase()] }</span> } */}
                     </li>
@@ -125,9 +125,9 @@ export default function DashboardSidebar() {
                 </ul>
                 <div className="w-full h-1 bg-cyan-800 bg-opacity-10"></div>
                 <ul className="w-full flex items-center flex-col">
-                    <li onClick={() => dashboardNavigation("account") } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red ${activeBoard?.toLowerCase() === "account" ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                        <i className={`flex items-center ${dashboardNavicons.account} transition-all group-hover:text-yoga-green-dark ${activeBoard?.toLowerCase() === "account" ?  "text-yoga-green-dark" : ''}`}></i>
-                        <button className={`text-center font-medium capitalize`}>{ "account" }</button>
+                    <li tabIndex={1} onClick={() => dashboardNavigation("account") } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === "account" ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
+                        <i className={`flex items-center ${dashboardNavicons.account} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === "account" ?  "text-yoga-green-dark" : ''}`}></i>
+                        <span className={`text-center font-medium capitalize`}>{ "account" }</span>
                     </li>
                 </ul>
             </div>
