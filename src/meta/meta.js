@@ -3,6 +3,7 @@ import home from "../assets/imgs/OGP/Home.jpg";
 import about from "../assets/imgs/OGP/About.jpg";
 import contact from "../assets/imgs/OGP/Contact.jpg";
 import classes from "../assets/imgs/OGP/Classes.jpg";
+import book from "../assets/imgs/OGP/Book.jpg";
 
 export default {
     home:{
@@ -29,7 +30,7 @@ export default {
     booknow:{
         description: "Book your yoga session at Jnain Yoga Studio through our online booking system. Select your preferred class, date, and time, and I will confirm your booking shortly. I look forward to guiding you on a transformative journey toward holistic well-being.",
         keywords: "Yoga studio, Book now, booking, online booking, schedule, timetable, yoga sessions, Jnain Yoga Studio, session timing, calendar, availability.",
-        image: home,
+        image: book,
         url: "https://jnaninyoga.com/booknow",
         type: "website"
     },
