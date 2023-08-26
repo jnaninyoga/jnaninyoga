@@ -2,7 +2,7 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-import { dashboardNavbar, usersDashboardNavbar } from "../utils";
+import { dashboardNavbar } from "../utils";
 
 ActiveBoardProvider.propTypes = {
     children: PropTypes.any,
@@ -15,14 +15,11 @@ export default function ActiveBoardProvider(props) {
     // getting the target board from the url
     const { board } = useParams();
     // check if the requested board buy url is valid
-    const supportedBoards = useMemo(() => {
-        const Boards = [...dashboardNavbar.map((board) => board.toLowerCase()), ...usersDashboardNavbar.map((board) => board.toLowerCase())];
-        return Boards;
-    }, []);
+    const supportedBoards = useMemo(() => dashboardNavbar.map(board => board.name.toLowerCase()), []);
 
     // if the board is not supported, redirect to the users board
     useEffect(() => {
-        if (!supportedBoards.includes(board)) {
+        if (!supportedBoards.includes(board.toLowerCase())) {
             setActiveBoard("users");
         } else {
             setActiveBoard(board);
