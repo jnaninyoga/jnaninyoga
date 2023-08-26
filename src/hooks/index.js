@@ -2,11 +2,10 @@ import i18next, { changeLanguage } from "i18next";
 import { useState, useEffect, useContext, useMemo} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
 import { standardNavbar, supportedLanguages, tokenDecoder } from "../utils";
-import { docSnap } from "../firebase";
-import { DashboardContext } from "../context/dashboard";
+import { docSnap, fetchDescDocs, fetchDocs } from "../firebase";
 import { ActiveBoardContext } from "../context/activeboard";
-import collections from "../firebase/collections";
-import { ModalContext } from "../context/modal";
+import collections, { names } from "../firebase/collections";
+import { onSnapshot, orderBy, where } from "firebase/firestore";
 
 export function useIntersectView(ref) {
     const [isIntersected, setIsintersected] = useState();
@@ -83,20 +82,90 @@ export function useAdminAuth() {
     return { auth, verifying };
 }
 
-// hook that serve the dashboard context
-export function useData(){
-    const {data, loading, setData} = useContext(DashboardContext);
-    return { data, loading, setData };
+// load dashboard data
+export function useData(collection){
+    const { verifying, auth } = useAdminAuth();
+    const [data, setData] = useState(JSON.parse(localStorage.getItem(collection)));
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    const navigate = useNavigate();
+
+    // check if the session still valid:
+    if(!verifying && !auth ) {
+        // clear the cached data
+        Object.values(names).forEach(name => localStorage.removeItem(name));
+        navigate("/lotus/login?error=Your session has expired, please login again")
+    }
+
+    // start loading data based on the collection
+    useEffect(() => {
+        (async () => {
+            //swith the collection:
+            switch (collection) {
+                case names.auth:
+                    try {
+                        const admin = (await docSnap(collections.auth)).docs[0];
+                        setData({ ...admin.data(), id: admin.id });
+                    } catch (error) {
+                        console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                        setError(error);
+                    } finally {
+                        setLoading(false);
+                    }
+                break;
+
+                case names.classes:
+                    try {
+                        onSnapshot(fetchDocs(collections[collection], orderBy("order")), (querySnapshot) => {
+                            // check if the session still valid:
+                            // if(!verifying && !auth ) navigate("/lotus/login?error=Your session has expired, please login again");
+    
+                            // set the documents in the collection state with there ids
+                            // order the sessions by there time that session is starting, the start time is like this: sessions = [{type: number, start: string = "hh:mm"}, {type: number, start: string = "hh:mm"}]
+                            // checking for sessions who not have a start time like this: sessions = [{type: number}, {type: number, start: string = "hh:mm"}]
+                            // setData((prevData) => ({ ...prevData, [collection]: querySnapshot.docs.map((doc) => ({ ...doc.data(), day: doc.id, sessions: doc.data().sessions.sort((a, b) => a?.start?.localeCompare(b?.start)) })) }));
+                            // console.log("classes", data.classes);
+                            setData( querySnapshot.docs.map( doc => ({ ...doc.data(), day: doc.id }) ) );
+                        });
+                    } catch (error) {
+                        console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                        setError(error);
+                    } finally {
+                        setLoading(false);
+                    }
+                break;
+
+                default:
+                    try{
+                        onSnapshot(fetchDescDocs(collections[collection], where("deleted", "==", false)), (querySnapshot) => {
+                            // check if the session still valid:
+                            // if(!verifying && !auth ) navigate("/lotus/login?error=Your session has expired, please login again");
+                            // set the documents in the collection state with there ids
+                            setData( querySnapshot.docs.map( doc => ({ ...doc.data(), id: doc.id }) ) );
+                        });
+                    } catch (error) {
+                        console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                        setError(error);
+                    } finally {
+                        setLoading(false);
+                    }
+                break;
+            }
+        })();
+    }, [collection]);
+
+    // cache the data in the local storage
+    useEffect(() => {
+        localStorage.setItem(collection, JSON.stringify(data));
+    }, [data, collection]);
+
+    console.info(`${collection.toUpperCase()} DASHBOARD DATA`, data, loading);
+
+    return [data, loading, error];
 }
 
 // hook the server the active board in the dashboard
 export function useActiveBoard() {
     const {activeBoard, setActiveBoard} = useContext(ActiveBoardContext);
     return { activeBoard, setActiveBoard };
-}
-
-// hook that return the modal active state
-export function useModalActiveState() {
-    const { activeModal, setActiveModal } = useContext(ModalContext);
-    return [ activeModal, setActiveModal ];
 }
