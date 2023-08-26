@@ -19,7 +19,7 @@ export default function ActiveBoardProvider(props) {
 
     // if the board is not supported, redirect to the users board
     useEffect(() => {
-        if (!supportedBoards.includes(board.toLowerCase())) {
+        if (!supportedBoards.includes(board?.toLowerCase())) {
             setActiveBoard("users");
         } else {
             setActiveBoard(board);

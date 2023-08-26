@@ -151,10 +151,14 @@ export function dateFormater(date, withTime=true, withDay=true, local="en-US"){
     return new Date(typeof date == "string" ? date : date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withDay && {weekday: 'long'}), ...(withTime && timeOptions)})
 }
 
-// caclulate the user age from his birthdate using accurate time from: 'https://timeapi.io/api/Time/current/zone?timeZone=' API
+// caclulate the user age from his birthdate using accurate time from: 'https://github.com/davidayalas/current-time' API
 export async function userAge(birthdate){
-    const APIDate = await fetch(`https://timeapi.io/api/Time/current/zone?timeZone=${Intl.DateTimeFormat().resolvedOptions().timeZone}`).then(res => res.json()).then(data => data).catch(err => console.error(err)); 
-    return Math.floor( new Date(APIDate.dateTime).getFullYear() - new Date(birthdate).getFullYear() );
+    try{
+        const APIDate = await ( await fetch(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${Intl.DateTimeFormat().resolvedOptions().timeZone}`)).json();
+        return Math.floor( new Date(APIDate.fulldate).getFullYear() - new Date(birthdate).getFullYear() );
+    } catch (error){
+        console.error("ERROR CALCULATING AGE: ", error);
+    }
 }
 
 // format a phone number to wa.me link from any phone region using libphonenumber-js
