@@ -29,8 +29,6 @@ export const OverviewStockImgs = {
 
 // Yoga Calander:
 export const standardNavbar = ["Home","About","Contact","Classes", "BookNow"];
-export const dashboardNavbar = ["Contacts","Reviews","Books"];
-export const usersDashboardNavbar = ["Users","Carnets","Classes"];
 export const standardDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 export const standardYogaCoursesTypes = [
     {
@@ -51,18 +49,40 @@ export const standardYogaCoursesTypes = [
     }
 ];
 
+export const dashboardNavbar = [
+    {
+        name: "Users",
+        icon: "fi fi-sr-users-alt",
+    },
+    {
+        name: "Carnets",
+        icon: "fi fi-sr-address-book",
+    },
+    {
+        name: "Sessions",
+        icon: "fi fi-sr-calendar",
+    },
+    /// separator
+    {
+        name: "Books",
+        icon: "fi fi-sr-book-open-reader",
+    },
+    {
+        name: "Contacts",
+        icon: "fi fi-ss-headset",
+    },
+    {
+        name: "Reviews",
+        icon: "fi fi-sr-star-comment-alt",
+    },
+    /// separator
+    {
+        name:"Account",
+        icon:"fi fi-sr-user-gear",
+    },
+];
 /// Dashboard allowed search fields
 export const usersSearchFields = ["firstname", "lastname", "job",  "phone", "address", "date"];
-
-export const dashboardNavicons = {
-    contacts: "fi fi-ss-headset",
-    reviews: "fi fi-sr-star-comment-alt",
-    books: "fi fi-sr-book-open-reader",
-    classes: "fi fi-sr-calendar",
-    account: "fi fi-sr-user-gear",
-    users: "fi fi-sr-users-alt",
-    carnets: "fi fi-sr-address-book",
-}
 
 export const supportedLanguages = [
     {name: 'English', code: 'en', dir: 'ltr'},
@@ -129,6 +149,12 @@ export function dateFormater(date, withTime=true, withDay=true, local="en-US"){
     const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(typeof date == "string" ? date : date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withDay && {weekday: 'long'}), ...(withTime && timeOptions)})
+}
+
+// caclulate the user age from his birthdate using accurate time from: 'https://timeapi.io/api/Time/current/zone?timeZone=' API
+export async function userAge(birthdate){
+    const APIDate = await fetch(`https://timeapi.io/api/Time/current/zone?timeZone=${Intl.DateTimeFormat().resolvedOptions().timeZone}`).then(res => res.json()).then(data => data).catch(err => console.error(err)); 
+    return Math.floor( new Date(APIDate.dateTime).getFullYear() - new Date(birthdate).getFullYear() );
 }
 
 // format a phone number to wa.me link from any phone region using libphonenumber-js
