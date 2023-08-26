@@ -8,10 +8,10 @@ import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
 import Stars from "../../components/Stars";
-import Error from "../../layouts/Error";
+import Loader from "../../layouts/Loader";
 
 export default function Reviews() {
-  const { loading, data: { reviews } } = useData();
+  const [reviews, DataLoading, DataError] = useData(names.reviews);
   const [pageSize, setPageSize] = useState(10);
 
   // selected contact
@@ -125,8 +125,22 @@ export default function Reviews() {
     }
   ], [alertAction, deleteReview]);
 
+  // if data been loading
+  if (!reviews && DataLoading) return <Loader loading='Loading Reviews Data...' />;
+
   // if there is error loading the data
-  if (!reviews) return <Error title={"Error Loading reviews Data"} error={"There was an error loading your reviews data dashboard. Please try again later."} />
+  if (DataError || !reviews) return (
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <Alert 
+        type="error"
+        title="Error Loading Reviews Data"
+        message="There was an error loading your Reviews data dashboard. Please try again later."
+        confirm={"Try Again"}
+        onConfirm={window.location.reload}
+        onCancel={closeModal}
+      />
+    </section>
+  )
 
   return (
     <>
@@ -141,7 +155,6 @@ export default function Reviews() {
 
       <DataGrid
         className="h-fit bg-yoga-white text-lg"
-        loading={loading}
         rows={reviews}
         columns={columns}
         getRowId={(row) => row.id}

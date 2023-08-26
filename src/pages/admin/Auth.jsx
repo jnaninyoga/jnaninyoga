@@ -10,6 +10,7 @@ import { docSnap } from "../../firebase";
 import { useAdminAuth, usePathLanguage, useSearchParamsSerializer } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import collections from "../../firebase/collections";
+import Suspens from "../../layouts/Suspens";
 
 export default function Auth() {
     const { t } = useTranslation();
@@ -70,6 +71,10 @@ export default function Auth() {
       }, 5000);
       return () => clearTimeout(timeout);
     }, [error]);
+
+  
+  // it the auth validation is not done yet, return a loading screen
+  if (token.verifying) return <Suspens/>;
 
   return (
     <>

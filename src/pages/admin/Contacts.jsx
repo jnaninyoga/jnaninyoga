@@ -1,4 +1,3 @@
-import "handyscript/lib/string";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
@@ -8,10 +7,10 @@ import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } 
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
-import Error from "../../layouts/Error";
+import Loader from "../../layouts/Loader";
 
 export default function Contacts() {
-  const { loading, data: { contacts } } = useData();
+  const [contacts, DataLoading, DataError] = useData(names.contacts);
   
   const [pageSize, setPageSize] = useState(10);
 
@@ -170,8 +169,22 @@ export default function Contacts() {
     }
   ], [updateContact, deleteContact, alertAction]);
 
+  // if data been loading
+  if (!contacts && DataLoading) return <Loader loading='Loading Contacts Data...' />;
+
   // if there is error loading the data
-  if (!contacts) return <Error title={"Error Loading Contacts Data"} error={"There was an error loading your contacts data dashboard. Please try again later."} />
+  if (DataError || !contacts) return (
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <Alert 
+        type="error"
+        title="Error Loading Contacts Data"
+        message="There was an error loading your contacts data dashboard. Please try again later."
+        confirm={"Try Again"}
+        onConfirm={window.location.reload}
+        onCancel={closeModal}
+      />
+    </section>
+  )
 
   return (
     <>
@@ -190,7 +203,6 @@ export default function Contacts() {
 
       <DataGrid
         className="h-fit bg-yoga-white text-lg"
-        loading={loading}
         rows={contacts}
         columns={columns}
         getRowId={(row) => row.id}

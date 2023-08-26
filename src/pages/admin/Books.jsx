@@ -1,4 +1,3 @@
-import "handyscript/lib/string";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
@@ -8,11 +7,11 @@ import { dateFormater, whatsappLink, supportedLanguages, toXlsx, alertMessage } 
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
-import Error from "../../layouts/Error";
+import Loader from "../../layouts/Loader";
 
 export default function Books() {
-  const { loading, data: { books } } = useData();
-  
+  // const { loading, data: { books } } = useData();
+  const [books, DataLoading, DataError] = useData(names.books);
   const [pageSize, setPageSize] = useState(10);
 
   // selected Book
@@ -171,8 +170,22 @@ export default function Books() {
     }
   ], [updateBook, deleteBook, alertAction]);
 
+  // if data been loading
+  if (!books && DataLoading) return <Loader loading='Loading Booked Sessions Data...' />;
+
   // if there is error loading the data
-  if (!books) return <Error title={"Error Loading Booked Sessions Data"} error={"There was an error loading your booked sessions data dashboard. Please try again later."} />
+  if (DataError || !books) return (
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <Alert
+        type="error"
+        title="Error Loading Booked Sessions Data"
+        message="There was an error loading your Booked Sessions data dashboard. Please try again later."
+        confirm={"Try Again"}
+        onConfirm={window.location.reload}
+        onCancel={closeModal}
+      />
+    </section>
+  )
 
   return (
     <>
@@ -191,7 +204,6 @@ export default function Books() {
 
       <DataGrid
         className="h-fit bg-yoga-white text-lg"
-        loading={loading}
         rows={books}
         columns={columns}
         getRowId={(row) => row.id}

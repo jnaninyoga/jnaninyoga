@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Form from "../../layouts/Form";
 import { alertMessage, dateFormater, tokenDecoder } from "../../utils";
 import { accountFields } from "../../utils/form";
@@ -6,19 +6,13 @@ import { useData } from "../../hooks";
 import { names } from "../../firebase/collections";
 import { updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
-import Error from "../../layouts/Error";
+import Loader from "../../layouts/Loader";
 
 export default function Account() {
-  const { data: { auth } } = useData();
+  const [auth, DataLoading, DataError] = useData(names.auth);
   const [account, setAccount] = useState(tokenDecoder("yogacoach"));
   const [alert, setAlert] = useState({}); // [title, message, cancel, onCancel, confirm, onConfirm]
   const [error, setError] = useState(false);
-
-  // inject the current account credentials into the form
-  const AccountFields = useMemo(() => accountFields.map((field) => {
-    field.defaultValue = auth[field.name.toLowerCase()];
-    return field;
-  }), [auth]);
 
   // Alert Action
   const alertAction = useCallback((onAction, closeAlert=true) => {
@@ -55,8 +49,22 @@ export default function Account() {
     return () => clearTimeout(timeout);
   }, [error]);
 
+  // if data been loading
+  if (!auth && DataLoading) return <Loader loading='Loading Account Credentials Data...' />;
+
   // if there is error loading account credentials 
-  if (!auth) return <Error title={"Error Loading Account Credentials"} error={"There was an error loading your account credentials. Please try again later."} />
+  if (DataError || !auth) return (
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <Alert
+        type="error"
+        title="Error Loading Account Credentials"
+        message="There was an error loading your Account Credentials dashboard. Please try again later."
+        confirm={"Try Again"}
+        onConfirm={window.location.reload}
+        onCancel={closeModal}
+      />
+    </section>
+  )
 
   return (
     <section className="w-full p-4 flex flex-col gap-4">
@@ -66,7 +74,7 @@ export default function Account() {
           animatedIcon
           title={"Update Credentials"}
           state={[account, setAccount]}
-          fields={AccountFields}
+          fields={accountFields}
           insertElement={<p className="cinzel uppercase text-sm text-center text-gray-500"><span className="text-gray-700">Last Update:</span> {dateFormater(auth.updatedAt)}</p>}
           submitBtn={"Update"}
           resetBtn={"Default"}
