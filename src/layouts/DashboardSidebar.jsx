@@ -1,51 +1,25 @@
-import "handyscript/lib/string";
 import logo from "../assets/imgs/spine/logo.webp";
 import { useEffect, useMemo, useRef, useState } from "react";
-// import { useTranslation } from "react-i18next";
-import { dashboardNavbar, dashboardNavicons, usersDashboardNavbar } from "../utils";
+import { dashboardNavbar } from "../utils";
 import { Link, useNavigate } from "react-router-dom";
 import { useActiveBoard, useData } from "../hooks";
 import Stars from "../components/Stars";
+import { names } from "../firebase/collections";
 
 export default function DashboardSidebar() {
-    const { data: { reviews } } = useData();
-    const { activeBoard, setActiveBoard } = useActiveBoard();
+    const [reviews] = useData(names.reviews);
+    const { activeBoard } = useActiveBoard();
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const navigate = useNavigate();
 
-    // const { t } = useTranslation();
-    // const dashboardnavbar = t(`dashboardNavbar`, { returnObjects: true });
+    const ChunkDashBoard = useMemo(() => dashboardNavbar.chunk(3) ,[])
 
     const dashboardSidebar = useRef(null);
 
     // set the length of the reviews and contacts as notifications in the navbar, using the active board and local storage
-    // const notifications = useMemo(() => {
-    //     // check local storage notifications
-    //     const localNotifications = JSON.parse(localStorage.getItem("notifications"));
-    //     // const activeBoard = localStorage.getItem("activeBoard") || "contacts";
-    //     // it the local storage notifications deffers from the reviews and contacts length, update the notifications
-
-    //     const Notifications = { reviews: reviews.length, contacts: contacts.length };
-
-    //     const newNotifications = { 
-    //         reviews: reviews.length - localNotifications.reviews,
-    //         contacts: contacts.length - localNotifications.contacts, 
-    //     };
-    //     console.log({localNotifications});
-    //     console.log({newNotifications});
-    //     // newNotifications[activeBoard] = 0;
-    //     // set the notifications in loacl storage
-    //     localStorage.setItem("notifications", JSON.stringify(Notifications));
-    //     return newNotifications;
-    // }, [reviews, contacts]);
-
-    // check if navbar is an array
-    // const Tnavbar = () => Array.isArray(dashboardnavbar) ? dashboardnavbar : dashboardNavbar;
 
     //dashboard navigation
     const dashboardNavigation = (board) => {
-        // set the active board in local storage
-        setActiveBoard(board);
         hideMenu();
         navigate(`/lotus/${board}`);
     };
@@ -101,37 +75,21 @@ export default function DashboardSidebar() {
                 <Stars rate={globalRate} className="h-6 w-6"/>
             </div>
 
-            <div className="h-full w-full flex items-center flex-col gap-5 overflow-y-auto">
-                <ul className="w-full flex items-center flex-col">
-                {
-                    usersDashboardNavbar.map((link, index) => (
-                    <li tabIndex={1} key={index} onClick={() => dashboardNavigation(usersDashboardNavbar[index].toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === usersDashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                        <i className={`flex items-center ${dashboardNavicons[link.toLowerCase()]} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === usersDashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
-                        <span className={`text-center font-medium capitalize`}>{ link }</span>
-                    </li>
+            <div key="dashboard-links" className="h-full w-full flex items-center flex-col gap-5 overflow-y-auto">
+                { ChunkDashBoard.map((board,bidx) => (
+                    <>
+                    { (bidx > 0) && <div key={bidx} className="w-full h-1 bg-cyan-800 bg-opacity-10"></div> }
+                    <ul key={bidx+1} className="w-full flex items-center flex-col">
+                        { board.map((link) => (
+                            <li tabIndex={1} role="link" key={link.name} onClick={() => dashboardNavigation(link.name.toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === link.name.toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
+                                <i className={`flex items-center ${link.icon} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === link.name.toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
+                                <span className={`text-center font-medium capitalize`}>{ link.name }</span>
+                            </li>
+                        ))}
+                    </ul>
+                    </>
                 ))}
-                </ul>
-                <div className="w-full h-1 bg-cyan-800 bg-opacity-10"></div>
-                <ul className="w-full flex items-center flex-col">
-                {
-                    dashboardNavbar.map((link, index) => (
-                    <li tabIndex={1} key={index} onClick={() => dashboardNavigation(dashboardNavbar[index].toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                        <i className={`flex items-center ${dashboardNavicons[link.toLowerCase()]} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === dashboardNavbar[index].toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
-                        <span className={`text-center font-medium capitalize`}>{ link }</span>
-                        {/* Notification Counter */}
-                        {/* { notifications[dashboardNavbar[index].toLowerCase()] > 0 && activeBoard?.toLowerCase() !== dashboardNavbar[index].toLowerCase() && <span className="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 flex items-center justify-center text-xs text-white bg-yoga-green rounded-full">{ notifications[dashboardNavbar[index].toLowerCase()] }</span> } */}
-                    </li>
-                ))}
-                </ul>
-                <div className="w-full h-1 bg-cyan-800 bg-opacity-10"></div>
-                <ul className="w-full flex items-center flex-col">
-                    <li tabIndex={1} onClick={() => dashboardNavigation("account") } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === "account" ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                        <i className={`flex items-center ${dashboardNavicons.account} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === "account" ?  "text-yoga-green-dark" : ''}`}></i>
-                        <span className={`text-center font-medium capitalize`}>{ "account" }</span>
-                    </li>
-                </ul>
             </div>
-
         </nav>
     </aside>
   )
