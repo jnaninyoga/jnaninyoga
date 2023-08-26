@@ -12,6 +12,7 @@ import {
   doc,
   addDoc,
   deleteDoc,
+  where,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -40,6 +41,8 @@ export const docSnap = async (collectionRef) => await getDocs(collectionRef);
 // Firebase FireStore TimeStamp
 export const timestamp = serverTimestamp();
 
+// ======== fetch docs ========
+
 // function that will ensure every document has timestamp field
 export const document = (doc) => { return {...doc, createdAt: timestamp, deleted: false}};
 
@@ -51,17 +54,40 @@ export const fetchDocs = (collectionRef, ...queryConstraints) => query( collecti
 // get docs ordered by timestamp
 export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(collectionRef, ...queryConstraints, orderBy("createdAt", "desc"));
 
-// document refence
-export const addRefDocument = (collection, data, refCollection, refID) => addDoc(collectionDB(collection), document({...data, ref: getDocRef(refCollection, refID)}));
+// ======== add doc ========
 
 // add/create doc
 export const addDocument = async (collection, data) => await addDoc(collectionDB(collection), document(data));
 
+// document refence/cascade document
+export async function addRefDocument(collection, data, refCollection, ref="ref") {
+  // if not ref collection throw an error
+  if(!refCollection) throw new Error("refCollection is required");
+  const docRef = await addDocument(collection, data);
+  return await addDocument(refCollection, {[ref]: docRef});
+}
+
+// ======== update doc ========
+
 //update doc
 export const updateDocument = async (collection, id, data) => await updateDoc(doc(DB, collection, id), {...data, updatedAt: timestamp});
+
+// ======== delete doc ========
 
 // delete doc
 export const deleteDocument = async (collection, id) => await updateDocument(collection, id, {deleted: true});
 
+// restore doc
+export const restoreDocument = async (collection, id) => await updateDocument(collection, id, {deleted: false});
+
 // delete doc permanently
 export const deleteDocumentPermanently = async (collection, id) => await deleteDoc(doc(DB, collection, id));
+
+// delete on cascade: delete the document and delete all the documents that have a reference to the document that is being deleted
+export async function deleteOnCascade(collection, id, docRefCollection, ref="ref", restore=false) {
+  const docRef = getDocRef(collection, id);
+  const queryRef = query(collectionDB(docRefCollection || collection), where(ref, "==", docRef));
+  const docs = await docSnap(queryRef);
+  docs.forEach(async (doc) => restore ? await restoreDocument(docRefCollection || collection, doc.id) : await deleteDocument(docRefCollection || collection, doc.id));
+  restore ? await restoreDocument(collection, id) : await deleteDocument(collection, id);
+}
