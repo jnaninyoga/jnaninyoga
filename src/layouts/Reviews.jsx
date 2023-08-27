@@ -162,11 +162,12 @@ export default function Reviews() {
             slidesPerView: 3,
         },
     }}
+    wrapperTag='ul'
     >
     {
         reviews.map((review, index) => {
             return (
-                <SwiperSlide key={index}>
+                <SwiperSlide key={index} tag='li'>
                     <Review 
                     author={review.fullname}
                     review={review.review}
