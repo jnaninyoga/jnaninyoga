@@ -1,7 +1,7 @@
 import Rating from '../components/Rating'
 import { useEffect, useMemo, useRef, useState } from "react";
 import GreenMat from "../assets/imgs/spine/GreenMat.webp";
-import icon from '../assets/imgs/icons/lotus.webp';
+import Icon from '../assets/svg';
 import Review from '../components/Review';
 import Form from "./Form";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -119,7 +119,14 @@ export default function Reviews() {
     </section> :
     <section ref={reviewsRef} className='w-full flex flex-1 justify-center items-center flex-col gap-12'>
         <div className='w-full flex justify-center items-center flex-col gap-4'>
-            <img src={icon} className={`${isReviewsIntersected ? "scale-1" : "scale-0"} h-12 w-12 transition-all duration-500 select-none`} alt="Red/pink lotus icon" />
+            <div className={`${isReviewsIntersected ? "scale-1" : "scale-0"} h-14 w-24 flex items-center justify-between bg-[#ffb4b6]] transition-all select-none z-20`}>
+                <Icon
+                label="Lotus"
+                colors={{oc: "#ffffff", pc: "#fdc5ba"}}
+                height={100}
+                width={100}
+                />
+            </div>
             <h2 className={`${isReviewsIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} sm:w-1/2 w-[80%] text-yoga-white cinzel sm:text-4xl text-2xl font-bold uppercase text-center transition-all duration-500 relative before:absolute before:h-1 before:w-full before:bg-yoga-white  before:left-1/2  before:-translate-x-1/2 before:-bottom-2`}>{t(`${activePage}.reviews.title`)}</h2>
         </div>
 

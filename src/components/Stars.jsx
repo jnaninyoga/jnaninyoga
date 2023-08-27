@@ -9,7 +9,7 @@ Stars.propTypes = {
 
 export default function Stars({rate, stars=5, className="w-6 h-6"}) {
   return (
-    <div className='flex justify-center items-center gap-1' title={`${rate} stars`}>
+    <div className='flex justify-center items-center gap-1' title={`${rate} ⭐`}>
     {stars > 0 && ( Array(stars).fill(0).map((_, i) => 
         <div key={i}>
             <Rate fill={rate > 0 && i < rate} className={className} color={"#fdc5ba"}/>
