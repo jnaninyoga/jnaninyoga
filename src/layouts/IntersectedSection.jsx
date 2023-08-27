@@ -35,9 +35,9 @@ export default function IntersectedSection({title, text, video, alt="", poster="
                     width={100}
                     />
                 </div>
-                <h2 className={`${isPsecIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} text-2xl cinzel lg:text-start text-center font-bold uppercase delay-500 duration-500 transition-all`}>{title}</h2>
+                <h2 role='heading' className={`${isPsecIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} text-2xl cinzel lg:text-start text-center font-bold uppercase delay-500 duration-500 transition-all`}>{title}</h2>
             </div>
-            <p dir={currentLanguage.dir} className={`${isPsecIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} lg:text-start lg:text-lg sm:text-center text-justify delay-500 duration-500 transition-all`}>{text}</p>
+            <p role='definition' dir={currentLanguage.dir} className={`${isPsecIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} lg:text-start lg:text-lg sm:text-center text-justify delay-500 duration-500 transition-all`}>{text}</p>
         </article>
     </section>
   )

@@ -38,21 +38,21 @@ export default function Footer() {
         </ul>
         <img className="h-40 lg:order-2 order-2" src={logo} alt="Jnanin Yoga Studio Logo" />
         {/* Social Media */}
-        <ul className="lg:w-[14%] lg:text-lg sm:text-xl w-full lg:order-3 order-3 cinzel flex lg:flex-col sm:flex-row flex-col sm:justify-center lg:items-start sm:items-center lg:gap-2 gap-4" id="socialmedia">
+        <ul itemScope itemType="http://schema.org/Organization" className="lg:w-[14%] lg:text-lg sm:text-xl w-full lg:order-3 order-3 cinzel flex lg:flex-col sm:flex-row flex-col sm:justify-center lg:items-start sm:items-center lg:gap-2 gap-4" id="socialmedia">
           <li>
-            <a itemProp="url" className="flex items-center gap-4" href="https://instagram.com/jnaninyoga" title="Instagram Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+            <a itemProp="sameAs" className="flex items-center gap-4" href="https://instagram.com/jnaninyoga" title="Instagram Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-brands-instagram"></i>
               <h4 className="underline-offset-4 underline">@jnaninyoga</h4>
             </a>
           </li>
           <li>
-            <a itemProp="url" className="flex items-center gap-4" href="https://facebook.com/jnaninyoga" title="Facebook Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+            <a itemProp="sameAs" className="flex items-center gap-4" href="https://facebook.com/jnaninyoga" title="Facebook Page" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-brands-facebook"></i>
               <h4 className="underline-offset-4 underline">@jnaninyoga</h4>
             </a>
           </li>
           <li>
-            <a itemProp="url" className="flex items-center gap-4" href="https://wa.me/212661286464" title="Whatsapp Contact" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
+            <a itemProp="sameAs" className="flex items-center gap-4" href="https://wa.me/212661286464" title="Whatsapp Contact" referrerPolicy="no-referrer" rel="noreferrer" target="_blank">
               <i className="fi fi-brands-whatsapp"></i>
               <h4 className="underline-offset-4 underline">212 661 286 464</h4>
             </a>
@@ -62,9 +62,9 @@ export default function Footer() {
           </li>
         </ul>       
         {/* Navigation */}
-        <ul className="lg:w-1/6 md:h-full order-1 lg:order-4 cinzel flex flex-col justify-start sm:items-center gap-2" id="navigaton">
+        <ul role="navigation" className="lg:w-1/6 md:h-full order-1 lg:order-4 cinzel flex flex-col justify-start sm:items-center gap-2" id="navigaton">
           {Tnavbar().map((link, index) => (
-            <li key={index} className="text-center text-xl">
+            <li key={index} role="link" className="text-center text-xl">
               <Link 
               to={`${lang ? `/${currentLanguage.code}/` : '/'}${link.toLowerCase() === navbar[0].toLowerCase() ? "" : `${standardNavbar[index].toLowerCase()}`}`}
               className={`relative transition-all before:transition-all before:absolute before:h-1 before:bg-yoga-red before:left-1/2 before:-translate-x-1/2 before:-bottom-1 hover:before:w-full hover:text-yoga-green uppercase`}>
@@ -72,7 +72,7 @@ export default function Footer() {
               </Link>
             </li>
           ))}
-          <li className="list-item sm:hidden">
+          <li role="link" className="list-item sm:hidden">
             <Link className="yoga-btn" to={`${lang ? `/${currentLanguage.code}/` : '/'}booknow`}>{t('booknow.form.submitBtn')}</Link>
           </li>
         </ul>

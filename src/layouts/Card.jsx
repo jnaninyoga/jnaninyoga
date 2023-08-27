@@ -22,7 +22,7 @@ export default function Card({text="", twStyle="", title="", btn=false, linkTo="
   const currentLanguage = useCurrentLanguage();
 
   return (
-  <div ref={card} className={`py-6 px-6 w-[90%] lg:min-w-[1150px] flex items-center justify-between flex-col gap-4 bg-yoga-white bg-texture texture-v sm:texture-h texture-opacity-80 ${twStyle} overflow-hidden`}>
+  <article ref={card} role="contentinfo" className={`py-6 px-6 w-[90%] lg:min-w-[1150px] flex items-center justify-between flex-col gap-4 bg-yoga-white bg-texture texture-v sm:texture-h texture-opacity-80 ${twStyle} overflow-hidden`}>
     <div className={`${isCardIntersected ? "scale-1" : "scale-0"} h-14 w-24 flex items-center justify-between bg-[#ffb2a3]] transition-all select-none z-20`}>
       <Icon
         // default: #fdc5ba
@@ -36,6 +36,6 @@ export default function Card({text="", twStyle="", title="", btn=false, linkTo="
     {title && <h3 className={`${isCardIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} cinzel text-xl sm:text-2xl font-bold uppercase text-center transition-all duration-500 z-20`}>{title}</h3> } 
     <p className={`${isCardIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} cinzel text-center pb-2 sm:text-xl transition-all duration-500 z-20`}>{text}</p>
     {btn && <NavLink to={`/${currentLanguage.code}${linkTo}`} title={btn} className={`${isCardIntersected ? "translate-y-0 opacity-100" : "translate-y-[100%] opacity-0"} yoga-btn transition-all duration-500 delay-100 z-20`}>{btn}</NavLink> }
-  </div>
+  </article>
   )
 }

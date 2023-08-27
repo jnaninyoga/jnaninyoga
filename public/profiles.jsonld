@@ -1,0 +1,11 @@
+{
+  "@context" : "http://schema.org",
+  "@type" : "Organization",
+  "name" : "Vanhoutte Inc.",
+  "url" : "http://vanhoutte.be",
+  "sameAs" : [
+    "https://instagram.com/jnaninyoga",
+    "https://www.facebook.com/jnaninyoga",
+    "https://wa.me/212661286464"
+  ]
+}
