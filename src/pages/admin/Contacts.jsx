@@ -1,16 +1,16 @@
-import "handyscript/lib/string";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
 import { useCallback, useMemo, useState } from "react";
 import Lookup from "../../layouts/Lookup";
-import { dateFormater, supportedLanguages, toXlsx } from "../../utils";
+import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } from "../../utils";
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
+import Loader from "../../layouts/Loader";
 
 export default function Contacts() {
-  const { loading, data: { contacts } } = useData();
+  const [contacts, DataLoading, DataError] = useData(names.contacts);
   
   const [pageSize, setPageSize] = useState(10);
 
@@ -19,46 +19,63 @@ export default function Contacts() {
 
   // message modal state
   const [modal, setModal] = useState();
-  const [deleteModal, setDeleteModal] = useState();
+  const [alert, setAlert] = useState({});
+
+  // Alert Action
+  const alertAction = useCallback((onAction, closeAlert=true) => {
+    onAction && onAction(); // run the action if it's exist
+    closeAlert && setAlert({}); // close the alert
+  }, []);
 
   // updating the document in firestore
   const updateContact = useCallback(async (id, data) => {
     try {
       await updateDocument(names.contacts, id, data);
+      setModal(null);
+      setAlert({...alertMessage("U", "Contact", true), onConfirm: alertAction, onCancel: alertAction})
     } catch (error) {
       console.error(error);
+      setAlert({ ...alertMessage("E", "Contact", true, "Updating"), confirm: "Try Again", onConfirm: () => alertAction(() => updateContact(id)), onCancel: alertAction })
     }
-  }, []);
+  }, [alertAction]);
 
   // update all contacts
-  const updateAllContacts = useCallback(async (data) => {
+  const updateMultiContacts = useCallback(async (data) => {
     try {
-      await Promise.all(selection.map((id) => updateContact(id, data)));
+      const updateContacts = async () => await Promise.all(selection.map((id) => updateContact(id, data)));
+      setAlert({...alertMessage("UA", "Contact"), onConfirm: () => alertAction(updateContacts), onCancel: alertAction})
     } catch (error) {
       console.error(error);
+      setAlert({ ...alertMessage("E", "Contacts", true, "Updating"), confirm: "Try Again", onConfirm: () => alertAction(() => updateMultiContacts(data)), onCancel: alertAction })
     }
-  }, [selection, updateContact]);
+  }, [selection, updateContact, alertAction]);
 
   // delete contact
-  const deleteContact = async (id) => {
+  const deleteContact = useCallback(async (id) => {
     try {
       await deleteDocument(names.contacts, id);
+      const restoreContact = async () => await updateDocument(names.contacts, id, {deleted: false});
+      setAlert({...alertMessage("D", "Contact", true), onConfirm: () => alertAction(restoreContact), onCancel: alertAction, confirm: "Restore"})
     } catch (error) {
       console.error(error);
+      setAlert({ ...alertMessage("E", "Contact", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(() => deleteContact(id)), onCancel: alertAction })
     }
-  }
+  }, [alertAction]);
 
   // delete all contacts
-  const deleteAllContacts = useCallback(async () => {
+  const deleteMultiContacts = useCallback(async () => {
     try {
       await Promise.all(selection.map((id) => deleteContact(id)));
+      const restoreContacts = async () => await Promise.all(selection.map((id) => updateDocument(names.contacts, id, {deleted: false})));
+      setAlert({...alertMessage("DA", "Contact", true), onConfirm: () => alertAction(restoreContacts), onCancel: alertAction, confirm: "Restore All"})
     } catch (error) {
       console.error(error);
+      setAlert({ ...alertMessage("E", "Contacts", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(deleteMultiContacts), onCancel: alertAction })
     }
-  }, [selection]);
+  }, [selection, alertAction, deleteContact]);
 
   const exportToXLSX = useCallback(() => {
-    const data = contacts.map((contact) => {
+    const data = (selection.length > 0 ? selection : contacts).map((contact) => {
       // formating the data to be readable
       return {
         "Full Name": contact.fullname,
@@ -67,20 +84,20 @@ export default function Contacts() {
         "Language": contact.lang,
         "Message": contact.message,
         "Answered": contact.answered ? "Yes" : "No",
-        "Created At": dateFormater(contact.timestamp)
+        "Created At": dateFormater(contact.createdAt)
       }
     });
 
     // exporting the data to xlsx
     return toXlsx(data, "jnaninyoga-contacts");
 
-  }, [contacts]);
+  }, [contacts, selection]);
 
   // close the model when click outside the modal in the parent element
   const closeModal = e =>{
     if(e.target === e.currentTarget){
       setModal(null);
-      setDeleteModal(null)
+      setAlert({});
     }
   }
 
@@ -90,19 +107,19 @@ export default function Contacts() {
       editable: false,
       // formate the value to be a readable format of "Yes" or "No"
       type: "boolean",
-      renderCell: ({ value }) => <div className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
+      renderCell: ({ value }) => <div title={value ? "Answered" : "Not Answered"} className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
     },
     { field: "fullname", headerName: "Full Name", width: 150, 
-      renderCell: ({ value }) => <h1 className="cinzel font-semibold">{value}</h1>
+      renderCell: ({ value }) => <h1 title={value} className="cinzel font-semibold">{value}</h1>
     },
     { field: "email", headerName: "Email", width: 180,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={`mailto:${value}`}>{value}</a> )
+      renderCell: ({ value }) => ( <a title={value} href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "phone", headerName: "Phone", width: 100,
       sortable: false,
-      renderCell: ({ value }) => ( <a href={`https://wa.me/${value}`}>{value}</a> )
+      renderCell: ({ value }) => ( <a title={value} href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
     { field: "message", headerName: "Message", width: 200,
@@ -118,8 +135,8 @@ export default function Contacts() {
       valueOptions: supportedLanguages.map((lang) => lang.name),
     },
 
-    { field: "timestamp", headerName: "Date", width: 170,
-      type: "dateTime",
+    { field: "createdAt", headerName: "Date", width: 260,
+      type: "date",
       // formating the date to be like this: 2021 Sep 30 12:00:00
       valueFormatter: ({ value }) => dateFormater(value)
     },
@@ -129,8 +146,8 @@ export default function Contacts() {
       filterable: false,
       renderCell: ({ row }) => (
         <div className="flex justify-center items-center gap-4">
-          <button className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`} onClick={() => updateContact(row.id, { answered: true })}>Answered</button>
-          <button className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`} onClick={() => updateContact(row.id, { answered: false })}>Not Answered</button>
+          <button onClick={() => updateContact(row.id, { answered: true })} title={"Mark This Contact as Answered"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Answered</button>
+          <button onClick={() => updateContact(row.id, { answered: false })} title={"Mark This Contact as Not Answered"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Not Answered</button>
         </div>
       )
     },
@@ -139,7 +156,7 @@ export default function Contacts() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`} onClick={() => { setModal(row); }}>Show</button>
+        <button onClick={() => { setModal(row); }} title={"show Contact Detailes"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
       )
     },
     // field for making a contact as deleted
@@ -147,29 +164,45 @@ export default function Contacts() {
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} onClick={() => { setDeleteModal(row); }}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
+        <button onClick={() => setAlert({...alertMessage("D", "Contact"), onConfirm: () => alertAction(() => deleteContact(row.id)), onCancel: alertAction})} title={"Delete This Contact"} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
-  ], [updateContact]);
+  ], [updateContact, deleteContact, alertAction]);
+
+  // if data been loading
+  if (!contacts && DataLoading) return <Loader loading='Loading Contacts Data...' />;
+
+  // if there is error loading the data
+  if (DataError || !contacts) return (
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <Alert 
+        type="error"
+        title="Error Loading Contacts Data"
+        message="There was an error loading your contacts data dashboard. Please try again later."
+        confirm={"Try Again"}
+        onConfirm={window.location.reload}
+        onCancel={closeModal}
+      />
+    </section>
+  )
 
   return (
     <>
     <Box className="w-full p-4 flex flex-col gap-4">
 
-      <div className={`w-full flex items-center gap-20 ${selection.length > 0 && "p-2 overflow-auto overflow-y-hidden"}`}>
+      <div className={`w-full flex items-center justify-between ${selection.length > 0 && "overflow-auto overflow-y-hidden"}`}>
         <div className="flex justify-center items-center gap-4">
-          <button className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`} onClick={() => updateAllContacts({ answered: true })}>All Answered</button>
-          <button className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`} onClick={() => updateAllContacts({ answered: false })}>All Not Answered</button>
+          <button onClick={exportToXLSX} className={`cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < contacts.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+          <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiContacts), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < contacts.length) ? "Delete Selected" : "Delete All"}</span></button>
         </div>
         <div className="flex justify-center items-center gap-4">
-          <button className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`} onClick={exportToXLSX}>Export To Excel</button>
-          <button className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-300" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} onClick={() => setDeleteModal("deleteall")}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">Delete All</span></button>
+          <button onClick={() => updateMultiContacts({ answered: true })} title={"Mark This Contact as Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Answered</button>
+          <button onClick={() => updateMultiContacts({ answered: false })} title={"Mark This Contact as Not Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Answered</button>
         </div>
       </div>
 
       <DataGrid
         className="h-fit bg-yoga-white text-lg"
-        loading={loading}
         rows={contacts}
         columns={columns}
         getRowId={(row) => row.id}
@@ -193,22 +226,15 @@ export default function Contacts() {
           date={dateFormater(modal.timestamp)}
           succes="Answered"
           abort="Not Answered"
-          forSucces={() => { updateContact(modal.id, { answered: true }); setModal(null)}}
-          forAbort={() => { updateContact(modal.id, { answered: false }); setModal(null)}}
+          forSucces={() => updateContact(modal.id, { answered: true }) }
+          forAbort={() => updateContact(modal.id, { answered: false }) }
         />
       </section>
     )}
-    {/* delete modal */}
-    {deleteModal && (
+    {/* alert modal */}
+    {alert.title && (
       <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
-        <Alert
-          title={deleteModal === "deleteall" ? "Delete All Contacts" : "Delete Contact"}
-          message={deleteModal === "deleteall" ? "Are you sure you want to delete all the contacts?" : "Are you sure you want to delete this contact?"}
-          confirm="Delete"
-          cancel="Cancel"
-          onConfirm={() => { deleteModal === "deleteall" ? deleteAllContacts() : deleteContact(deleteModal.id); setDeleteModal(null) }}
-          onCancel={() => setDeleteModal(null)}
-        />
+        <Alert {...alert} />
       </section>
     )}
     </>

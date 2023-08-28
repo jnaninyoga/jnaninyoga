@@ -1,5 +1,4 @@
 import PropType from 'prop-types';
-import 'handyscript/lib/array';
 import Rate from './Rate';
 
 Rating.propTypes = {
@@ -13,7 +12,7 @@ Rating.propTypes = {
 
 export default function Rating({stars=5, rate, setRate, height, width, className}) {
   return (
-    <div className='flex justify-center items-center gap-1'>
+    <div className='flex justify-center items-center gap-1' title={`${rate} ⭐`}>
         {stars > 0 && ( Array(stars).fill(0).map((_, i) => 
             <div onClick={() => setRate(i+1)} onMouseEnter={() => setRate(i+1)} key={i}>
                 <Rate className={className} height={height} width={width} fill={rate > 0 && i < rate} color={"#fdc5ba"}/>

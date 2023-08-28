@@ -8,12 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { updateDocument } from '../../firebase';
 import { names } from '../../firebase/collections';
 import SessionCreation from '../../layouts/SessionCreation';
-// import backup from '../../backup';
+import Alert from '../../layouts/Alert';
+import Loader from '../../layouts/Loader';
 
-
-export default function Classes() {
-  const { data: { classes } } = useData();
-  // const [, useModalActiveState] = useModalActiveState();
+export default function Sessions() {
+  const [classes, DataLoading , DataError] = useData(names.classes);
 
   const [modal, setModal] = useState();
   const [creationModal, setCreationModal] = useState();
@@ -89,10 +88,25 @@ export default function Classes() {
     if(e.target === e.currentTarget){
       setModal(null);
       setCreationModal(null);
-      
     }
   }
 
+  // if data been loading
+  if (!classes && DataLoading) return <Loader loading='Sessions Data Loading...' />;
+
+  // if there is error loading the data
+  if (DataError || !classes) return (
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <Alert
+        type="error"
+        title="Error Loading Classes Data"
+        message="There was an error loading your Classes data dashboard. Please try again later."
+        confirm={"Try Again"}
+        onConfirm={window.location.reload}
+        onCancel={closeModal}
+      />
+    </section>
+  )
 
   return (
     <div className='flex gap-5 flex-col px-4 py-4 h-full w-full' style={{backgroundImage: `url(${BG})`}}>
@@ -101,35 +115,35 @@ export default function Classes() {
         <i className="fi fi-sr-plus text-yoga-dark flex justify-center items-center"></i> <span className="ml-4 uppercase">Add A New Session</span>
       </button>
 
-      <section className="h-full pb-4 overflow-x-scroll scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
+      <section className="h-full pb-4 overflow-x-scroll lg:overflow-y-auto scroll-smooth scroll-mx-[80vw] scroll-px-[80vw] sm:scroll-px-0 sm:scroll-mx-0">
         <table className="table-fixed sm:rotate-0 border-separate border-spacing-2">
             <thead>
-                <tr className="text-yoga-white w-full">
-                    {standardDays.map((day, idx) => (
-                        <th key={idx} className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">{day}</th>
-                    ))}
-                </tr>
+              <tr className="text-yoga-white w-full">
+                {standardDays.map((day, idx) => (
+                  <th key={idx} className="sm:w-[180px] w-[80vw] min-w-[80vw] sm:min-w-[180px] sm:max-w-[180px] px-2 py-1 cinzel bg-yoga-red">{day}</th>
+                ))}
+              </tr>
             </thead>
             <tbody>
-                {/* getting the biggest session with elemnts like a: [1,2,3], b: [1,2,3,4]; the biggest one it's b */}
-                {Array.from({ length: Math.max(...classes.map((sessionDay) => sessionDay.sessions.length)) })
-                .map((_, sid) => (
-                    <tr key={sid} className="h-[80px]">
-                        {classes.map((sessionDay, sdidx) => (
-                          <td key={`${sdidx}${sid}`} className='h-[80px] cursor-pointer'>
-                            <Session
-                                onClick={() => openModal({ day: sessionDay.day, session: sessionDay.sessions[sid] || defaultSession, sid })}
-                                type={sessionDay.sessions[sid]?.type*1 || 0}
-                                start={sessionDay.sessions[sid]?.start}
-                                end={sessionDay.sessions[sid]?.end}
-                                desc={sessionDay.sessions[sid]?.desc}
-                                instructor={t("classes.sessionInstructor", { course: standardYogaCoursesTypes[Math.max(sessionDay.sessions[sid]?.type - 1, 0)]?.type, start: sessionDay.sessions[sid]?.start, end: sessionDay.sessions[sid]?.end })}
-                                alt={standardYogaCoursesTypes[Math.max(sessionDay.sessions[sid]?.type - 1, 0)]?.type}
-                            />
-                          </td>
-                        ))}
-                    </tr>
-                ))}
+              {/* getting the biggest session with elemnts like a: [1,2,3], b: [1,2,3,4]; the biggest one it's b */}
+              {Array.from({ length: Math.max(...classes.map((sessionDay) => sessionDay.sessions.length)) })
+              .map((_, sid) => (
+                <tr key={sid} className="h-[80px]">
+                  {classes.map((sessionDay, sdidx) => (
+                    <td key={`${sdidx}${sid}`} className='h-[80px] cursor-pointer'>
+                      <Session
+                          onClick={() => openModal({ day: sessionDay.day, session: sessionDay.sessions[sid] || defaultSession, sid })}
+                          type={sessionDay.sessions[sid]?.type*1 || 0}
+                          start={sessionDay.sessions[sid]?.start}
+                          end={sessionDay.sessions[sid]?.end}
+                          desc={sessionDay.sessions[sid]?.desc}
+                          instructor={t("classes.sessionInstructor", { course: standardYogaCoursesTypes[Math.max(sessionDay.sessions[sid]?.type - 1, 0)]?.type, start: sessionDay.sessions[sid]?.start, end: sessionDay.sessions[sid]?.end })}
+                          alt={standardYogaCoursesTypes[Math.max(sessionDay.sessions[sid]?.type - 1, 0)]?.type}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
         </table>
       </section>

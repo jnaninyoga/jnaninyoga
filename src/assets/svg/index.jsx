@@ -3,7 +3,7 @@ import PropsTypes from 'prop-types'
 
 Icon.propTypes = {
     label: PropsTypes.string,
-    src: PropsTypes.string.isRequired,
+    src: PropsTypes.string,
     target: PropsTypes.string,
     className: PropsTypes.string,
     colors: PropsTypes.shape({
@@ -19,7 +19,7 @@ Icon.propTypes = {
 };
 
 
-export default function Icon({label, src, target, className, style, colors={pc: "#000", oc: "#000", sc: "#000" }, trigger="loop", delay=2000, width=250, height=250 }) {
+export default function Icon({label, target, className, style, src="https://cdn.lordicon.com/hvuelaml.json", colors={pc: "#000", oc: "#000", sc: "#000" }, trigger="loop", delay=2000, width=250, height=250 }) {
   return (
     <lord-icon
     className={className}

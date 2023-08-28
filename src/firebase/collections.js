@@ -6,6 +6,8 @@ export const names = {
     books: "books",
     reviews: "reviews",
     auth: "auth",
+    users: "users",
+    carnets: "carnets",
 }
 
 export const collections = {
@@ -14,6 +16,8 @@ export const collections = {
     books: collectionDB(names.books),
     reviews: collectionDB(names.reviews),
     auth: collectionDB(names.auth),
+    users: collectionDB(names.users),
+    carnets: collectionDB(names.carnets),
 }
 
 export default collections;

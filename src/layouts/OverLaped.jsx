@@ -14,8 +14,8 @@ export default function OverLaped(props) {
     <section className="flex items-center justify-center flex-col w-screen">
         {
           type === "video" ?
-          <video poster={overlay} src={banner} onContextMenu={e => e.preventDefault()} className="relative w-full sm:h-96 h-52 object-cover object-center pointer-events-none select-none" alt="The background Video banner" muted loop autoPlay preload='auto'></video>
-          : <img src={banner || overlay} onContextMenu={e => e.preventDefault()} className="relative w-full sm:h-96 h-52 object-cover object-center pointer-events-none select-none" alt="The background image banner" />
+          <video role="banner" poster={overlay} src={banner} onContextMenu={e => e.preventDefault()} className="relative w-full sm:h-96 h-52 object-cover object-center pointer-events-none select-none" alt="The background Video banner" muted loop autoPlay preload='auto'></video>
+          : <img role="banner" src={banner || overlay} onContextMenu={e => e.preventDefault()} className="relative w-full sm:h-96 h-52 object-cover object-center pointer-events-none select-none" alt="The background image banner" />
         }
         <main className="container relative px-4 py-8 h-min lg:w-fit w-[92%] lg:-translate-y-20 -translate-y-14 flex justify-center flex-col" style={{backgroundImage: `url(${textureBG})`}}>
             {props.children}

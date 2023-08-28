@@ -1,5 +1,5 @@
 // using Helmet to setupe mata data for each page
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import PropType from 'prop-types';
 import { HostName } from './meta';
 
