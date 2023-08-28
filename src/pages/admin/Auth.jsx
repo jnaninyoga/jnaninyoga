@@ -88,7 +88,7 @@ export default function Auth() {
         onSubmit={validateAuth}
         submitBtn={t('adminauth.form.login')}
         EmptyErrorMessage={t('adminauth.form.error')}
-        ErrorMessage={error}
+        ErrorMessage={t('adminauth.form.error')}
         errorTrigger={error}
         />
     </OverLaped>

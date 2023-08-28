@@ -77,17 +77,17 @@ export default function DashboardSidebar() {
 
             <div key="dashboard-links" className="h-full w-full flex items-center flex-col gap-5 overflow-y-auto">
                 { ChunkDashBoard.map((board,bidx) => (
-                    <>
-                    { (bidx > 0) && <div key={bidx} className="w-full h-1 bg-cyan-800 bg-opacity-10"></div> }
-                    <ul key={bidx+1} className="w-full flex items-center flex-col">
-                        { board.map((link) => (
-                            <li tabIndex={1} role="link" key={link.name} onClick={() => dashboardNavigation(link.name.toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === link.name.toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
-                                <i className={`flex items-center ${link.icon} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === link.name.toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
-                                <span className={`text-center font-medium capitalize`}>{ link.name }</span>
-                            </li>
-                        ))}
-                    </ul>
-                    </>
+                    <div key={bidx} className="w-full flex items-center flex-col gap-5">
+                        { (bidx > 0) && <div className="w-full h-1 bg-cyan-800 bg-opacity-10"></div> }
+                        <ul className="w-full flex items-center flex-col">
+                            { board.map((link) => (
+                                <li tabIndex={1} role="link" key={link.name} onClick={() => dashboardNavigation(link.name.toLowerCase()) } className={`relative w-full text-lg sm:text-xl px-4 py-2 flex items-center gap-4 group  outline outline-2 -outline-offset-[5px] outline-none hover:outline-white hover:bg-yoga-red focus:outline-white focus:bg-yoga-red ${activeBoard?.toLowerCase() === link.name.toLowerCase() ?  "bg-yoga-red outline-white" : ''} transition-all duration-300 cursor-pointer`}>
+                                    <i className={`flex items-center ${link.icon} transition-all group-hover:text-yoga-green-dark group-focus:text-yoga-green-dark ${activeBoard?.toLowerCase() === link.name.toLowerCase() ?  "text-yoga-green-dark" : ''}`}></i>
+                                    <span className={`text-center font-medium capitalize`}>{ link.name }</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 ))}
             </div>
         </nav>
