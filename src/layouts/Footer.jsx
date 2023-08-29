@@ -58,7 +58,7 @@ export default function Footer() {
             </a>
           </li>
           <li className="sm:list-item hidden mt-2">
-            <Link className="yoga-btn" to={`${lang ? `/${currentLanguage.code}/` : '/'}booknow`}>{t('booknow.form.sendBtn')}</Link>
+            <Link className="yoga-btn" to={`${lang ? `/${currentLanguage.code}/` : '/'}booknow`}>{t('booknow.form.submitBtn')}</Link>
           </li>
         </ul>       
         {/* Navigation */}
