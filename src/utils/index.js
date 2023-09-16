@@ -56,14 +56,34 @@ export const dashboardNavbar = [
         icon:"fi fi-sr-user-gear",
     },
 ];
-/// Dashboard allowed search fields
-export const usersSearchFields = ["firstname", "lastname", "job",  "phone", "address", "date"];
 
 export const supportedLanguages = [
     {name: 'English', code: 'en', dir: 'ltr'},
     {name: 'Français', code: 'fr', dir: 'ltr'},
     {name: 'العربية', code: 'ar', dir: 'rtl'}
 ];
+
+export const carnetsPeriodToPriceSessions = {
+    // periods: 1Y, 6M, 4M, 2M
+    // sessions: 50, 30, 20, 10
+    // prices: 5000MAD, 3600MAD, 2600MAD, 1500MAD
+    "1Y":{
+        sessions: 50,
+        price: 5000,
+    },
+    "6M":{
+        sessions: 30,
+        price: 3600,
+    },
+    "4M":{
+        sessions: 20,
+        price: 2600,
+    },
+    "2M":{
+        sessions: 10,
+        price: 1500,
+    },
+}
 
 // alert message generator based on crud operations "CRUD" & DA: Delete All
 export function alertMessage(operation, topic, finished=false, operationDescription="Operating on"){
@@ -126,14 +146,25 @@ export function dateFormater(date, withTime=true, withDay=true, local="en-US"){
     return new Date(typeof date == "string" ? date : date?.seconds * 1000).toLocaleDateString(local, {...dateOptions, ...(withDay && {weekday: 'long'}), ...(withTime && timeOptions)})
 }
 
+export async function date(){
+    const APIDate = await ( await fetch(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${Intl.DateTimeFormat().resolvedOptions().timeZone}`)).json();
+    return new Date(APIDate.fulldate);
+}
+
 // caclulate the user age from his birthdate using accurate time from: 'https://github.com/davidayalas/current-time' API
 export async function userAge(birthdate){
     try{
-        const APIDate = await ( await fetch(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${Intl.DateTimeFormat().resolvedOptions().timeZone}`)).json();
-        return Math.floor( new Date(APIDate.fulldate).getFullYear() - new Date(birthdate).getFullYear() );
+        return Math.floor( new Date(await date()).getFullYear() - new Date(birthdate).getFullYear() );
     } catch (error){
         console.error("ERROR CALCULATING AGE: ", error);
     }
+}
+
+// util function that detect user IP/Geo address:
+export async function clientIPify(){
+    const ipify =  await (await fetch("https://api.ipify.org?format=json")).json();
+    const ipgeolocation = await (await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${import.meta.env.VITE_IPGEOLOCATION_API_KEY}&ip=${ipify.ip}`)).json();
+    return ipgeolocation;
 }
 
 // format a phone number to wa.me link from any phone region using libphonenumber-js
@@ -142,23 +173,21 @@ export function whatsappLink(phone){
     return `https://wa.me/${parsedPhoneNumber?.replace(/\s/g, '') || phone}`;
 }
 
-export function tokenDecoder(secret){
-    const token = document.cookie.search(secret) !== -1 ? JSON.parse(document.cookie.split(";").find(cookie => cookie.includes(secret)).split("=")[1]) : null;
+export function tokenDecoder(){
+    const token = document.cookie.search(import.meta.env.VITE_AUTH_COOKIE_NAME) !== -1 ? JSON.parse(document.cookie.split(";").find(cookie => cookie.includes(import.meta.env.VITE_AUTH_COOKIE_NAME)).split("=")[1]) : null;
     return {
         ...token,
-        password: token ? CryptoJS.AES.decrypt(decodeURIComponent(token.password), secret).toString(CryptoJS.enc.Utf8) : null
+        password: token ? CryptoJS.AES.decrypt(decodeURIComponent(token.password), import.meta.env.VITE_AUTH_SECRET).toString(CryptoJS.enc.Utf8) : null
     }
 }
 
-export  function tokenCoder(secret, token){
-    // setting a cookie to remember the user for 1 day
-    const date = new Date()
-    date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
-    // hash the admin password before saving it in the cookie using crypto-js
-    // normali the hashed password to avoid '=' in the cookie
-    token.password = encodeURIComponent(CryptoJS.AES.encrypt(token.password, secret).toString());
-    document.cookie = `${secret}=${JSON.stringify(token)}; expires=${date.toUTCString()}; path=/`;
-    return token;
+export  function tokenCoder(token){
+    const date = new Date();
+    const Token = {...token, password: token.password};
+    date.setTime(date.getTime() + ((import.meta.env.VITE_AUTH_SESSION_EXPIRES * 1) * 24 * 60 * 60 * 1000));
+    Token.password = encodeURIComponent(CryptoJS.AES.encrypt(Token.password, import.meta.env.VITE_AUTH_SECRET).toString());
+    document.cookie = `${import.meta.env.VITE_AUTH_COOKIE_NAME}=${JSON.stringify(Token)}; expires=${date.toUTCString()}; path=/`;
+    return Token;
 }
 
 export function toXlsx(data, filename){
