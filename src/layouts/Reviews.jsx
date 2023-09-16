@@ -5,7 +5,7 @@ import Icon from '../assets/svg';
 import Review from '../components/Review';
 import Form from "./Form";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Mousewheel, A11y } from 'swiper/modules';
+import { Autoplay, A11y } from 'swiper/modules';
 import { reviewsFields } from "../utils/form";
 import { useTranslation } from 'react-i18next';
 import { useActivePage, useCurrentLanguage, useIntersectView } from '../hooks';
@@ -92,7 +92,7 @@ export default function Reviews() {
 
   
   return (
-    <section id="reviews" className="container min-h-[400px] relative mt-14 py-8 flex flex-1 justify-center items-center flex-col gap-6 sm:mt-20 overflow-hidden" style={{backgroundImage: `url(${GreenMat})`}}>
+    <section id="reviews" className="w-screen min-h-[400px] relative mt-14 py-8 flex flex-1 justify-center items-center flex-col gap-6 sm:mt-20 overflow-hidden" style={{backgroundImage: `url(${GreenMat})`}}>
     {isFormActive ? 
     <section className='w-full flex flex-1 justify-center items-center px-4 flex-col'>
     {thankPage ?        
@@ -132,24 +132,16 @@ export default function Reviews() {
 
     <Swiper
     className="w-full h-full"
-    modules={[Autoplay, Mousewheel, A11y]}
-    a11y={{
-        enabled: true, // enable A11y in other words Accessibility
-    }}
-    spaceBetween={30}
-    grabCursor={true}
+    modules={[Autoplay, A11y]}
+    loop
+    grabCursor
+    centeredSlides
     content="center"
-
-    centeredSlides={true}
-    mousewheel={{
-        invert: false,
-    }}
-    loop={true}
+    spaceBetween={30}
     autoplay={{
         delay: 5000,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
-        
     }}
     breakpoints={{
         640: {
@@ -161,6 +153,9 @@ export default function Reviews() {
         1024: {
             slidesPerView: 3,
         },
+    }}
+    a11y={{
+        enabled: true, // enable A11y in other words Accessibility
     }}
     wrapperTag='ul'
     >
