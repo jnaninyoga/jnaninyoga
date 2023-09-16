@@ -7,6 +7,7 @@ import PhoneInput from 'react-phone-number-input';
 import Icon from '../assets/svg';
 
 import 'react-phone-number-input/style.css';
+import { clientIPify } from '../utils';
 
 Form.propTypes = {
     title: PropsTypes.string,
@@ -41,6 +42,13 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
     const isWrapperIntersected = useIntersectView(wrapper);
     const isFormIntersected = useIntersectView(formRef);
     const isBtnsIntersected = useIntersectView(btnsRef);
+
+    // detect IP/GEOLocation and set it to the form
+    const [clientIP, setClientIP] = useState({});
+
+    useEffect(() => {
+        (async () => { setClientIP(await clientIPify()) })();
+    }, []);
 
     
     const setFormField = (e, fieldData={})=>{
@@ -100,7 +108,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
     
 
   return (
-    <form ref={formRef} onSubmit={submitForm} className='lg:w-[50vw] w-full lg:px-20 sm:px-10 px-2 flex items-center flex-col'>
+    <form ref={formRef} onSubmit={submitForm} className='lg:w-[40vw] w-full lg:px-20 sm:px-10 px-2 flex items-center flex-col'>
         {animatedIcon ?
             <div className={`${isFormIntersected ? "scale-1" : "scale-0"} sm:h-24 sm:w-32 h-20 w-28 flex items-center justify-center transition-all duration-500 select-none `}>
                 <Icon
@@ -124,11 +132,11 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
             {fields.map((field, index) => <div key={index} className='relative w-full h-fit flex flex-col gap-1'>
             
             {/* Display a NOTE on top of field it there is one */}
-            { field.note && <div className={`relative ${ isWrapperIntersected ? "translate-y-0 opacity-100 mb-1": 'translate-y-[-100%] opacity-0'} pl-2 m-0 flex font-bold text-sm text-yoga-green transition-all duration-[${ 100 * index + 100 }ms]`}>
+            { field.note && <fieldset className={`relative ${ isWrapperIntersected ? "translate-y-0 opacity-100 mb-1": 'translate-y-[-100%] opacity-0'} pl-2 m-0 flex font-bold text-sm text-yoga-green transition-all duration-[${ 100 * index + 100 }ms]`}>
                 <i className="fi fi-sr-info text-yoga-green flex items-center justify-center mx-2 z-10 animate-pulse"></i>
                 <div className='absolute h-8 w-8 top-1/2 border-t-2 border-l-2 border-yoga-green animate-pulse'></div>
                 <p className="bg-yoga-green text-yoga-white px-1 z-10">{field.note}</p>
-            </div> }
+            </fieldset> }
 
             {
                 // Separators
@@ -140,7 +148,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
 
                 // Single Select
                 field.type === 'singleSelect' ?
-                <div className={`form-field flex gap-4 ${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'}  ${errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error" : ""} ${dark && "drop-shadow"} transition-all duration-[${ 100 * index + 100 }ms] bg-yoga-white`}>
+                <fieldset className={`form-field flex gap-4 ${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'}  ${errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error" : ""} ${dark && "drop-shadow"} transition-all duration-[${ 100 * index + 100 }ms] bg-yoga-white`}>
                     <div className='cinzel font-semibold w-fit'>{field.name}{field.required && <span className="form-label-error">*</span>}:</div>
                     <div className='flex items-center gap-2 overflow-x-auto'>
                         {field.options.map((option, index) =>
@@ -158,7 +166,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                         </label>
                         )}
                     </div>
-                </div> :
+                </fieldset> :
 
                 // Custom Select
                 field.type === 'select' ?
@@ -169,9 +177,23 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                     defaultSelected={typeof field.defaultValue == 'number' ? form[field.name] || field.defaultValue : field.options.indexOf(form[field.name] || field.defaultValue) || 0}
                 /> :
 
-                // Testarea element
+                // input type phone
+                field.type === 'tel' ?
+                <fieldset className='relative w-full h-fit flex gap-1'>
+                    <PhoneInput
+                        defaultCountry={clientIP.country_code2}
+                        name={field.name}
+                        onChange={value => setFormField(null, {name: field.name, value}) }
+                        className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
+                        placeholder={field.required ? "*"+field.placeholder : field.placeholder}
+                        value={form[field.name] || field.defaultValue}
+                        required={field.required}
+                    />
+                </fieldset> :
+
+                // Textarea element
                 field.type === 'textarea' ?
-                <div className={`relative w-full h-fit flex flex-col gap-1`} >
+                <fieldset className={`relative w-full h-fit flex flex-col gap-1`} >
                     <textarea
                         onChange={setFormField}
                         // expand the textarea as the user types new lines
@@ -186,24 +208,10 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                             (field.maxChars && form[field.name]?.length > 0) &&
                             <p className={`z-30 absolute bottom-2 ltr:right-3 rtl:left-3 p-0 m-0 text-sm transition-all duration-[${ 100 * index + 100 }ms]`}>{form[field.name].length}/{field.maxChars}</p>
                         }
-                </div> :
-
-                // input type phone
-                field.type === 'tel' ?
-                <div className='relative w-full h-fit flex gap-1'>
-                    <PhoneInput
-                        defaultCountry='MA'
-                        name={field.name}
-                        onChange={value => setFormField(null, {name: field.name, value}) }
-                        className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
-                        placeholder={field.required ? "*"+field.placeholder : field.placeholder}
-                        value={form[field.name] || field.defaultValue}
-                        required={field.required}
-                    />
-                </div> :
+                </fieldset> :
 
                 // default input element
-                <div className='relative w-full h-fit flex flex-col gap-1'>
+                <fieldset className='relative w-full h-fit flex flex-col gap-1'>
                     <input
                         onChange={setFormField}
                         className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
@@ -219,7 +227,7 @@ export default function Form({title, state, fields, insertElement, resetBtn,  su
                             <i className={`fi ${showPassword ? "fi-sr-eye-crossed" : "fi-sr-eye"} ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-label-error" : "text-yoga-green"} flex justify-center items-end`}></i>
                         </button>
                     )}
-                </div>
+                </fieldset>
             }
 
             {/* // show the error message if there's any */}
