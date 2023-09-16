@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import Form from "../../layouts/Form";
-import { alertMessage, dateFormater, tokenDecoder } from "../../utils";
+import { alertMessage, clientIPify, date, dateFormater, tokenDecoder } from "../../utils";
 import { accountFields } from "../../utils/form";
 import { useData } from "../../hooks";
 import { names } from "../../firebase/collections";
 import { updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
 import Loader from "../../layouts/Loader";
+import { emailLog, sendEmail } from "../../email";
 
 export default function Account() {
   const [auth, DataLoading, DataError] = useData(names.auth);
-  const [account, setAccount] = useState(tokenDecoder("yogacoach"));
+  const [account, setAccount] = useState(tokenDecoder());
   const [alert, setAlert] = useState({}); // [title, message, cancel, onCancel, confirm, onConfirm]
   const [error, setError] = useState(false);
 
@@ -25,6 +26,21 @@ export default function Account() {
     try {
       setError(false);
       await updateDocument(names.auth, auth.id, account);
+      const clientIP = await clientIPify();
+      // sending email to the admin to notify him about the update
+      const emaillog = await sendEmail({
+        to: import.meta.env.VITE_CONTACT_EMAIL,
+        from: {
+          name: "Jnain Yoga Coach",
+          email: import.meta.env.VITE_CONTACT_EMAIL
+        },
+        subject: "Account Credentials Updated",
+        html: `
+          <h1>Account Credentials Updated</h1>
+          <p>Account Credentials has been updated by <strong>${auth.username}</strong>, at: <strong>${dateFormater(new Date(await date()).toString())}</strong>, from: <strong>${clientIP.country_name}</strong>, <strong>${clientIP.city}</strong>, <strong>IP: ${clientIP.ip}</strong></p>
+        `,
+      });
+      await emailLog("Update Account Credentials", auth.id, emaillog.messageId);
       setAlert({ ...alertMessage("U", "Account Credentials", true), onConfirm: alertAction, onCancel: alertAction});      
     } catch (error) {
       console.error(error);

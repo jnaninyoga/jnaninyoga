@@ -57,7 +57,7 @@ export default function DashboardSidebar() {
     }, [isMenuHidden]);
 
   return (
-    <aside role="menu" className={`lg:w-1/4 w-screen z-[100000] before:absolute before:h-screen before:w-screen before:pointer-events-none ${isMenuHidden ? "before:bg-none" : "before:bg-black before:bg-opacity-40 before:backdrop-blur-[2px]"} lg:bg-none flex flex-col transition-all duration-300 print:hidden`}>
+    <aside role="menu" className={`lg:w-fit w-screen z-[100000] before:absolute before:h-screen before:w-screen before:pointer-events-none ${isMenuHidden ? "before:bg-none" : "before:bg-black before:bg-opacity-40 before:backdrop-blur-[2px]"} lg:bg-none flex flex-col transition-all duration-300 print:hidden`}>
         <div className={`lg:hidden py-2 px-6 w-screen flex justify-between items-center bg-yoga-white`}>
             <button id="toggleDashboardSidebar" onClick={showMenu} className={`flex items-center justify-center text-2xl`}><i id="toggleDashboardSidebar" className="fi fi-bs-bars-staggered flex items-center justify-center"></i></button>
             <img className="h-10" src={logo} alt="Jnanin Yoga Studio Logo" />

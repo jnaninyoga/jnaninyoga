@@ -60,11 +60,11 @@ export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(c
 export const addDocument = async (collection, data) => await addDoc(collectionDB(collection), document(data));
 
 // document refence/cascade document
-export async function addRefDocument(collection, data, refCollection, ref="ref") {
+export async function addRefDocument(collection, data, refCollection, refData, ref="ref") {
   // if not ref collection throw an error
   if(!refCollection) throw new Error("refCollection is required");
   const docRef = await addDocument(collection, data);
-  return await addDocument(refCollection, {[ref]: docRef});
+  return await addDocument(refCollection, refData ? {...refData, [ref]: docRef} : {[ref]: docRef} );
 }
 
 // ======== update doc ========

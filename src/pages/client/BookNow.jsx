@@ -8,13 +8,13 @@ import { bookNowFields } from "../../utils/form";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
-// import { addDoc } from "firebase/firestore";
 import { addDocument } from "../../firebase";
 import { names } from "../../firebase/collections";
 import Error from "../../layouts/Error";
 import Thank from "../../layouts/Thank";
 import Meta from "../../meta";
-import metadata from "../../meta/meta";
+import metadata, { HostName } from "../../meta/meta";
+import { emailLog, sendEmail } from "../../email";
 
 export default function BookNow() {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export default function BookNow() {
 
   const [book, setBook] = useState({});
   const [showThankPage, setShowThankPage] = useState(false);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   const TFields = t('booknow.form.fields', {returnObjects: true});
   const TFieldsErrors = t('booknow.form.fieldserrors', {returnObjects: true});
@@ -40,11 +40,34 @@ export default function BookNow() {
     try {
       // clear the error
       setError(false);
-      await addDocument(names.books, {...bookdata, lang: currentLanguage.name, confirmed: false});
+      const book = await addDocument(names.books, {...bookdata, lang: currentLanguage.name, confirmed: false});
+      // send the contact as an email to the admin
+      const emaillog = await sendEmail({
+        to: import.meta.env.VITE_CONTACT_EMAIL,
+        from: {
+          name: bookdata.fullname,
+          email: bookdata.email
+        },
+        subject: `New Booking From, ${bookdata.fullname}`,
+        html: `
+          <h1>New Booking Form</h1>
+          <p>You have a new booking from, <strong>${bookdata.fullname}<strong>.</p>
+          <ul>
+            <li><strong>Name:</strong> ${bookdata.fullname}</li>
+            <li><strong>Email:</strong> ${bookdata.email}</li>
+            <li><strong>Phone:</strong> ${bookdata.phone}</li>
+            <li><strong>Interest:</strong> ${bookdata.interest}</li>
+          </ul>
+          <p><strong><u>BOOKS DASHBOARD:</u></strong> <a href="${HostName}/lotus/books?bid=${book.id}">${HostName}/lotus/books?bid=${book.id}</a></p>
+        `,
+        text: `New Booking From, ${bookdata.fullname}\nYou have a new contact from, ${bookdata.fullname}.\nName: ${bookdata.fullname}\nEmail: ${bookdata.email}\nPhone: ${bookdata.phone}\nInterest: ${bookdata.interest}\nBOOKS DASHBOARD: ${HostName}/lotus/books?bid=${book.id}`
+      });
+      // email log
+      await emailLog("booking", book, emaillog.messageId);
       setShowThankPage(true);
     } catch (e) {
+      setError(e.message);
       console.error("Error adding document: ", e);
-      setError(e);
     }
   }
 
@@ -58,7 +81,7 @@ export default function BookNow() {
   }, [showThankPage]);
 
   // check if there is any error
-  if (error) return <Error title={t('GlobalError.title')} error={error || t('GlobalError.text')} btn={t('GlobalError.btn')}/>
+  if (error) return <Error title={t('GlobalError.title')} error={error.message || t('GlobalError.text')} btn={t('GlobalError.btn')}/>
 
   // if the form is sent successfully, it will render the thank you page
   if (showThankPage) return <Thank
