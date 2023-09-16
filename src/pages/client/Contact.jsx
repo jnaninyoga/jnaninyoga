@@ -8,13 +8,14 @@ import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { contactFields } from "../../utils/form";
 import { useTranslation } from "react-i18next";
 import Meta from "../../meta";
-import metadata from "../../meta/meta";
+import metadata, { HostName } from "../../meta/meta";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
 import { addDocument } from "../../firebase";
 import Error from "../../layouts/Error";
 import Thank from "../../layouts/Thank";
 import Followers from "../../components/Followers";
 import { names } from "../../firebase/collections";
+import { emailLog, sendEmail } from "../../email";
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -40,10 +41,33 @@ export default function Contact() {
     try {
       // clear the error message
       setError(false);
-      await addDocument(names.contacts, {...contactdata, lang: currentLanguage.name, answered: false});
+      const contact = await addDocument(names.contacts, {...contactdata, lang: currentLanguage.name, answered: false});
+      // send the contact as an email to the admin
+      const emailData = await sendEmail({
+        to: import.meta.env.VITE_CONTACT_EMAIL,
+        from: {
+          name: contactdata.fullname,
+          email: contactdata.email
+        },
+        subject: `New Contact From, ${contactdata.fullname}`,
+        html: `
+          <h1>New Contact Form</h1>
+          <p>You have a new contact from, <strong>${contactdata.fullname}<strong>.</p>
+          <ul>
+            <li><strong>Name:</strong> ${contactdata.fullname}</li>
+            <li><strong>Email:</strong> ${contactdata.email}</li>
+            <li><strong>Phone:</strong> ${contactdata.phone}</li>
+            <li><strong>Message:</strong> ${contactdata.message}</li>
+          </ul>
+          <p><strong><u>CONTACT DASHBOARD:</u></strong> <a href="${HostName}/lotus/contacts?cid=${contact.id}">${HostName}/lotus/contacts?cid=${contact.id}</a></p>
+        `,
+        text: `New Contact From, ${contactdata.fullname}\nYou have a new contact from, ${contactdata.fullname}.\nName: ${contactdata.fullname}\nEmail: ${contactdata.email}\nPhone: ${contactdata.phone}\nMessage: ${contactdata.message}\nCONTACT DASHBOARD: ${HostName}/lotus/contacts?cid=${contact.id}`
+      });
+      // email log
+      await emailLog("contact", contact, emailData.messageId);
       setShowThankPage(true);
     } catch (e) {
-      setError(e);
+      setError(e.message);
       console.error("Error adding document: ", e);
     }
   }

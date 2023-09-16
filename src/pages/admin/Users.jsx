@@ -12,9 +12,10 @@ import Alert from "../../layouts/Alert";
 import Form from "../../layouts/Form";
 import UserLookup from "../../layouts/UserLookup";
 import Loader from '../../layouts/Loader';
+import { addContact, deleteContact, updateContact } from '../../email';
+import { defaultCarnet } from '../../constants/defaults';
 
 export default function Users() {
-  // const { loading, data: { users } } = useData();
   const [users, DataLoading, DataError] = useData(names.users);
   const [user, setUser] = useState({});
   const [operationError, setOperationError] = useState(false); // error creating or updating the user
@@ -62,7 +63,8 @@ export default function Users() {
     try {
       // clear the form error message
       setOperationError(false);
-      await addRefDocument(names.users, {...user, age: await userAge(user.birthdate)}, names.carnets, 'user');
+      await addRefDocument(names.users, {...user, age: await userAge(user.birthdate)}, names.carnets, defaultCarnet(), 'user');
+      await addContact({firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
       setModal(null);
       setAlert({...alertMessage("C", "User", true), onConfirm: alertAction, onCancel: alertAction})
     } catch (error) {
@@ -77,6 +79,7 @@ export default function Users() {
   const deleteUser = useCallback(async (id) => {
     try {
       await deleteOnCascade(names.users, id, names.carnets, 'user');
+      await deleteContact(users.find(user => user.id === id).email)
       const restoreUser = async () => await deleteOnCascade(names.users, id, names.carnets, 'user', true);
       setAlert({...alertMessage("D", "User", true), onConfirm: () => alertAction(restoreUser), onCancel: alertAction, confirm: "Restore"})
     } catch (error) {
@@ -84,7 +87,7 @@ export default function Users() {
       // throw an error alert to try again
       setAlert({ ...alertMessage("E", "User", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(() => deleteUser(id)), onCancel: alertAction })
     }
-  }, [alertAction]);
+  }, [alertAction, users]);
 
   // delete all Users
   const deleteMultiUsers = useCallback(async () => {
@@ -105,6 +108,7 @@ export default function Users() {
       // clear the form error message
       setOperationError(false);
       await updateDocument(names.users, modal.data.id, {...user, age: await userAge(user.birthdate)});
+      await updateContact(modal.data.email, {firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
       setModal(null);
       setAlert({...alertMessage("U", "User", true), onConfirm: alertAction, onCancel: alertAction})
     } catch (error) {
@@ -199,7 +203,7 @@ export default function Users() {
       valueFormatter: ({ value }) => dateFormater(value, false)
     },
 
-    { field: "email", headerName: "Email", width: 180,
+    { field: "email", headerName: "Email", width: 10,
       sortable: false,
       renderCell: ({ value }) => ( <a title={value} href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
@@ -248,7 +252,7 @@ export default function Users() {
       sortable: false,
       filterable: false,
       renderCell: ({row}) => (
-        <button onClick={() => { setAlert({...alertMessage("D", "User"), onConfirm: () => alertAction(() => deleteUser(row.id)), onCancel: alertAction}) }} title={`Delete ${row.firstname} ${row.lastname} profile`} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
+        <button onClick={() => { setAlert({...alertMessage("D", "User"), onConfirm: () => alertAction(() => deleteUser(row.id, row.email)), onCancel: alertAction}) }} title={`Delete ${row.firstname} ${row.lastname} profile`} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
   ], [alertAction, deleteUser, triggerUpdate]);
@@ -259,7 +263,7 @@ export default function Users() {
 
   // if there is error loading the data
   if (DataError || !users) return (
-    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+    <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white">
       <Alert 
         type="error"
         title="Error Loading Users Data"
@@ -273,14 +277,12 @@ export default function Users() {
 
   return (
     <>
-    <Box className="w-full p-4 flex flex-col gap-4 print:hidden">
+    <Box className="w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4 print:hidden overflow-x-auto">
 
-      <div className={`w-full flex items-center ${selection.length > 0 && "overflow-auto overflow-y-hidden"}`}>
-        <div className="w-full flex justify-start items-center gap-2">
-            <button type="button" onClick={() => setModal({type: "C"})} className="flex justify-center items-center gap-2 cinzel font-semibold w-max text-center uppercase px-6 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all"><i className="fi fi-sr-user-add flex justify-center items-center"></i> <span className="">Add User</span></button>
-            <button type="button" onClick={exportToXLSX} className={`cinzel mx-1 w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < users.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
-            <button type="button" onClick={() => setAlert({...alertMessage("DA", "User"), onConfirm: () => alertAction(deleteMultiUsers), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel mx-1 w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} ><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < users.length) ? "Delete Selected" : "Delete All"}</span></button>
-        </div>
+      <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
+        <button type="button" onClick={() => { setModal({type: "C"}); setUser({}) }} className="h-full min-w-max px-6 py-2 flex justify-center items-center gap-2 cinzel font-semibold text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all"><i className="fi fi-sr-user-add flex justify-center items-center"></i> <span className="">Add User</span></button>
+        <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < users.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+        <button type="button" onClick={() => setAlert({...alertMessage("DA", "User"), onConfirm: () => alertAction(deleteMultiUsers), onCancel: alertAction})} className={`cinzel h-full min-w-max px-3 py-2 ${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} text-center uppercase flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} ><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 w-full text text-yoga-white">{(selection.length > 0 && selection.length < users.length) ? "Delete Selected" : "Delete All"}</span></button>
       </div>
 
       <DataGrid
@@ -302,10 +304,10 @@ export default function Users() {
     {modal && (
       modal.type === "C" || modal.type === "U" ?
       // Create User
-      <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-full print:w-full print:bg-white">
+      <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-full print:w-full print:bg-white">
           <div className="relative flex h-[95%] md:w-[60%] w-[95%] bg-yoga-white overflow-hidden" >
               <img src={user.sex?.toLowerCase() == 'male' ? BGMale : BGFemale} alt="background" className={`h-full w-full select-none object-cover object-center bg-center bg-cover opacity-60`} />
-              <div className="absolute top-0 left-0 py-6 w-full h-full flex overflow-y-auto bg-contain" > 
+              <div className="absolute top-0 left-0 py-6 w-full h-full flex overflow-y-auto overflow-x-hidden bg-contain" > 
                 <Form
                   dark
                   animatedIcon
@@ -331,14 +333,14 @@ export default function Users() {
       </section> :
       // Show User
       modal.type === "R" &&
-      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 print:z-[200000] print:h-screen print:w-screen print:bg-white">
+      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white">
         <UserLookup user={modal.data} />
       </section>
     )}
 
     {/* Alert Message */}
     {alert.title && (
-      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center">
+      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200100]">
           <Alert {...alert} />
       </section>
     )}
