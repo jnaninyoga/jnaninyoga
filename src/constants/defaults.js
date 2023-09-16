@@ -1,6 +1,6 @@
 import { names } from "../firebase/collections";
 import { supportedLanguages, tokenDecoder } from "../utils";
-import sessions from '../backup/sessions.json';
+import sessions from './sessions.json';
 
 // defaut user data:
 export const User = {
@@ -14,7 +14,47 @@ export const User = {
     phone: "",
     address: "",
     job: "",
+    medicalhistory:{
+        currentcare: "No Current Medical Care",
+        currentcareinfo: "",
+        record: "No Medical History",
+        recordinfo: "",
+    },
+    physentalstate:{
+        physical: [""],
+        mental: [""],
+    },
+    liferhythm:{
+        sleep: "good",
+        sport:"regulary",
+        nutrition:"good",
+        meditation:"regulary",
+    },
+    consultationreason:"",
     createdAt: new Date().toDateString(),
+}
+
+export const Carnet = {
+    user: 0,
+    completed: false,
+    type: "regular",
+    period: "2M", // 2 months, periods: 1Y, 6M, 4M, 2M
+    sessions: 10, // number of sessions, sessions: 50, 30, 20, 10
+    passedSessions: 0, // number of passed sessions
+    price: 1500, // price of the carnet, prices: 5000MAD, 3600MAD, 2600MAD, 1500MAD
+    paidAmount: 0, // amount paid by the user
+    reremainingAmount: 1500, // remaining amount to pay
+    createdAt: new Date().toDateString(),
+}
+
+export function defaultCarnet(period="2M"){
+    switch (period.toUpperCase()) {
+        case "1Y": return {...Carnet, period, sessions: 50, price: 5000, remainingAmount: 5000};
+        case "6M": return {...Carnet, period, sessions: 30, price: 3600, remainingAmount: 3600};
+        case "4M": return {...Carnet, period, sessions: 20, price: 2600, remainingAmount: 2600};
+        case "2M": return {...Carnet, period, sessions: 10, price: 1500, remainingAmount: 1500};
+        default: return {...Carnet, period, sessions: 10, price: 1500, remainingAmount: 1500};
+    }
 }
 
 // default contact:

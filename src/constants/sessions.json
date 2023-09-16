@@ -1,0 +1,87 @@
+[
+  {
+    "order": 1,
+    "day": "monday",
+    "sessions": [
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 1, "start": "12:30", "end": "14:00", "desc": "" },
+      { "type": 2, "start": "14:00", "end": "15:30", "desc": "" },
+      { "type": 2, "start": "16:00", "end": "17:30", "desc": ""},
+      { "type": 3, "start": "18:00", "end": "19:30", "desc": "Chair Yoga" },
+      { "type": 4, "start": "21:00", "end": "", "desc": "" },
+      { "type": 4, "start": "21:00", "end": "", "desc": "" }
+    ]
+  },
+  {
+    "order": 2,
+    "day": "tuesday",
+    "sessions": [
+      { "type": 1, "start": "07:30", "end": "09:00", "desc": "" },
+      { "type": 2, "start": "09:00", "end": "10:30", "desc": "" },
+      { "type": 1, "start": "11:00", "end": "12:30", "desc": "" },
+      { "type": 1, "start": "12:30", "end": "14:00", "desc": "" },
+      { "type": 2, "start": "14:00", "end": "15:30", "desc": "" },
+      { "type": 2, "start": "16:00", "end": "17:30", "desc": "" },
+      { "type": 1, "start": "18:00", "end": "19:30", "desc": "" },
+      { "type": 1, "start": "21:00", "end": "22:30", "desc": "" }
+    ]
+  },
+  {
+    "order": 3,
+    "day": "wednesday",
+    "sessions": [
+      { "type": 1, "start": "07:30", "end": "09:00", "desc": "" },
+      { "type": 1, "start": "09:00", "end": "10:30", "desc": "" },
+      { "type": 0 },
+      { "type": 1, "start": "12:30", "end": "14:00", "desc": "" },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 }
+    ]
+  },
+  {
+    "order": 4,
+    "day": "thursday",
+    "sessions": [
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 2, "start": "14:00", "end": "15:30", "desc": "" },
+      { "type": 3, "start": "16:00", "end": "18:00", "desc": "Kids Yoga" },
+      { "type": 3, "start": "18:00", "end": "19:00", "desc": "chair Yoga" },
+      { "type": 4, "start": "21:00", "end": "", "desc": "" }
+    ]
+  },
+  {
+    "order": 5,
+    "day": "friday",
+    "sessions":[
+      { "type": 1, "start": "07:30", "end": "09:00", "desc": "" },
+      { "type": 2, "start": "09:00", "end": "10:30", "desc": "" },
+      { "type": 1, "start": "11:00", "end": "12:30", "desc": "" },
+      { "type": 1, "start": "12:30", "end": "14:00", "desc": "" },
+      { "type": 2, "start": "14:00", "end": "15:30", "desc": "" },
+      { "type": 2, "start": "16:00", "end": "17:30", "desc": "" },
+      { "type": 1, "start": "18:00", "end": "19:30", "desc": "" },
+      { "type": 1, "start": "21:00", "end": "22:30", "desc": "" }
+    ]
+  },
+  {
+    "order": 6,
+    "day": "saturday",
+    "sessions":[
+      { "type": 0 },
+      { "type": 3, "start": "09:00", "end": "10:30", "desc": "Shakti Yoga" },
+      { "type": 1, "start": "11:00", "end": "12:30", "desc": "" },
+      { "type": 1, "start": "12:30", "end": "14:00", "desc": "" },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 },
+      { "type": 0 }
+    ]
+  }
+]
