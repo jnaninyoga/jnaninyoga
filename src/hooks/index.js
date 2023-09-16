@@ -85,7 +85,7 @@ export function useAdminAuth() {
 // load dashboard data
 export function useData(collection){
     const { verifying, auth } = useAdminAuth();
-    const [data, setData] = useState(JSON.parse(localStorage.getItem(collection)));
+    const [data, setData] = useState(JSON.parse(localStorage.getItem(collection)) || []);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const navigate = useNavigate();
@@ -159,9 +159,36 @@ export function useData(collection){
         localStorage.setItem(collection, JSON.stringify(data));
     }, [data, collection]);
 
-    console.info(`${collection.toUpperCase()} DASHBOARD DATA`, data, loading);
+    // console.info(`${collection.toUpperCase()} DASHBOARD DATA`, data, loading);
 
     return [data, loading, error];
+}
+
+// hook that fetch configuarations settings from the database for each collection
+export function useConfigurations(collection){
+    const [configurations, setConfigurations] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                onSnapshot(fetchDocs(collections.configurations), (querySnapshot) => {
+                    // set the documents in the collection state with there ids
+                    setConfigurations(querySnapshot.docs.filter(doc => doc.id === collection)[0]?.data().settings);
+                });
+            } catch (error) {
+                console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, [collection]);
+
+    // console.info(`${collection.toUpperCase()} DASHBOARD CONFIGURATIONS`, configurations, loading);
+
+    return [configurations, loading, error];
 }
 
 // hook the server the active board in the dashboard
