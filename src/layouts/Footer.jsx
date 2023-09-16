@@ -14,7 +14,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-yoga-white flex flex-col py-8 px-10 items-center justify-between bottom-0 mt-5">
-      <h1 className="z-0 w-full lg:mb-4 mb-8 lg:text-2xl sm:text-3xl text-2xl ltr:lg:text-left rtl:lg:text-right text-center uppercase font-bold relative before:absolute before:h-1 lg:before:w-80 before:sm:w-[70%] before:w-full before:bg-yoga-black ltr:lg:before:left-0 rtl:lg:before:right-0 before:left-1/2 lg:before:translate-x-0 before:-translate-x-1/2 before:-bottom-2">Jnanin Yoga Studio</h1>
+      <h1 className="cinzel z-0 w-full mb-8 lg:text-2xl sm:text-3xl text-2xl ltr:lg:text-left rtl:lg:text-right text-center uppercase font-bold relative before:absolute before:h-1 lg:before:w-80 before:sm:w-[70%] before:w-full before:bg-yoga-black ltr:lg:before:left-0 rtl:lg:before:right-0 before:left-1/2 lg:before:translate-x-0 before:-translate-x-1/2 before:-bottom-2">Jnanin Yoga Studio</h1>
       <section className="container w-full font-medium flex justify-evenly items-center lg:items-start lg:flex-row flex-col lg:gap-4 sm:gap-6 gap-4">
         <ul className="lg:w-1/3 lg:order-1 order-4 cinzel lg:text-lg sm:text-xl flex sm:flex-col-reverse flex-col lg:items-start sm:items-center items-start lg:gap-2 gap-4" id="contactinfo">
           <li itemProp="address" itemScope itemType="https://schema.org/PostalAddress">

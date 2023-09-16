@@ -287,6 +287,10 @@
       box-shadow: 5px 5px 0 0 var(--yoga-red);
     }
 
+    .form-field-mouse-interact{
+      box-shadow: 5px 5px 0 0 var(--yoga-red);
+    }
+
     .session{
       @apply p-2;
       @apply flex;

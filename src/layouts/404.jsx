@@ -28,7 +28,7 @@ export default function NotFound() {
     <Meta title={t('notfound.meta.title')} {...metadata.notfound}/>
     <Header/>
     <OverLaped banner={banner}>
-        <section className="sm:w-[90vw] flex flex-1 justify-center items-center flex-col gap-4">
+        <section className="sm:max-w-[90vw] flex flex-1 justify-center items-center flex-col gap-4">
           <div className="relative flex flex-col justify-center items-center">
             <div className="flex flex-col justify-center items-center -translate-y-10">
               <Icon 
@@ -40,8 +40,8 @@ export default function NotFound() {
             <h1 className="absolute top-[150px] cinzel text-8xl text-center text-yoga-white font-bold animate-bounce">404</h1>
           </div>
           <article className="w-full flex flex-1 justify-center items-center flex-col gap-4">
-            <h2 className="cinzel text-4xl text-center text-yoga-white font-bold uppercase">{t("notfound.title")}</h2>
-            <p className="sm:text-2xl text-center text-yoga-white font-medium">{t("notfound.text")}</p>
+            <h2 className="cinzel text-3xl text-center text-yoga-white font-bold uppercase">{t("notfound.title")}</h2>
+            <p className="sm:text-xl text-center text-yoga-white font-medium">{t("notfound.text")}</p>
             <button><Link to="/" className="cinzel sm:text-2xl text-xl font-bold yoga-btn">{t("notfound.btn")}</Link></button>
           </article>
         </section>

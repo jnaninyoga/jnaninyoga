@@ -4,7 +4,7 @@ import Header from "../../layouts/Header";
 import OverLaped from "../../layouts/OverLaped";
 import banner from "../../assets/videos/banner.mp4";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
-import icon from "../../assets/imgs/icons/lotus.webp";
+import Icon from "../../assets/svg";
 import profile from "../../assets/imgs/stock/profile.webp";
 import { useActivePage, useIntersectView, usePathLanguage } from "../../hooks";
 import { useTranslation } from "react-i18next";
@@ -31,14 +31,19 @@ export default function About() {
 
   <OverLaped banner={banner} type={"video"}>
     <img src={LotusOverlay} className={`opacity-100 -z-10 absolute scale-75 bottom-32 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />
-    <section ref={wrapper} className="relative lg:w-[90vw] w-full lg:px-20 sm:px-10 px-2 flex items-center gap-4 flex-col">
-      <div ref={profileImg} className={`relative aspect-square lg:h-48 lg:w-48 sm:h-56 sm:w-56 h-48 w-48 -translate-y-[65%] lg:translate-y-0 overflow-hidden`}>
-        <img src={icon} className={`${isProfileIntersected ? "scale-1" : "scale-0"} h-full w-full transition-all duration-300 select-none`} alt="Red/pink lotus icon" />
-        <img src={profile} className={`${isProfileIntersected ? "opacity-100 -translate-y-1/2" : "opacity-0 translate-y-1/2"} absolute h-[60%] w-[60%] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full object-cover object-center transition-all duration-300 select-none pointer-events-none`} alt="The Yoga Coash Ouarda"/>
+    <section ref={wrapper} className="relative w-full lg:px-20 sm:px-10 px-2 flex items-center gap-4 flex-col">
+      <div ref={profileImg} className={`relative aspect-square sm:h-56 sm:w-56 h-48 w-48 -translate-y-[65%] lg:translate-y-0 overflow-hidden`}>
+        <div className={`${isProfileIntersected ? "scale-[1.30]" : "scale-0"} h-full w-full flex justify-center items-center transition-all duration-300 select-none`}>
+          <Icon
+            label="Lotus"
+            colors={{oc: "#ffffff", pc: "#ffaaab"}}
+          />
+        </div>
+        <img src={profile} className={`${isProfileIntersected ? "opacity-100 -translate-y-1/2" : "opacity-0 translate-y-1/2"} absolute h-[50%] w-[50%] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full object-cover object-center transition-all duration-300 select-none pointer-events-none`} alt="The Yoga Coash Ouarda"/>
       </div>
       <article className="flex lg:translate-y-0 sm:-translate-y-[18%] -translate-y-[12%] flex-col items-center justify-center gap-6 overflow-hidden">
         <h1 className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} cinzel text-yoga-white text-center sm:text-4xl text-2xl font-bold uppercase transition-all duration-500`}>{t(`${activePage}.title`)}</h1>
-        <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} text-yoga-white sm:w-[100%] sm:text-center text-justify sm:text-lg transition-all duration-300`}>
+        <p className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} text-yoga-white sm:text-center text-justify sm:text-lg transition-all duration-300`}>
           {t(`${activePage}.text`)}
         </p>
         <ul ref={SocialMedia} className="cinzel items-center flex gap-6">

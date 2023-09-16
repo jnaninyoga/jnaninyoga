@@ -5,10 +5,10 @@ import Switchboard from "./Switchboard";
 
 export default function Dashboard() {
   return (
-    <main className="flex w-screen lg:flex-row flex-col">
+    <main className="w-screen flex lg:flex-row flex-col">
       <ActiveBoardProvider>
-          <DashboardSidebar/>
-          <Switchboard />
+        <DashboardSidebar/>
+        <Switchboard />
       </ActiveBoardProvider>    
     </main>
   )
