@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useData } from "../../hooks";
-import { useCallback, useMemo, useState } from "react";
+import { useData, useSearchParamsSerializer } from "../../hooks";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import Lookup from "../../layouts/Lookup";
 import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } from "../../utils";
 import { names } from "../../firebase/collections";
@@ -11,6 +11,8 @@ import Loader from "../../layouts/Loader";
 
 export default function Contacts() {
   const [contacts, DataLoading, DataError] = useData(names.contacts);
+  // get the contact id 'CID' from the url search params
+  const searchParams = useSearchParamsSerializer();
   
   const [pageSize, setPageSize] = useState(10);
 
@@ -26,6 +28,13 @@ export default function Contacts() {
     onAction && onAction(); // run the action if it's exist
     closeAlert && setAlert({}); // close the alert
   }, []);
+
+  // check if the contact id 'CID' is presented in the search params,and set the Modal with the coresponding contact
+  useEffect(() => {
+    if(!searchParams.cid) return;
+    const contact = contacts.find((contact) => contact.id === searchParams.cid);
+    contact && setModal(contact);
+  }, [searchParams, contacts]);
 
   // updating the document in firestore
   const updateContact = useCallback(async (id, data) => {
@@ -188,17 +197,13 @@ export default function Contacts() {
 
   return (
     <>
-    <Box className="w-full p-4 flex flex-col gap-4">
+    <Box className={`w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4`}>
 
-      <div className={`w-full flex items-center justify-between ${selection.length > 0 && "overflow-auto overflow-y-hidden"}`}>
-        <div className="flex justify-center items-center gap-4">
-          <button onClick={exportToXLSX} className={`cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < contacts.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
-          <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiContacts), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < contacts.length) ? "Delete Selected" : "Delete All"}</span></button>
-        </div>
-        <div className="flex justify-center items-center gap-4">
-          <button onClick={() => updateMultiContacts({ answered: true })} title={"Mark This Contact as Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Answered</button>
-          <button onClick={() => updateMultiContacts({ answered: false })} title={"Mark This Contact as Not Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Answered</button>
-        </div>
+      <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
+        <button onClick={exportToXLSX} className={`cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < contacts.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+        <button onClick={() => updateMultiContacts({ answered: true })} title={"Mark This Contact as Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Answered</button>
+        <button onClick={() => updateMultiContacts({ answered: false })} title={"Mark This Contact as Not Answered"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Answered</button>
+        <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiContacts), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel h-full min-w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < contacts.length) ? "Delete Selected" : "Delete All"}</span></button>
       </div>
 
       <DataGrid

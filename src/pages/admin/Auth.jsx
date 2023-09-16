@@ -38,7 +38,6 @@ export default function Auth() {
       return field;
     }), [TFields, TFieldsErrors, t]);
 
-
     
     const validateAuth = async (authdata) => {
       try{
@@ -47,10 +46,10 @@ export default function Auth() {
         // get the admin data from the database
         const admin = await (await docSnap(collections.auth)).docs[0].data();
         if (admin.username === authdata.username && admin.password === authdata.password){
-          tokenCoder("yogacoach", authdata);
+          tokenCoder(authdata);
           navigate(`/lotus`);
         } else {
-          setError(t('adminauth.form.error'));
+          setError(true);
         }
       }catch(error){
         console.error(error);

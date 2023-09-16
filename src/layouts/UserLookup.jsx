@@ -67,7 +67,7 @@ Bullet.propTypes = {
 
 function Title({title}){
     return (
-    <div className={`relative h-10 w-full flex justify-center items-center gap-2`}>
+    <div className={`relative h-10 w-full min-w-max flex justify-center items-center gap-2`}>
         <h3 className={`absolute left-8 opacity-100 px-4 py-[5px] cinzel text-lg text-center font-semibold uppercase w-max bg-yoga-red outline outline-2 outline-white -outline-offset-[6px] transition-all`}>{title}</h3>
         <div className="w-full h-[4px] bg-cyan-800 bg-opacity-10"></div>
     </div>
@@ -91,7 +91,7 @@ function Bullet({type="bullet", title, label, value, link, icon=false, styledTex
 }
 
 export default function UserLookup({user}) {
-    const [withUserIDURL, setWithUserIDURL] = useState(true);
+    const [withUserIDURL, setWithUserIDURL] = useState(false);
 
     const itsLongName = useMemo(()=> {
         const { firstname, lastname } = user;
@@ -104,15 +104,15 @@ export default function UserLookup({user}) {
     <Helmet>
         <title>{`${user.firstname} ${user.lastname} - Jnanin Yoga Profile`}</title>
     </Helmet>
-    <section className="relative h-[90%] w-[95%] md:w-[720px] md:h-[858px] flex flex-col gap-2 bg-yoga-white print:bg-white overflow-x-hidden overflow-y-auto bg-texture texture-v-1 before:opacity-20 print:absolute print:left-0 print:top-0 print:h-screen print:w-screen">
-        <section className='relative h-full w-full px-4 py-6 print:px-0 print:pr-5 print:py-4 flex items-center flex-col gap-8 print:gap-6'>
+    <section className="relative h-[90%] w-[95%] md:w-[720px] md:h-[858px] flex flex-col gap-2 bg-yoga-white print:bg-white sm:overflow-x-hidden overflow-y-auto bg-texture texture-v-1 before:opacity-20 print:absolute print:left-0 print:top-0 print:h-screen print:w-screen">
+        <section className='relative h-full w-full min-w-max px-4 py-6 print:px-0 print:pr-5 print:py-4 flex items-center flex-col gap-8 print:gap-6'>
 
             {/* PERSONAL INFORMATIONS */}
             <header className='w-full pl-5 flex justify-start items-center gap-4'>
                 <div className='w-32 h-32 flex justify-center items-center aspect-square bg-cover bg-center'>
                     <img src={logo} alt="jnanin yoga user" className='w-[90%] h-[90%] object-cover object-center aspect-square' />
                 </div>
-                <div className='w-full h-full flex flex-col justify-center gap-1'>
+                <div className='w-full min-w-max h-full flex flex-col justify-center gap-1'>
                     {/* biomethric informations */}
                     <h2 title={"User ID"} className='cinzel text-lg font-semibold text-gray-400'>#{withUserIDURL ? <a href={`${HostName}/lotus/users?uid=${user.id}`} className={`outline-none hover:text-yoga-green focus:text-yoga-green hover:underline focus:underline underline-offset-4 transition-all`} target="_blank" rel="noreferrer">{user.id}</a> : user.id}</h2>
                     <h1 className={`flex ${itsLongName ? "flex-col text-3xl" : "text-4xl"} cinzel text-3xl uppercase font-semibold`}>
@@ -137,7 +137,7 @@ export default function UserLookup({user}) {
 
             {/* PERSONAL / PROFESSIONAL INFORMATIONS */}
             <Title title="Personal / Professional Informations" />
-            <article className='w-full flex flex-col gap-1 px-10'>
+            <article className='w-full min-w-max flex flex-col gap-1 px-10'>
                 <div className='w-full flex gap-24'>
                     {/* social network informations */}
                     <ul className='flex flex-col'>
@@ -156,7 +156,7 @@ export default function UserLookup({user}) {
             {/* MEDICAL INFORMATIONS */}
             <Title title="Medical Informations" />
 
-            <article className='w-full flex flex-col gap-4 pl-10'>
+            <article className='w-full min-w-max flex flex-col gap-4 pl-10'>
                 <ul className='w-full flex flex-col'>
                     <Bullet styledText sm={false} underline title={`${user.firstname} ${user.lastname}, Current care`} label="Current Care:" value={user.medicalhistory.currentcare} />
                     <Bullet type='stack' sm={false} underline title={`${user.firstname} ${user.lastname}, Current care informations`} label="Current Care Informations:" value={user.medicalhistory.currentcareinfo || "No Additional Informations"} />
@@ -170,7 +170,7 @@ export default function UserLookup({user}) {
             {/* PHYSICAL / MENTAL STATE */}
             <Title title="Physical / Mental State" />
 
-            <article className='w-full flex flex-col gap-1 pl-10'>
+            <article className='w-full min-w-max flex flex-col gap-1 pl-10'>
                 <ul className='w-full flex flex-col'>
                     <Bullet styledText sm={false} underline title={`${user.firstname} ${user.lastname}, Physical state`} label="Physical State:" value={user.physentalstate.physical.join(", ")} />
                     <Bullet styledText sm={false} underline title={`${user.firstname} ${user.lastname}, Mental state`} label="Mental State:" value={user.physentalstate.mental.join(", ")} />
@@ -180,7 +180,7 @@ export default function UserLookup({user}) {
             {/* LIFE RHYTHM */}
             <Title title="Life Rhythm" />
 
-            <article className='w-full flex gap-1 pl-10'>
+            <article className='w-full min-w-max flex gap-1 pl-10'>
                 <ul className='w-full flex flex-col'>
                     <Bullet styledText sm={false} title={`${user.firstname} ${user.lastname}, Sleep`} label="Sleep:" value={user.liferhythm.sleep} icon="fi fi-ss-moon" />
                     <Bullet styledText sm={false} title={`${user.firstname} ${user.lastname}, Nutrition`} label="Nutrition:" value={user.liferhythm.nutrition} icon="fi fi-sr-salad" />
@@ -194,10 +194,10 @@ export default function UserLookup({user}) {
             {/* CONSULTATION REASON */}
             <Title title="Consultation Reason" />
 
-            <p className='w-full cinzel capitalize pl-10'>{user.consultationreason || "Nothing Mentioned"}</p>
+            <p className='w-full min-w-max cinzel capitalize pl-10'>{user.consultationreason || "Nothing Mentioned"}</p>
 
-            <div className='p-4 z-20 w-full flex justify-center sm:justify-end items-center gap-2 print:hidden'>
-                <label title='download the user profile with user id url that will redirect to this user in the users dashboard' className='flex justify-center items-center gap-1' htmlFor="useridurl"><input onChange={() => setWithUserIDURL(!withUserIDURL)} className='h-4 w-4 accent-cyan-600 border border-yoga-red active:scale-90 transition-all' type="checkbox" id="useridurl" defaultChecked /> With User Id URL</label>
+            <div className='p-4 z-20 w-full min-w-max flex justify-center sm:justify-end items-center gap-5 print:hidden'>
+                <label title='download the user profile with user id url that will redirect to this user in the users dashboard' className='flex justify-center items-center gap-1' htmlFor="useridurl"><input checked={withUserIDURL} onChange={() => setWithUserIDURL(!withUserIDURL)} className='h-4 w-4 accent-cyan-600 border border-yoga-red active:scale-90 transition-all' type="checkbox" id="useridurl"/> With User Id URL</label>
                 <button onClick={window.print} className='yoga-btn drop-shadow-lg group'><i className="fi fi-sr-file-pdf flex items-center justify-center mr-1 group-hover:text-yoga-green-dark transition-all"></i> Download</button>
             </div>
         </section>

@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useData } from "../../hooks";
-import { useCallback, useMemo, useState } from "react";
+import { useData, useSearchParamsSerializer } from "../../hooks";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import Lookup from "../../layouts/Lookup";
 import { dateFormater, whatsappLink, supportedLanguages, toXlsx, alertMessage } from "../../utils";
 import { names } from "../../firebase/collections";
@@ -10,8 +10,9 @@ import Alert from "../../layouts/Alert";
 import Loader from "../../layouts/Loader";
 
 export default function Books() {
-  // const { loading, data: { books } } = useData();
   const [books, DataLoading, DataError] = useData(names.books);
+  // get the booked session id 'BID' from the url search params
+  const searchParams = useSearchParamsSerializer();
   const [pageSize, setPageSize] = useState(10);
 
   // selected Book
@@ -26,6 +27,13 @@ export default function Books() {
     onAction && onAction(); // run the action if it's exist
     closeAlert && setAlert({}); // close the alert
   }, []);
+
+  // check if the book id 'BID' is presented in the search params,and set the Modal with the coresponding book
+  useEffect(() => {
+    if(!searchParams.bid) return;
+    const book = books.find((book) => book.id === searchParams.bid);
+    book && setModal(book);
+  }, [searchParams, books]);
 
   // updating the document in firestore
   const updateBook = useCallback(async (id, data) => {
@@ -189,17 +197,13 @@ export default function Books() {
 
   return (
     <>
-    <Box className="w-full p-4 flex flex-col gap-4">
+    <Box className="w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4">
 
-      <div className={`w-full flex items-center justify-between ${selection.length > 0 && "overflow-auto overflow-y-hidden"}`}>
-        <div className="flex justify-center items-center gap-4">
-          <button onClick={exportToXLSX} className={`cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < books.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
-          <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiBooks), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < books.length) ? "Delete Selected" : "Delete All"}</span></button>
-        </div>
-        <div className="flex justify-center items-center gap-4">
-          <button onClick={() => updateMultiBooks({ confirmed: true })} title={"Mark This Booked Sessions as Confirmed"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Confirmed</button>
-          <button onClick={() => updateMultiBooks({ confirmed: false })} title={"Mark This Booked Sessions as Not Confirmed"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Confirmed</button>
-        </div>
+      <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
+        <button onClick={exportToXLSX} className={`cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < books.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+        <button onClick={() => updateMultiBooks({ confirmed: true })} title={"Mark This Booked Sessions as Confirmed"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-150" : "translate-y-[100%] scale-0 opacity-0"} cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>All Confirmed</button>
+        <button onClick={() => updateMultiBooks({ confirmed: false })} title={"Mark This Booked Sessions as Not Confirmed"} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-200" : "translate-y-[100%] scale-0 opacity-0"} cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>All Not Confirmed</button>
+        <button onClick={() => setAlert({...alertMessage("DA", "Review"), onConfirm: () => alertAction(deleteMultiBooks), onCancel: alertAction})} className={`${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} cinzel h-full min-w-max text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 text-yoga-white">{(selection.length > 0 && selection.length < books.length) ? "Delete Selected" : "Delete All"}</span></button>
       </div>
 
       <DataGrid
