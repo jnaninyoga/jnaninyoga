@@ -228,7 +228,7 @@ export default function Contacts() {
           {...modal}
           status={modal.answered}
           statusDisplay={modal.answered ? "Answered" : "Not Answered"}
-          date={dateFormater(modal.timestamp)}
+          date={dateFormater(modal.createdAt)}
           succes="Answered"
           abort="Not Answered"
           forSucces={() => updateContact(modal.id, { answered: true }) }

@@ -172,7 +172,7 @@ export default function Reviews() {
           author={modal.fullname}
           message={modal.review}
           lang={modal.lang}
-          date={dateFormater(modal.timestamp)}
+          date={dateFormater(modal.createdAt)}
           insertElement={<Stars rate={modal.rate} />}
           details={false}
         />

@@ -228,7 +228,7 @@ export default function Books() {
           {...modal}
           status={modal.answered}
           statusDisplay={modal.answered ? "Confirmed" : "Not Confirmed"}
-          date={dateFormater(modal.timestamp)}
+          date={dateFormater(modal.createdAt)}
           succes="Confirmed"
           abort="Not Confirmed"
           forSucces={() => { updateBook(modal.id, { confirmed: true }); setModal(null) }}
