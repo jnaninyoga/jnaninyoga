@@ -69,7 +69,6 @@ export function useAdminAuth() {
 	useEffect(() => {
 		if (!activeBoard) return;
 		const stringifiedSearchParams = Object.keys(searchParams).length > 0 ? `?${new URLSearchParams(searchParams).toString()}` : "";
-		console.log("AUTH URL", `/lotus/${activeBoard ?? ''}${stringifiedSearchParams}`);
 		localStorage.setItem("navigationHistory", `/lotus/${activeBoard ?? ''}${stringifiedSearchParams}`);
 	}, [activeBoard, searchParams]);
 
@@ -108,7 +107,9 @@ export function useData(collection) {
 	if (!verifying && !auth) {
 		// clear the cached data
 		Object.values(names).forEach((name) => localStorage.removeItem(name));
-		navigate("/lotus/login?error=Your session has expired, please login again");
+		// set invalid login session error in the local storage
+		localStorage.setItem("loginerror", "Your session has expired, please login again");
+		navigate("/lotus/login");
 	}
 
 	// start loading data based on the collection
