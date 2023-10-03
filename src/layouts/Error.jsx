@@ -17,12 +17,13 @@ export default function Error({error, title="Something Went Wrong!", btn="Try Ag
 
     // refresh the page
     const refreshPage = () => {
-        window.location.reload();
+      localStorage.clear();
+      window.location.reload();
     }
 
   return (
     <OverLaped>
-      <section className="w-[90vw] flex flex-1 items-center justify-center flex-col">
+      <section className="px-32 flex flex-1 items-center justify-center flex-col">
         <Icon
           label="Lotus"
           src={icon}
