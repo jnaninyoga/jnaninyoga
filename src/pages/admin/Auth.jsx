@@ -22,7 +22,7 @@ export default function Auth() {
     const searchParams = useSearchParamsSerializer();
 
     // if the user is logged in, redirect to the dashboard
-    if(!token.verifying && token.auth) navigate(`/lotus`);
+    if(!token.verifying && token.auth) navigate(-1);
 
     const [auth, setAuth] = useState({});
     // error messages for the login form
@@ -47,7 +47,7 @@ export default function Auth() {
         const admin = await (await docSnap(collections.auth)).docs[0].data();
         if (admin.username === authdata.username && admin.password === authdata.password){
           tokenCoder(authdata);
-          navigate(`/lotus`);
+          navigate(-1); // redirect to the dashboard back in history
         } else {
           setError(true);
         }
