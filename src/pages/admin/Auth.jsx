@@ -7,7 +7,7 @@ import { adminLoginFields } from "../../utils/form";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { useTranslation } from "react-i18next";
 import { docSnap } from "../../firebase";
-import { useAdminAuth, usePathLanguage, useSearchParamsSerializer } from "../../hooks";
+import { useAdminAuth, usePathLanguage } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import collections from "../../firebase/collections";
 import Suspens from "../../layouts/Suspens";
@@ -18,15 +18,11 @@ export default function Auth() {
     const navigate = useNavigate();
     usePathLanguage();
 
-    // check if the if redericted to the login page with `error` search  param
-    const searchParams = useSearchParamsSerializer();
-
-    // if the user is logged in, redirect to the dashboard
-    if(!token.verifying && token.auth) navigate(-1);
+    if(!token.verifying && token.auth) navigate(localStorage.getItem("navigationHistory"));
 
     const [auth, setAuth] = useState({});
     // error messages for the login form
-    const [error, setError] = useState(false);
+    const [error, setError] = useState({trigger: false, message: ''});
 
     const TFields = t('adminauth.form.fields', {returnObjects: true});
     const TFieldsErrors = t('adminauth.form.fieldserrors', {returnObjects: true});
@@ -42,31 +38,35 @@ export default function Auth() {
     const validateAuth = async (authdata) => {
       try{
         // clear the error message
-        setError(false);
+        setError({trigger: false, message: ''});
         // get the admin data from the database
         const admin = await (await docSnap(collections.auth)).docs[0].data();
         if (admin.username === authdata.username && admin.password === authdata.password){
           tokenCoder(authdata);
-          navigate(-1); // redirect to the dashboard back in history
+          navigate(localStorage.getItem("navigationHistory")); // redirect to the dashboard back in history
         } else {
-          setError(true);
+          setError({trigger: true, message: t('adminauth.form.error')});
         }
       }catch(error){
+        setError({trigger: true, message: "Something went wrong, please try again later."}); // "Something went wrong, please try again later.
         console.error(error);
       }
     }
 
     // set error based on serch param error
     useEffect(() => {
-      if(!searchParams.error) return;
-      setError(searchParams.error);
-    }, [searchParams]);
+      const localErrorLogin = localStorage.getItem('loginerror');
+      console.warn(localErrorLogin);
+      if(!localErrorLogin) return;
+      setError({trigger: true, message: localErrorLogin});
+      localStorage.removeItem('loginerror'); // remove the error from the local storage
+    }, []);
 
     // effect to clear custom error messages
     useEffect(() => {
       if(!error) return
       const timeout = setTimeout(() => {
-        setError(false);
+        setError({trigger: false, message: ''});
       }, 5000);
       return () => clearTimeout(timeout);
     }, [error]);
@@ -87,8 +87,8 @@ export default function Auth() {
         onSubmit={validateAuth}
         submitBtn={t('adminauth.form.login')}
         EmptyErrorMessage={t('adminauth.form.error')}
-        ErrorMessage={t('adminauth.form.error')}
-        errorTrigger={error}
+        ErrorMessage={error.message}
+        errorTrigger={error.trigger}
         />
     </OverLaped>
     <Footer/>

@@ -29,7 +29,7 @@ export function useActivePage() {
 }
 
 export function useCurrentLanguage() {
-	return supportedLanguages.find((lang) => lang.code === i18next.language);
+	return supportedLanguages.find((lang) => lang.code === i18next.language) || supportedLanguages[0];
 }
 
 // change the i18next language based on the page path like about/ => about/en
@@ -59,8 +59,19 @@ export function useSearchParamsSerializer() {
 export function useAdminAuth() {
 	const [auth, setAuth] = useState(false);
 	const [verifying, setVerifying] = useState(true);
+
 	const navigte = useNavigate();
 	const currentLang = useCurrentLanguage();
+
+	const searchParams = useSearchParamsSerializer();
+	const { activeBoard } = useActiveBoard();
+
+	useEffect(() => {
+		if (!activeBoard) return;
+		const stringifiedSearchParams = Object.keys(searchParams).length > 0 ? `?${new URLSearchParams(searchParams).toString()}` : "";
+		console.log("AUTH URL", `/lotus/${activeBoard ?? ''}${stringifiedSearchParams}`);
+		localStorage.setItem("navigationHistory", `/lotus/${activeBoard ?? ''}${stringifiedSearchParams}`);
+	}, [activeBoard, searchParams]);
 
 	useEffect(() => {
 		(async () => {
@@ -69,6 +80,9 @@ export function useAdminAuth() {
 			const admin = await (await docSnap(collections.auth)).docs[0].data();
 			// if not logged in redirect to login page
 			if (!token || token.password !== admin.password) {
+				// set invalid login session error in the local storage
+				localStorage.setItem("loginerror", "Your session has expired, please login again");
+				// set redirect url in the local storage
 				navigte(`/lotus/${currentLang.code}/login`);
 				setVerifying(false);
 				return;
@@ -77,7 +91,7 @@ export function useAdminAuth() {
 			if (token.password === admin.password) setAuth(true);
 			setVerifying(false);
 		})();
-	}, [currentLang.code, navigte]);
+	}, [currentLang.code, navigte, searchParams]);
 
 	return { auth, verifying };
 }
@@ -85,11 +99,9 @@ export function useAdminAuth() {
 // load dashboard data
 export function useData(collection) {
 	const { verifying, auth } = useAdminAuth();
-	const [data, setData] = useState(
-		JSON.parse(localStorage.getItem(collection)) || []
-	);
+	const [data, setData] = useState( JSON.parse(localStorage.getItem(collection)) || [] );
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState();
+	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
 	// check if the session still valid:
@@ -154,14 +166,14 @@ export function useData(collection) {
 
 	// console.info(`${collection.toUpperCase()} DASHBOARD DATA`, data, loading);
 
-	return [data, loading, error];
+	return [data, loading, error, setData];
 }
 
 // hook that fetch configuarations settings from the database for each collection
-export function useConfigurations(collection) {
-	const [configurations, setConfigurations] = useState({});
+export function useConfigurations(collection, defaultSettings) {
+	const [configurations, setConfigurations] = useState(defaultSettings || {});
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState();
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		(async () => {
@@ -171,7 +183,7 @@ export function useConfigurations(collection) {
 					setConfigurations(querySnapshot.docs.filter((doc) => doc.id === collection)[0]?.data().settings);
 				});
 			} catch (error) {
-				console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+				console.error(`${collection.toUpperCase()} DASHBOARD CONFIGURATIONS ERROR`, error);
 				setError(error);
 			} finally {
 				setLoading(false);
