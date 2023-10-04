@@ -8,7 +8,7 @@ import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { contactFields } from "../../utils/form";
 import { useTranslation } from "react-i18next";
 import Meta from "../../meta";
-import metadata, { HostName } from "../../meta/meta";
+import metadata from "../../meta/meta";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
 import { addDocument } from "../../firebase";
 import Error from "../../layouts/Error";
@@ -59,9 +59,9 @@ export default function Contact() {
             <li><strong>Phone:</strong> ${contactdata.phone}</li>
             <li><strong>Message:</strong> ${contactdata.message}</li>
           </ul>
-          <p><strong><u>CONTACT DASHBOARD:</u></strong> <a href="${HostName}/lotus/contacts?cid=${contact.id}">${HostName}/lotus/contacts?cid=${contact.id}</a></p>
+          <p><strong><u>CONTACT DASHBOARD:</u></strong> <a href="${import.meta.env.VITE_HOST_NAME}/lotus/contacts?id=${contact.id}">${import.meta.env.VITE_HOST_NAME}/lotus/contacts?id=${contact.id}</a></p>
         `,
-        text: `New Contact From, ${contactdata.fullname}\nYou have a new contact from, ${contactdata.fullname}.\nName: ${contactdata.fullname}\nEmail: ${contactdata.email}\nPhone: ${contactdata.phone}\nMessage: ${contactdata.message}\nCONTACT DASHBOARD: ${HostName}/lotus/contacts?cid=${contact.id}`
+        text: `New Contact From, ${contactdata.fullname}\nYou have a new contact from, ${contactdata.fullname}.\nName: ${contactdata.fullname}\nEmail: ${contactdata.email}\nPhone: ${contactdata.phone}\nMessage: ${contactdata.message}\nCONTACT DASHBOARD: ${import.meta.env.VITE_HOST_NAME}/lotus/contacts?id=${contact.id}`
       });
       // email log
       await emailLog("contact", contact, emailData.messageId);

@@ -1,5 +1,4 @@
 import ActiveBoardProvider from "../../context/activeboard";
-// import DashboardProvider from "../../context/dashboard";
 import DashboardSidebar from "../../layouts/DashboardSidebar";
 import Switchboard from "./Switchboard";
 
