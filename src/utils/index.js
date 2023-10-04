@@ -1,6 +1,7 @@
 import * as CryptoJS from "crypto-js";
 import * as XLSX from "xlsx";
 import parsePhoneNumber from "libphonenumber-js";
+import { Carnet } from "../constants/defaults";
 
 // Yoga Calander:
 export const standardNavbar = [
@@ -97,6 +98,31 @@ export const carnetsPeriodToPriceSessions = {
 		price: 1500,
 	},
 };
+
+export const DefaultCarnetsSettings = {
+	periods: ["1Y", "6M", "4M", "2M"],
+	sessions: [50, 30, 20, 10],
+	prices: [5000, 3600, 2600, 1500],
+};
+
+// periods map: 1Y => 1 year, xY or xM => x Year or X Month ...
+export const periodAccronymMap = (period) => {
+	const x =  period.slice(0,1);
+	const P = period.slice(1);
+	const map = { y: "Year", m: "Month",};
+	return `${x} ${x*1 >= 2 ? map[P.toLowerCase()]+'s' : map[P.toLowerCase()]}`;
+}
+
+export function carnetPicker(period="2M"){
+	delete Carnet.id;
+	switch (period.toUpperCase()) {
+		case "1Y": return {...Carnet, period, sessions: 50, price: 5000, remainingAmount: 5000};
+		case "6M": return {...Carnet, period, sessions: 30, price: 3600, remainingAmount: 3600};
+		case "4M": return {...Carnet, period, sessions: 20, price: 2600, remainingAmount: 2600};
+		case "2M": return {...Carnet, period, sessions: 10, price: 1500, remainingAmount: 1500};
+		default: return {...Carnet, period, sessions: 10, price: 1500, remainingAmount: 1500};
+	}
+}
 
 // alert message generator based on crud operations "CRUD" & DA: Delete All
 export function alertMessage(operation, topic, finished = false, operationDescription = "Operating on") {
