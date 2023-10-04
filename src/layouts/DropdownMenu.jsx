@@ -5,13 +5,14 @@ DropdownMenu.propTypes = {
     options: propTypes.arrayOf(propTypes.string).isRequired,
     onSelect: propTypes.func.isRequired,
     placeholder: propTypes.string.isRequired,
-    defaultSelected: propTypes.number,
+    // default selected option is eaither the index of the option or the option itself (string)
+    defaultSelected: propTypes.oneOfType([propTypes.number, propTypes.string]),
     menuStyle: propTypes.string,
     optionStyle: propTypes.string
 };
 
 export default function DropdownMenu({options, onSelect, placeholder, defaultSelected, menuStyle, optionStyle}) {
-    const selection = useRef(options[defaultSelected] || '');
+    const selection = useRef(typeof defaultSelected === 'number' ? options[defaultSelected] : options.find(option => option === defaultSelected));
     const [dropdownMenu, setDropdownMenu] = useState(false);
     const dropdownRef = useRef(null);
     const optionRef = useRef();
