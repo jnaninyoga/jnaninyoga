@@ -13,6 +13,7 @@ import {
   addDoc,
   deleteDoc,
   where,
+  getDoc,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,6 +39,7 @@ export default app;
 
 export const collectionDB = (name) => collection(DB, name);
 export const docSnap = async (collectionRef) => await getDocs(collectionRef);
+
 // Firebase FireStore TimeStamp
 export const timestamp = serverTimestamp();
 
@@ -48,6 +50,9 @@ export const document = (doc) => { return {...doc, createdAt: timestamp, deleted
 
 // return the doc ref
 export const getDocRef = (collection, id) => doc(DB, collection, id);
+
+// fetch a document by it ref from the (getDocRef) function
+export const fetchRefDoc = async (ref) => { return { ...await (await getDoc(ref)).data(), id: ref.id }};
 
 // fetch docs with limits
 export const fetchDocs = (collectionRef, ...queryConstraints) => query( collectionRef, ...queryConstraints);
