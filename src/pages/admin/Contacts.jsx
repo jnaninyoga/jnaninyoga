@@ -8,16 +8,18 @@ import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
 import Loader from "../../layouts/Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function Contacts() {
   const [contacts, DataLoading, DataError] = useData(names.contacts);
+  
+  // selected contact
+  const [pageSize, setPageSize] = useState(10);
+  const [selection, setSelection] = useState([]);
+
   // get the contact id 'CID' from the url search params
   const searchParams = useSearchParamsSerializer();
-  
-  const [pageSize, setPageSize] = useState(10);
-
-  // selected contact
-  const [selection, setSelection] = useState([]);
+  const navigate = useNavigate();
 
   // message modal state
   const [modal, setModal] = useState();
@@ -107,6 +109,7 @@ export default function Contacts() {
     if(e.target === e.currentTarget){
       setModal(null);
       setAlert({});
+      navigate({search: ''});
     }
   }
 

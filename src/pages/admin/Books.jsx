@@ -8,15 +8,18 @@ import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
 import Alert from "../../layouts/Alert";
 import Loader from "../../layouts/Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function Books() {
   const [books, DataLoading, DataError] = useData(names.books);
-  // get the booked session id 'BID' from the url search params
-  const searchParams = useSearchParamsSerializer();
-  const [pageSize, setPageSize] = useState(10);
 
   // selected Book
+  const [pageSize, setPageSize] = useState(10);
   const [selection, setSelection] = useState([]);
+
+  // get the booked session id 'BID' from the url search params
+  const searchParams = useSearchParamsSerializer();
+  const navigate = useNavigate();
 
   // message modal state
   const [modal, setModal] = useState();
@@ -107,6 +110,7 @@ export default function Books() {
     if(e.target === e.currentTarget){
       setModal(null);
       setAlert({});
+      navigate({search: ''});
     }
   }
 
