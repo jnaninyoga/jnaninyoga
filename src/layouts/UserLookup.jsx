@@ -4,7 +4,6 @@ import logo from "../assets/imgs/spine/logo.webp";
 import { dateFormater, whatsappLink } from "../utils";
 import { Helmet } from "react-helmet-async";
 import { useMemo, useState } from "react";
-import { HostName } from "../meta/meta";
 
 UserLookup.propTypes = {
 	user: PropTypes.shape({
@@ -124,7 +123,7 @@ export default function UserLookup({ user }) {
 							{/* biomethric informations */}
 							<h2 title={"User ID"} className="cinzel text-lg font-semibold text-gray-400">
 								# {withUserIDURL ? (
-									<a href={`${HostName}/lotus/users?id=${user.id}`} className={`outline-none hover:text-yoga-green focus:text-yoga-green hover:underline focus:underline underline-offset-4 transition-all`} target="_blank" rel="noreferrer">
+									<a href={`${import.meta.env.VITE_HOST_NAME}/lotus/users?id=${user.id}`} className={`outline-none hover:text-yoga-green focus:text-yoga-green hover:underline focus:underline underline-offset-4 transition-all`} target="_blank" rel="noreferrer">
 										{user.id}
 									</a>
 								) : (
