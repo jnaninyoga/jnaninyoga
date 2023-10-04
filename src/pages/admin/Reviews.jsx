@@ -155,6 +155,7 @@ export default function Reviews() {
         className="h-fit bg-yoga-white text-lg"
         rows={reviews}
         columns={columns}
+        loading={DataLoading}
         getRowId={(row) => row.id}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

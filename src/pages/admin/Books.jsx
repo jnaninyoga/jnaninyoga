@@ -214,6 +214,7 @@ export default function Books() {
         className="h-fit bg-yoga-white text-lg"
         rows={books}
         columns={columns}
+        loading={DataLoading}
         getRowId={(row) => row.id}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

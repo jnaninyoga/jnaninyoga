@@ -213,6 +213,7 @@ export default function Contacts() {
         className="h-fit bg-yoga-white text-lg"
         rows={contacts}
         columns={columns}
+        loading={DataLoading}
         getRowId={(row) => row.id}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
