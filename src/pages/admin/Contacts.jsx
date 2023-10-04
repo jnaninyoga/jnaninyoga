@@ -29,10 +29,10 @@ export default function Contacts() {
     closeAlert && setAlert({}); // close the alert
   }, []);
 
-  // check if the contact id 'CID' is presented in the search params,and set the Modal with the coresponding contact
+  // check if the contact id 'ID' is presented in the search params,and set the Modal with the coresponding contact
   useEffect(() => {
-    if(!searchParams.cid) return;
-    const contact = contacts.find((contact) => contact.id === searchParams.cid);
+    if(!searchParams.id) return;
+    const contact = contacts.find((contact) => contact.id === searchParams.id);
     contact && setModal(contact);
   }, [searchParams, contacts]);
 
@@ -197,7 +197,7 @@ export default function Contacts() {
 
   return (
     <>
-    <Box className={`w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4`}>
+    <Box className={`w-fit max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4`}>
 
       <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
         <button onClick={exportToXLSX} className={`cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < contacts.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
