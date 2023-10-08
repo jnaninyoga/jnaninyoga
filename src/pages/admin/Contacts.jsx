@@ -2,12 +2,12 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData, useSearchParamsSerializer } from "../../hooks";
 import { useCallback, useMemo, useState, useEffect } from "react";
-import Lookup from "../../layouts/Lookup";
+import Lookup from "../../layouts/admin/shared/Lookup";
 import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } from "../../utils";
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
-import Alert from "../../layouts/Alert";
-import Loader from "../../layouts/Loader";
+import Alert from "../../layouts/admin/shared/Alert";
+import Loader from "../../layouts/global/Loader";
 import { useNavigate } from "react-router-dom";
 
 export default function Contacts() {

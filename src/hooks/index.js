@@ -73,6 +73,7 @@ export function useAdminAuth() {
 	}, [activeBoard, searchParams]);
 
 	useEffect(() => {
+		if (!verifying) return;
 		(async () => {
 			const token = tokenDecoder();
 			// validate the token with firebase
@@ -80,9 +81,9 @@ export function useAdminAuth() {
 			// if not logged in redirect to login page
 			if (!token || token.password !== admin.password) {
 				// set invalid login session error in the local storage
-				localStorage.setItem("loginerror", "Your session has expired, please login again");
+				// localStorage.setItem("loginerror", "Your session has expired, please login again");
 				// set redirect url in the local storage
-				navigte(`/lotus/${currentLang.code}/login`);
+				navigte(`/lotus/${currentLang.code}/login?error=Your session has expired, please login again`);
 				setVerifying(false);
 				return;
 			}
@@ -90,7 +91,7 @@ export function useAdminAuth() {
 			if (token.password === admin.password) setAuth(true);
 			setVerifying(false);
 		})();
-	}, [currentLang.code, navigte, searchParams]);
+	}, [currentLang.code, navigte, verifying, searchParams]);
 
 	return { auth, verifying };
 }

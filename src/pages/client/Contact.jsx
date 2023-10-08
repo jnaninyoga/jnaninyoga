@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import Header from "../../layouts/Header";
-import Footer from "../../layouts/Footer";
-import Form from "../../layouts/Form";
-import OverLaped from "../../layouts/OverLaped";
+import Header from "../../layouts/global/Header";
+import Footer from "../../layouts/global/Footer";
+import Form from "../../layouts/global/Form";
+import OverLaped from "../../layouts/global/OverLaped";
 import banner from "../../assets/videos/banner.mp4";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import { contactFields } from "../../utils/form";
@@ -11,9 +11,9 @@ import Meta from "../../meta";
 import metadata from "../../meta/meta";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
 import { addDocument } from "../../firebase";
-import Error from "../../layouts/Error";
-import Thank from "../../layouts/Thank";
-import Followers from "../../components/Followers";
+import Error from "../../layouts/global/Error";
+import Thank from "../../layouts/client/shared/Thank";
+import Followers from "../../components/contact/Followers";
 import { names } from "../../firebase/collections";
 import { emailLog, sendEmail } from "../../email";
 

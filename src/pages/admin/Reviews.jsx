@@ -2,13 +2,13 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
 import { useCallback, useMemo, useState } from "react";
-import Lockup from "../../layouts/Lookup";
+import Lockup from "../../layouts/admin/shared/Lookup";
 import { dateFormater, supportedLanguages, toXlsx, alertMessage } from "../../utils";
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
-import Alert from "../../layouts/Alert";
-import Stars from "../../components/Stars";
-import Loader from "../../layouts/Loader";
+import Alert from "../../layouts/admin/shared/Alert";
+import Stars from "../../layouts/global/Stars";
+import Loader from "../../layouts/global/Loader";
 
 export default function Reviews() {
   const [reviews, DataLoading, DataError] = useData(names.reviews);

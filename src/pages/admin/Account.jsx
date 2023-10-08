@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import Form from "../../layouts/Form";
+import Form from "../../layouts/global/Form";
 import { alertMessage, clientIPify, date, dateFormater, tokenDecoder } from "../../utils";
 import { accountFields } from "../../utils/form";
 import { useData } from "../../hooks";
 import { names } from "../../firebase/collections";
 import { updateDocument } from "../../firebase";
-import Alert from "../../layouts/Alert";
-import Loader from "../../layouts/Loader";
+import Alert from "../../layouts/admin/shared/Alert";
+import Loader from "../../layouts/global/Loader";
 import { emailLog, sendEmail } from "../../email";
 
 export default function Account() {
