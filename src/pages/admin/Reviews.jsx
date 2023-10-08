@@ -2,13 +2,13 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData } from "../../hooks";
 import { useCallback, useMemo, useState } from "react";
-import Lockup from "../../layouts/Lookup";
+import Lockup from "../../layouts/admin/shared/Lookup";
 import { dateFormater, supportedLanguages, toXlsx, alertMessage } from "../../utils";
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
-import Alert from "../../layouts/Alert";
-import Stars from "../../components/Stars";
-import Loader from "../../layouts/Loader";
+import Alert from "../../layouts/admin/shared/Alert";
+import Stars from "../../layouts/global/Stars";
+import Loader from "../../layouts/global/Loader";
 
 export default function Reviews() {
   const [reviews, DataLoading, DataError] = useData(names.reviews);
@@ -144,7 +144,7 @@ export default function Reviews() {
 
   return (
     <>
-    <Box className="w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4">
+    <Box className="w-fit max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4">
 
       <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
         <button onClick={exportToXLSX} className={`cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < reviews.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
@@ -155,6 +155,7 @@ export default function Reviews() {
         className="h-fit bg-yoga-white text-lg"
         rows={reviews}
         columns={columns}
+        loading={DataLoading}
         getRowId={(row) => row.id}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -172,7 +173,7 @@ export default function Reviews() {
           author={modal.fullname}
           message={modal.review}
           lang={modal.lang}
-          date={dateFormater(modal.timestamp)}
+          date={dateFormater(modal.createdAt)}
           insertElement={<Stars rate={modal.rate} />}
           details={false}
         />

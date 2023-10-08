@@ -3,11 +3,11 @@ import Home from "./pages/client/Home";
 import About from "./pages/client/About";
 import Contact from "./pages/client/Contact";
 import Classes from "./pages/client/Classes";
-import NotFound from "./layouts/404";
+import NotFound from "./layouts/global/404";
 import Auth from "./pages/admin/Auth";
 import Dashboard from "./pages/admin/Dashboard";
 import BookNow from "./pages/client/BookNow";
-import Error from "./layouts/Error";
+import Error from "./layouts/global/Error";
 
 const router = [
   // Home page & localization path

@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import Footer from "../../layouts/Footer";
-import Header from "../../layouts/Header";
-import OverLaped from "../../layouts/OverLaped";
+import Footer from "../../layouts/global/Footer";
+import Header from "../../layouts/global/Header";
+import OverLaped from "../../layouts/global/OverLaped";
 import banner from "../../assets/videos/banner.mp4";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
 import Icon from "../../assets/svg";
@@ -10,7 +10,7 @@ import { useActivePage, useIntersectView, usePathLanguage } from "../../hooks";
 import { useTranslation } from "react-i18next";
 import Meta from "../../meta";
 import metadata from "../../meta/meta";
-import Map from "../../components/Map";
+import Map from "../../components/about/Map";
 
 export default function About() {
   const { t } = useTranslation();

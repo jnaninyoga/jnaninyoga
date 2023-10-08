@@ -2,22 +2,24 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData, useSearchParamsSerializer } from "../../hooks";
 import { useCallback, useMemo, useState, useEffect } from "react";
-import Lookup from "../../layouts/Lookup";
+import Lookup from "../../layouts/admin/shared/Lookup";
 import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } from "../../utils";
 import { names } from "../../firebase/collections";
 import { deleteDocument, updateDocument } from "../../firebase";
-import Alert from "../../layouts/Alert";
-import Loader from "../../layouts/Loader";
+import Alert from "../../layouts/admin/shared/Alert";
+import Loader from "../../layouts/global/Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function Contacts() {
   const [contacts, DataLoading, DataError] = useData(names.contacts);
+  
+  // selected contact
+  const [pageSize, setPageSize] = useState(10);
+  const [selection, setSelection] = useState([]);
+
   // get the contact id 'CID' from the url search params
   const searchParams = useSearchParamsSerializer();
-  
-  const [pageSize, setPageSize] = useState(10);
-
-  // selected contact
-  const [selection, setSelection] = useState([]);
+  const navigate = useNavigate();
 
   // message modal state
   const [modal, setModal] = useState();
@@ -29,10 +31,10 @@ export default function Contacts() {
     closeAlert && setAlert({}); // close the alert
   }, []);
 
-  // check if the contact id 'CID' is presented in the search params,and set the Modal with the coresponding contact
+  // check if the contact id 'ID' is presented in the search params,and set the Modal with the coresponding contact
   useEffect(() => {
-    if(!searchParams.cid) return;
-    const contact = contacts.find((contact) => contact.id === searchParams.cid);
+    if(!searchParams.id) return;
+    const contact = contacts.find((contact) => contact.id === searchParams.id);
     contact && setModal(contact);
   }, [searchParams, contacts]);
 
@@ -107,6 +109,7 @@ export default function Contacts() {
     if(e.target === e.currentTarget){
       setModal(null);
       setAlert({});
+      navigate({search: ''});
     }
   }
 
@@ -197,7 +200,7 @@ export default function Contacts() {
 
   return (
     <>
-    <Box className={`w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4`}>
+    <Box className={`w-fit max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4`}>
 
       <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
         <button onClick={exportToXLSX} className={`cinzel h-full min-w-max text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < contacts.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
@@ -210,6 +213,7 @@ export default function Contacts() {
         className="h-fit bg-yoga-white text-lg"
         rows={contacts}
         columns={columns}
+        loading={DataLoading}
         getRowId={(row) => row.id}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -228,7 +232,7 @@ export default function Contacts() {
           {...modal}
           status={modal.answered}
           statusDisplay={modal.answered ? "Answered" : "Not Answered"}
-          date={dateFormater(modal.timestamp)}
+          date={dateFormater(modal.createdAt)}
           succes="Answered"
           abort="Not Answered"
           forSucces={() => updateContact(modal.id, { answered: true }) }

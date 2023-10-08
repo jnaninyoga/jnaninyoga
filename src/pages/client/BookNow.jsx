@@ -1,19 +1,19 @@
-import Footer from "../../layouts/Footer";
-import Header from "../../layouts/Header";
-import OverLaped from "../../layouts/OverLaped";
+import Footer from "../../layouts/global/Footer";
+import Header from "../../layouts/global/Header";
+import OverLaped from "../../layouts/global/OverLaped";
 import banner from "../../assets/videos/redleaves.mp4";
 import LotusOverlay from "../../assets/imgs/icons/lotusOverlay.webp";
-import Form from "../../layouts/Form";
+import Form from "../../layouts/global/Form";
 import { bookNowFields } from "../../utils/form";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCurrentLanguage, usePathLanguage } from "../../hooks";
 import { addDocument } from "../../firebase";
 import { names } from "../../firebase/collections";
-import Error from "../../layouts/Error";
-import Thank from "../../layouts/Thank";
+import Error from "../../layouts/global/Error";
+import Thank from "../../layouts/client/shared/Thank";
 import Meta from "../../meta";
-import metadata, { HostName } from "../../meta/meta";
+import metadata from "../../meta/meta";
 import { emailLog, sendEmail } from "../../email";
 
 export default function BookNow() {
@@ -58,9 +58,9 @@ export default function BookNow() {
             <li><strong>Phone:</strong> ${bookdata.phone}</li>
             <li><strong>Interest:</strong> ${bookdata.interest}</li>
           </ul>
-          <p><strong><u>BOOKS DASHBOARD:</u></strong> <a href="${HostName}/lotus/books?bid=${book.id}">${HostName}/lotus/books?bid=${book.id}</a></p>
+          <p><strong><u>BOOKS DASHBOARD:</u></strong> <a href="${import.meta.env.VITE_HOST_NAME}/lotus/books?id=${book.id}">${import.meta.env.VITE_HOST_NAME}/lotus/books?id=${book.id}</a></p>
         `,
-        text: `New Booking From, ${bookdata.fullname}\nYou have a new contact from, ${bookdata.fullname}.\nName: ${bookdata.fullname}\nEmail: ${bookdata.email}\nPhone: ${bookdata.phone}\nInterest: ${bookdata.interest}\nBOOKS DASHBOARD: ${HostName}/lotus/books?bid=${book.id}`
+        text: `New Booking From, ${bookdata.fullname}\nYou have a new contact from, ${bookdata.fullname}.\nName: ${bookdata.fullname}\nEmail: ${bookdata.email}\nPhone: ${bookdata.phone}\nInterest: ${bookdata.interest}\nBOOKS DASHBOARD: ${import.meta.env.VITE_HOST_NAME}/lotus/books?id=${book.id}`
       });
       // email log
       await emailLog("booking", book, emaillog.messageId);

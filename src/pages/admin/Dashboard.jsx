@@ -1,7 +1,6 @@
 import ActiveBoardProvider from "../../context/activeboard";
-// import DashboardProvider from "../../context/dashboard";
-import DashboardSidebar from "../../layouts/DashboardSidebar";
-import Switchboard from "./Switchboard";
+import DashboardSidebar from "../../layouts/admin/shared/DashboardSidebar";
+import Switchboard from "../../layouts/admin/shared/Switchboard";
 
 export default function Dashboard() {
   return (

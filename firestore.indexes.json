@@ -61,6 +61,20 @@
       ]
     },
     {
+      "collectionGroup": "configurations",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "settings",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "contacts",
       "queryScope": "COLLECTION",
       "fields": [

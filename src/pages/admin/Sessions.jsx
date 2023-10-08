@@ -1,15 +1,15 @@
-import Session from '../../components/Session'
+import Session from '../../components/sessions/Session'
 import { useData } from '../../hooks'
 import { useMemo, useRef, useState } from 'react';
 import { standardDays, standardYogaCoursesTypes } from '../../utils'
 import BG from "../../assets/imgs/spine/GreenMat.webp";
-import SessionLookup from '../../layouts/SessionLookup';
+import SessionLookup from '../../layouts/admin/sessions/SessionLookup';
 import { useTranslation } from 'react-i18next';
 import { updateDocument } from '../../firebase';
 import { names } from '../../firebase/collections';
-import SessionCreation from '../../layouts/SessionCreation';
-import Alert from '../../layouts/Alert';
-import Loader from '../../layouts/Loader';
+import SessionCreation from '../../layouts/admin/sessions/SessionCreation';
+import Alert from '../../layouts/admin/shared/Alert';
+import Loader from '../../layouts/global/Loader';
 
 export default function Sessions() {
   const [classes, DataLoading , DataError] = useData(names.classes);

@@ -386,11 +386,11 @@
 
 body{
   background-image: url('/src/assets/imgs/spine/BeigeMat.webp');
-  background-color: var(--bg);
+  /* background-color: var(--bg); */
   background-size: 564px;
-  background-repeat: repeat;
-  background-origin: border-box;
-  background-attachment: fixed;
+  /* background-repeat: repeat; */
+  /* background-origin: border-box; */
+  /* background-attachment: fixed; */
 }
 
 /* Remove the BG img when media is print */
