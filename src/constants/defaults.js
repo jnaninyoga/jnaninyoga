@@ -48,27 +48,6 @@ export const Carnet = {
 	createdAt: new Date().toDateString(),
 }
 
-//   {
-//     "sessions": [
-//         50,
-//         30,
-//         20,
-//         10
-//     ],
-//     "prices": [
-//         5000,
-//         3600,
-//         2600,
-//         1500
-//     ],
-//     "periods": [
-//         "1Y",
-//         "6M",
-//         "4M",
-//         "2M"
-//     ]
-// }
-
 // default contact:
 export const Contact = {
 	id: 0,
