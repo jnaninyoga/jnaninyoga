@@ -15,15 +15,13 @@ Meta.propTypes = {
 
 export default function Meta(meta) {
     const { title, description, keywords, image, url, type } = meta;
-    // const activePage = useActivePage();
-    // const { description, keywords, image, url, type } = metadata[activePage] || metadata["notfound"];
 
     return (
         <Helmet prioritizeSeoTags>
             <title>{title}</title>
             <meta name="author" content="Jnanin Yoga Studio"/>
             {/* Canonical */}
-            <link rel="canonical" href="https://jnaninyoga.com/"/>
+            <link rel="canonical" href={url}/>
             
             {/* OGP - Open Graph Protocol */}
             <meta name="title" property="og:title" content={title}/>
