@@ -4,16 +4,16 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useData, useSearchParamsSerializer } from "../../hooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { dateFormater, whatsappLink, toXlsx, alertMessage, userAge } from "../../utils";
+import { dateFormater, whatsappLink, toXlsx, alertMessage, userAge, carnetPicker } from "../../utils";
 import { userFields } from "../../utils/form";
 import { names } from "../../firebase/collections";
 import { addRefDocument, deleteOnCascade, updateDocument } from "../../firebase";
-import Alert from "../../layouts/Alert";
-import Form from "../../layouts/Form";
-import UserLookup from "../../layouts/UserLookup";
-import Loader from '../../layouts/Loader';
+import Alert from "../../layouts/admin/shared/Alert";
+import Form from "../../layouts/global/Form";
+import UserLookup from "../../layouts/admin/users/UserLookup";
+import Loader from '../../layouts/global/Loader';
 import { addContact, deleteContact, updateContact } from '../../email';
-import { defaultCarnet } from '../../constants/defaults';
+import { useNavigate } from 'react-router-dom';
 
 export default function Users() {
   const [users, DataLoading, DataError] = useData(names.users);
@@ -22,6 +22,7 @@ export default function Users() {
 
   // get the user id 'UID' from the url search params
   const searchParams = useSearchParamsSerializer();
+  const navigate = useNavigate();
   
   const [pageSize, setPageSize] = useState(10);
   const [selection, setSelection] = useState([]);
@@ -38,8 +39,8 @@ export default function Users() {
 
   // check if the user id 'UID' is presented in the search params,and set the Modal with the coresponding user
   useEffect(() => {
-    if(!searchParams.uid) return;
-    const user = users.find((user) => user.id === searchParams.uid);
+    if(!searchParams.id) return;
+    const user = users.find((user) => user.id === searchParams.id);
     user && setModal({type: "R", data: user});
   }, [searchParams, users]);
 
@@ -63,7 +64,7 @@ export default function Users() {
     try {
       // clear the form error message
       setOperationError(false);
-      await addRefDocument(names.users, {...user, age: await userAge(user.birthdate)}, names.carnets, defaultCarnet(), 'user');
+      await addRefDocument(names.users, {...user, age: await userAge(user.birthdate)}, names.carnets, carnetPicker(), 'user');
       await addContact({firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
       setModal(null);
       setAlert({...alertMessage("C", "User", true), onConfirm: alertAction, onCancel: alertAction})
@@ -71,21 +72,27 @@ export default function Users() {
       console.error(error);
       setOperationError(true);
       // throw an error alert to try again
-      setAlert({ ...alertMessage("E", "User", true, "Creating"), confirm: "Try Again", onConfirm: () => alertAction(() => createUser(user)), onCancel: alertAction })
+      setAlert({ ...alertMessage("E", "User", true, "Creating"), confirm: "Try Again", onConfirm: () => alertAction(async () => await createUser(user)), onCancel: alertAction })
     }
   }, [alertAction]);
 
   // delete User
   const deleteUser = useCallback(async (id) => {
     try {
-      await deleteOnCascade(names.users, id, names.carnets, 'user');
       await deleteContact(users.find(user => user.id === id).email)
+      setAlert({...alertMessage("D", "Brevo Contact", true), onConfirm: alertAction, onCancel: alertAction})
+    } catch (error) {
+      console.error(error);
+      setAlert({ ...alertMessage("E", "Brevo Contact", true, "Deleting"), confirm: "Try Again", onConfirm: alertAction, onCancel: alertAction })
+    }
+    try {
+      await deleteOnCascade(names.users, id, names.carnets, 'user');
       const restoreUser = async () => await deleteOnCascade(names.users, id, names.carnets, 'user', true);
       setAlert({...alertMessage("D", "User", true), onConfirm: () => alertAction(restoreUser), onCancel: alertAction, confirm: "Restore"})
     } catch (error) {
       console.error(error);
       // throw an error alert to try again
-      setAlert({ ...alertMessage("E", "User", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(() => deleteUser(id)), onCancel: alertAction })
+      setAlert({ ...alertMessage("E", "User", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(async () => await deleteUser(id)), onCancel: alertAction })
     }
   }, [alertAction, users]);
 
@@ -115,7 +122,7 @@ export default function Users() {
       console.error(error);
       setOperationError(true);
       // throw an error alert to try again
-      setAlert({ ...alertMessage("E", "User", true, "Updating"), confirm: "Try Again", onConfirm: () => alertAction(() => updateUser(user)), onCancel: alertAction })
+      setAlert({ ...alertMessage("E", "User", true, "Updating"), confirm: "Try Again", onConfirm: () => alertAction(async () => await updateUser(user)), onCancel: alertAction })
     }
   }, [alertAction, modal]);
 
@@ -160,6 +167,7 @@ export default function Users() {
     if(e.target === e.currentTarget){
       setModal(null);
       setAlert({});
+      navigate({search: ""});
     }
   }
 
@@ -203,7 +211,7 @@ export default function Users() {
       valueFormatter: ({ value }) => dateFormater(value, false)
     },
 
-    { field: "email", headerName: "Email", width: 10,
+    { field: "email", headerName: "Email", width: 150,
       sortable: false,
       renderCell: ({ value }) => ( <a title={value} href={`mailto:${value}`} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
@@ -289,6 +297,7 @@ export default function Users() {
         className="h-fit bg-yoga-white text-lg"
         rows={users}
         columns={columns}
+        loading={DataLoading}
         getRowId={(row) => row.id}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -305,9 +314,9 @@ export default function Users() {
       modal.type === "C" || modal.type === "U" ?
       // Create User
       <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-full print:w-full print:bg-white">
-          <div className="relative flex h-[95%] md:w-[60%] w-[95%] bg-yoga-white overflow-hidden" >
+          <div className="relative flex h-[95%] md:w-[70%] w-[95%] max-w-2xl bg-yoga-white overflow-hidden" >
               <img src={user.sex?.toLowerCase() == 'male' ? BGMale : BGFemale} alt="background" className={`h-full w-full select-none object-cover object-center bg-center bg-cover opacity-60`} />
-              <div className="absolute top-0 left-0 py-6 w-full h-full flex overflow-y-auto overflow-x-hidden bg-contain" > 
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 py-6 w-full h-full flex justify-center overflow-y-auto overflow-x-hidden" > 
                 <Form
                   dark
                   animatedIcon
@@ -341,7 +350,7 @@ export default function Users() {
     {/* Alert Message */}
     {alert.title && (
       <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200100]">
-          <Alert {...alert} />
+        <Alert {...alert} />
       </section>
     )}
     </>

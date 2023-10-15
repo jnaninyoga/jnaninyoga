@@ -10,9 +10,6 @@ import 'react-phone-number-input/style.css';
 import { clientIPify } from '../../utils';
 
 const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="Submit", ErrorMessage="Something went wrong, please try again", EmptyErrorMessage="Please fill all the required fields", onSubmit= async form => console.log("FORM DATA: ", form), onReset=e=>e.preventDefault(), dark=false, animatedIcon=false, errorTrigger=false}) => {
-	const formRenderCount = useRef(0);
-	console.log("Form Rendered: ", ++formRenderCount.current);
-
 	// get the current language to know wich direction the form should be: ltr or rtl
 	const currentLanguage = useCurrentLanguage();
 

@@ -254,7 +254,7 @@
       @apply scale-[.98];
     }
 
-    .form-field{
+    .form-field, .field{
       @apply w-full;
       @apply h-fit;
       @apply min-h-[3rem];
