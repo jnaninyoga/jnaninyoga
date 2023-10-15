@@ -45,6 +45,7 @@ export const Carnet = {
 	price: 1500, // price of the carnet, prices: 5000MAD, 3600MAD, 2600MAD, 1500MAD
 	paidAmount: 0, // amount paid by the user
 	remainingAmount: 1500, // remaining amount to pay
+	payments: [], // payments history
 	createdAt: new Date().toDateString(),
 }
 
