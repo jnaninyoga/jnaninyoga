@@ -5,8 +5,9 @@ import "handyscript";
 import './locale/index'
 // TAILWIND - CSS
 import './styles/index.css'
+import './styles/loader.css'
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById("YogaMat");
 // const reactRoot = ReactDOM.createRoot(rootElement);
 
 if (rootElement.hasChildNodes()) {

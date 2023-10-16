@@ -2,16 +2,12 @@
     "navbar":["Accueil", "A propos", "Contact", "Les Séances"],
     "dashboardNavbar": ["Contacts","Avis","Les Séances","Compte"],
     "home": {
-        "meta":{
-            "title":"Accueil - Jnanin Yoga Studio",
-            "description": "Découvrez le bien-être holistique et embrassez votre force intérieure au Jnanin Yoga Studio. Rejoignez-moi (le coach de yoga Ouarda) alors que je vous guide à travers des cours stimulants qui nourrissent votre esprit, votre corps et votre esprit. Adoptez l'équilibre, l'autonomisation et la découverte de soi au sein de notre communauté inclusive.",
-            "keywords": "Studio de yoga, dirigé par des femmes, bien-être holistique, autonomisation, esprit-corps-esprit, cours de yoga, découverte de soi, équilibre, force intérieure, voyage transformateur, coach de yoga Ouarda, pleine conscience, méditation, flexibilité, force, communauté, inclusivité, bien-être , soulagement du stress, relaxation, respiration, santé, fitness, énergie positive, tranquillité"
-        },
+        "metaTitle":"Jnanin Yoga Studio: renforcez votre esprit, votre corps et votre esprit avec Coach Ouarda",
         "hero":{
             "title":"Le yoga est le voyage de soi, à travers soi, vers soi",
             "text":"Le yoga, une pratique intemporelle qui a transcendé les générations, contient une mine de sagesse et d'inspiration. Alors que nous nous embarquons dans ce voyage transformateur, nous nous souvenons des paroles du grand sage Patanjali, qui a dit : « Le yoga est l'apaisement des fluctuations de l'esprit. Dans un monde rempli de bruit et de distractions constants, le yoga nous invite à trouver la tranquillité au milieu du chaos."
         },
-        "overview":["Séances","Studio","Yoga"],
+        "gallery":"Jnanin Yoga Studio Galerie",
         "yogamotivation":[
             {
                 "title": "Libérez votre potentiel",
@@ -55,21 +51,13 @@
         }
     },
     "about": {
-        "meta":{
-            "title":"A propos - Jnanin Yoga Studio",
-            "description": "Je suis Ouarda, une coach marocaine passionnée de Yoga. Je guide les individus dans un voyage transformateur vers le bien-être holistique, en adaptant mes enseignements pour répondre à des besoins et des objectifs uniques. En mettant l'accent sur la respiration, la pleine conscience et la méditation, je libère un véritable potentiel et cultive l'amour de soi. Rejoignez-moi pour un beau voyage de découverte de soi, nourrissant le corps et l'âme pour une vie équilibrée.",
-            "keywords": "Coach de yoga, bien-être holistique, voyage transformateur, traditions marocaines, respiration, pleine conscience, méditation, découverte de soi, besoins uniques, amour de soi, vie équilibrée."
-        },
+        "metaTitle":"Rencontrez Ouarda: votre guide du bien-être holistique grâce au yoga",
         "title":"Yoga avec Ouarda",
         "text":"Bonjour, belles âmes! Je suis Ouarda, une coach de yoga marocaine, et je suis incroyablement passionnée par l'accompagnement des individus dans leur voyage transformateur vers le bien-être holistique. Ayant grandi dans la tapisserie culturelle vibrante du Maroc, j'ai toujours été fasciné par la sagesse et la beauté qui imprègnent nos traditions.Mon exploration personnelle du yoga m'a conduit sur un chemin de découverte de soi et j'ai réalisé l'impact profond qu'il avait sur mon esprit, mon corps et mon esprit. Cette prise de conscience a suscité en moi un profond désir de partager cette pratique incroyable avec les autres et de créer un espace où les individus peuvent trouver réconfort, force et paix intérieure.En tant que coach de yoga, ma mission est de fournir un environnement stimulant et inclusif à chaque personne qui franchit ma porte. Je crois que le yoga est pour tout le monde, peu importe l'âge, la forme ou l'expérience. Je m'efforce d'adapter mes enseignements pour répondre aux besoins et aux objectifs uniques de chaque élève, en les guidant dans leur cheminement personnel de croissance.Au-delà des aspects physiques du yoga, j'insiste sur l'importance de la respiration, de la pleine conscience et de la méditation. Ces pratiques ont transformé ma propre vie, et je crois qu'elles sont essentielles pour libérer notre véritable potentiel et trouver l'harmonie en nous-mêmes.Grâce à mon coaching, je vise à donner aux individus les moyens d'embrasser leur moi authentique, de cultiver l'amour de soi et de vivre en pleine conscience dans tous les aspects de leur vie. Je suis honoré de faire partie des voyages de transformation de mon élève, témoin de l'épanouissement de la force, de la résilience et de la paix intérieure.Alors, si vous êtes prêt à vous lancer dans un beau voyage de découverte de soi, je vous invite chaleureusement à me rejoindre sur le tapis. Ensemble, explorons les profondeurs du yoga, nourrissons nos corps et nos âmes et créons une vie d'équilibre, de joie et d'abondance.",
         "map": "La localisation de Jnanin Yoga Studio"
     },
     "contact": {
-        "meta":{
-            "title":"Contact - Jnanin Yoga Studio",
-            "description": "N'hésitez pas à me contacter au Jnain Yoga Studio via notre formulaire de contact, e-mail ou téléphone. Je suis là pour vous aider avec toute demande de renseignements ou fournir des informations sur nos services. Soyez assuré que je vous répondrai rapidement si vous remplissez le formulaire de contact. Merci de votre intérêt pour Jnain Yoga Studio; J'ai hâte de communiquer avec vous bientôt.",
-            "keywords": "Yoga studio, Contact, tendre la main, enquête, information, communication, message, e-mail, téléphone, connexion, formulaire de contact, Jnain Yoga Studio."
-        },
+        "metaTitle":"Entrez en contact avec Jnain Yoga Studio: contactez-nous dès aujourd'hui!",
         "title": "Contactez Nous",
         "form":{
             "fields": {
@@ -84,10 +72,8 @@
                 "phone": "Le numéro de téléphone doit comporter 10 chiffres",
                 "message": "Le message doit être au moins 2 caractères"
             },
-            "onEmpty": "Veuillez remplir tous les champs",
-            "empty": "Veuillez remplir le champ '{{field}}'",
             "onSuccess": "Votre message a été envoyé avec succès, nous vous contacterons bientôt.",
-            "sendBtn": "Envoyer",
+            "submitBtn": "Envoyer",
             "resetBtn": "Annuler"
         },
         "thank":{
@@ -97,11 +83,7 @@
         }
     },
     "booknow": {
-        "meta":{
-            "title":"Réservez maintenant - Jnanin Yoga Studio",
-            "description": "Réservez maintenant votre session de yoga en ligne au Jnain Yoga Studio. Veuillez remplir le formulaire de réservation et nous vous contacterons pour confirmer votre réservation. Merci de votre intérêt pour Jnain Yoga Studio; J'ai hâte de communiquer avec vous bientôt.",
-            "keywords": "Yoga studio, Réservez maintenant, réservation, session, formulaire de réservation, Jnain Yoga Studio."
-        },
+        "metaTitle":"Réservez votre séance de yoga au Jnain Yoga Studio: commencez votre voyage holistique maintenant",
         "title": "Réservez maintenant",
         "form":{
             "fields": {
@@ -116,7 +98,7 @@
                 "phone": "Le numéro de téléphone doit comporter 10 chiffres",
                 "interest": "Votre intérêt doit être d'au moins 10 caractères"
             },
-            "sendBtn": "Réservez",
+            "submitBtn": "Réservez",
             "resetBtn": "Annuler"
         },
         "thank":{
@@ -126,11 +108,7 @@
         }
     },
     "classes": {
-        "meta":{
-            "title":"Les Séances - Jnanin Yoga Studio",
-            "description": "Explorez la page Cours de Jnain Yoga Studio, où vous embarquerez pour un voyage de yoga holistique. Plongez dans notre programme soigneusement organisé, inscrivez-vous sans effort à vos cours préférés et commencez votre chemin extraordinaire vers le bien-être et l'exploration de soi.",
-            "keywords": "Cours, horaire, emploi du temps, séances de yoga, Jnain Yoga Studio, horaire des séances, calendrier, réservation, disponibilité."
-        },
+        "metaTitle":"Découvrez le calendrier des cours de yoga au Jnain Yoga Studio : votre chemin vers le bien-être holistique",
         "days": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
         "yogaCoursesTypes": [
             {
@@ -153,13 +131,9 @@
         "sessionInstructor": "Le {{course}} commence à '{{start}}' et se termine à '{{end}}' en (format 24h)"
     },
     "notfound": {
-        "meta":{
-            "title":"404 - Jnanin Yoga Studio",
-            "description": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
-            "keywords": "Page non trouvée, 404, erreur, page d'accueil, Jnain Yoga Studio."
-        },
-        "title": "Page non trouvée",
-        "text": "La page que vous recherchez n'a pas été trouvée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
+        "metaTitle":"Oops! Vous avez atteint la zone zen - Nos tapis de yoga semblent être partis dans une aventure consciente. 🧘‍♀️🌿",
+        "title": "Oops! Vous avez atteint la zone zen - Nos tapis de yoga semblent être partis dans une aventure consciente. 🧘‍♀️🌿",
+        "text": "Pendant que les tapis vous offrent un moment de tranquillité, pourquoi ne pas explorer le reste de notre oasis sereine ? Revenez à notre page d'accueil pour continuer votre voyage vers la paix intérieure et le bien-être. En attendant, respirez profondément, étirez vos membres virtuels et trouvons notre chemin ensemble. Namasté. 🙏✨",
         "btn": "Retour à la page d'accueil"
     },
     "adminauth":{
@@ -173,8 +147,17 @@
                 "username": "Invalid Nom d'utilisateur",
                 "password": "Invalid Mot de passe"
             },
-            "onEmpty": "Nom d'utilisateur ou Mot de passe est incorrect",
+            "error": "Nom d'utilisateur ou Mot de passe est incorrect",
             "login": "connexion"
         }
+    },
+    "GlobalError":{
+        "title": "Erreur",
+        "text": "Une erreur s'est produite, veuillez réessayer plus tard.",
+        "btn": "Réessayer"
+    },
+    "GlobalForm":{
+        "emptyField": "Veuillez remplir le champ '{{field}}'",
+        "emptyFields": "Veuillez remplir tous les champs"
     }
 }

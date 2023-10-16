@@ -30,13 +30,23 @@ export default function DashboardProvider(props) {
 
     useEffect(() => {
         Object.keys(collections).forEach(async (collection) => {
-            try {
-                if(collection === names.auth){
+            if(collection === names.auth){
+                try {
                     const admin = (await docSnap(collections.auth)).docs[0];
                     setData((prevData) => ({ ...prevData, [collection]: { ...admin.data(), id: admin.id } }));
+                } catch (error) {
+                    console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                    setError(error);
+                } finally {
+                    setLoading(false);
+                }
 
-                } else if(collection === names.classes){
+            } else if(collection === names.classes){
+                try {
                     onSnapshot(fetchDocs(collections[collection], orderBy("order")), (querySnapshot) => {
+                        // check if the session still valid:
+                        // if(!verifying && !auth ) navigate("/lotus/login?error=Your session has expired, please login again");
+
                         // set the documents in the collection state with there ids
                         // order the sessions by there time that session is starting, the start time is like this: sessions = [{type: number, start: string = "hh:mm"}, {type: number, start: string = "hh:mm"}]
                         // checking for sessions who not have a start time like this: sessions = [{type: number}, {type: number, start: string = "hh:mm"}]
@@ -44,28 +54,38 @@ export default function DashboardProvider(props) {
                         // console.log("classes", data.classes);
                         setData((prevData) => ({ ...prevData, [collection]: querySnapshot.docs.map((doc) => ({ ...doc.data(), day: doc.id })) }));
                     });
+                } catch (error) {
+                    console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                    setError(error);
+                } finally {
+                    setLoading(false);
+                }
 
-                } else {
+            } else {
+                try{
                     onSnapshot(fetchDescDocs(collections[collection], where("deleted", "==", false)), (querySnapshot) => {
+                        // check if the session still valid:
+                        // if(!verifying && !auth ) navigate("/lotus/login?error=Your session has expired, please login again");
                         // set the documents in the collection state with there ids
                         setData((prevData) => ({ ...prevData, [collection]: querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) }));
                     });
+                } catch (error) {
+                    console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+                    setError(error);
+                } finally {
+                    setLoading(false);
                 }
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setError(error);
-            }}
-        );
-    }, []);
+            } 
+        });
+    }, [verifying]);
 
-    // console.log("DASHBOARD DATA:", data);
+    console.log("DASHBOARD DATA:", data);
 
     // it the auth validation is not done yet, return a loading screen
     if (verifying) return <Suspens/>;
 
     // if there is an error, return an error screen
-    if (error) return <Error error={error} />;
+    if (error) { alert(error.message || error); return <Error error={error} />}
 
     return (
         <DashboardContext.Provider value={DashBoard}>

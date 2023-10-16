@@ -1,7 +1,6 @@
 // using Helmet to setupe mata data for each page
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import PropType from 'prop-types';
-import { HostName } from './meta';
 
 Meta.propTypes = {
     meta: PropType.shape({
@@ -16,15 +15,13 @@ Meta.propTypes = {
 
 export default function Meta(meta) {
     const { title, description, keywords, image, url, type } = meta;
-    // const activePage = useActivePage();
-    // const { description, keywords, image, url, type } = metadata[activePage] || metadata["notfound"];
 
     return (
         <Helmet prioritizeSeoTags>
             <title>{title}</title>
             <meta name="author" content="Jnanin Yoga Studio"/>
             {/* Canonical */}
-            <link rel="canonical" href="https://jnaninyoga.com/"/>
+            <link rel="canonical" href={url}/>
             
             {/* OGP - Open Graph Protocol */}
             <meta name="title" property="og:title" content={title}/>
@@ -32,7 +29,7 @@ export default function Meta(meta) {
             <meta name="keywords" content={keywords}/>
             <meta property="og:type" content={type || "website"}/>
             <meta property="og:url" content={url}/>
-            <meta name="image" property="og:image" itemProp="image" content={HostName + image}/>
+            <meta name="image" property="og:image" itemProp="image" content={import.meta.env.VITE_HOST_NAME + image}/>
             <meta property="og:image:type" content="image/jpg"/>
             <meta property="og:image:width" content="1280"/>
             <meta property="og:image:height" content="640"/>
@@ -42,7 +39,7 @@ export default function Meta(meta) {
             <meta name="twitter:card" content="summary_large_image"/>
             <meta name="twitter:title" content={title}/>
             <meta name="twitter:description" content={description}/>
-            <meta name="twitter:image" content={HostName + image}/>
+            <meta name="twitter:image" content={import.meta.env.VITE_HOST_NAME + image}/>
             <meta name="twitter:image:alt" content="Jnanin Yoga Studio"/>
         </Helmet>
     )
