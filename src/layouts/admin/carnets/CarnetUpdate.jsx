@@ -39,29 +39,49 @@ CarnetUpdate.propTypes = {
 
 export default function CarnetUpdate({ carnet, configurations, onUpdate, onCancel}) {
   const [carnetData, setCarnetData] = useState(carnet);
+  const [paymentTicketSwitch, setPaymentTicketSwitch] = useState(false);
+
+  console.log(carnetData);
   
   // calculate the progress in the fly
   carnetData.progress = Math.round((carnetData.passedSessions / carnetData.sessions) * 100);
 
   const totalPayments = useMemo(() => carnetData.payments.reduce((acc, payment) => acc + payment.amount, 0), [carnetData]);
 
-  const remainingAmount = useCallback(paiment => {
-    return carnetData.price - (totalPayments + paiment*1) < 0 ? carnetData.price : carnetData.price - (totalPayments + paiment*1)
-  }, [carnetData, totalPayments]);
+  // const remainingAmount = useCallback(paiment => {
+  //   return carnetData.price - (totalPayments + paiment*1) < 0 ? carnetData.price : carnetData.price - (totalPayments + paiment*1)
+  // }, [carnetData, totalPayments]);
+
+  const addPayment = useCallback(amount => {
+    setPaymentTicketSwitch(false);
+    if (amount > 0 && amount <= carnetData.price && amount <= carnetData.remainingAmount) {
+      setCarnetData(prev => ({
+        ...prev,
+        paidAmount: amount,
+        remainingAmount: carnetData.price - (totalPayments + amount) < 0 ? carnetData.price : carnetData.price - (totalPayments + amount),
+      }));
+    }
+  }, [carnetData.price, carnetData.remainingAmount, totalPayments]);
+
+  // push the payment ticket to the payments array history
+  const addPaymentTicket = useCallback(() => { 
+    if (carnetData.paidAmount > 0 && carnetData.paidAmount <= carnetData.price && totalPayments + carnetData.paidAmount <= carnetData.price) {
+      setCarnetData(prev => ({
+        ...prev,
+        payments: [...prev.payments, { amount: prev.paidAmount, date: serverTimestamp() }],
+      }));
+      setPaymentTicketSwitch(true);
+    }
+  }, [carnetData.paidAmount, carnetData.price, totalPayments]);
 
   const updateCarnet = useCallback( async (e) => {
     e.preventDefault();
     try {
-      const isCarntUpdated = Object.keys(carnetData).some(key => carnetData[key] !== carnet[key]);
-      // add pyment history if the paidAmount > 0 && paidAmount < price && carnetData !== carnet
-      if (!isCarntUpdated && carnetData.paidAmount > 0 && carnetData.paidAmount <= carnetData.price) {
-        setCarnetData(prev => ({ ...prev, payments: [...prev.payments, { amount: prev.paidAmount, date: serverTimestamp() }] }));
-      }
       await onUpdate(carnetData);
     } catch (error) {
       console.error(error);
     }
-  }, [carnetData, onUpdate, carnet]);
+  }, [carnetData, onUpdate]);
 
   const reset = () => {
     setCarnetData(carnet);
@@ -176,10 +196,13 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
           <input id={"price"} type={"text"} name="price" readOnly title={`Carnet Price: ${carnetData.price} MAD`} value={carnetData.price+" MAD"} className="outline-none h-full w-full text-yoga-green-dark" />
         </label>
 
-        <label htmlFor={"paidAmount"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
-          <span className="cinzel capitalize min-w-max cursor-pointer">Paid Amount:</span>
-          <input id={"paidAmount"} type={"number"} name="paidAmount" title={`Paid Amount: ${carnetData.paidAmount} MAD`} value={carnetData.paidAmount > carnetData.price ? carnetData.price : carnetData.paidAmount} min={0} max={carnetData.price} onChange={e => setCarnetData(prev => ({ ...prev, paidAmount: e.target.value*1 > carnetData.price ? carnetData.price : e.target.value*1, remainingAmount: remainingAmount(e.target.value*1) }))} className="outline-none h-full w-full" />
-        </label>
+        <div className="w-full flex justify-between items-center gap-4">
+          <label htmlFor={"paidAmount"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
+            <span className="cinzel capitalize min-w-max cursor-pointer">Paid Amount:</span>
+            <input id={"paidAmount"} type={"number"} name="paidAmount" title={`Paid Amount: ${carnetData.paidAmount} MAD`} defaultValue={0} value={carnetData.paidAmount} min={0} max={carnetData.remainingAmount === 0 ? carnetData.price : carnetData.remainingAmount} onChange={e => addPayment(e.target.value*1)} className="outline-none h-full w-full" />
+          </label>
+          <button type="button" onClick={() => addPaymentTicket()} disabled={paymentTicketSwitch && carnetData.remainingAmount === 0} className="h-full w-full max-w-[45px] aspect-square flex items-center justify-center bg-yoga-green-dark hover:bg-yoga-green focus:bg-yoga-green hover:scale-105 focus:scale-105 outline outline-2 -outline-offset-[5px] outline-white active:scale-90 disabled:pointer-events-none disabled:bg-gray-600 transition-all"><i className="fi fi-sr-receipt flex items-center justify-center text-yoga-white"></i></button>
+        </div>
 
         <label htmlFor={"remainingAmount"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
           <span className="cinzel capitalize min-w-max cursor-pointer">Remaining Amount:</span> 
@@ -193,6 +216,7 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
           <i className="fi fi-br-grip-lines flex items-center justify-center text-yoga-green-dark"></i>
           <span title="Remaining Amount" className="flex gap-2"><i className="fi fi-sr-coins flex items-center justify-center text-yoga-green-dark"></i> {carnetData.remainingAmount} MAD</span>
         </p>
+
       </section>
 
       <div className={`relative py-5 w-full flex justify-center items-center gap-2 overflow-hidden z-40`}>
@@ -200,13 +224,13 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
         <div className="w-full h-[2.5px] bg-cyan-800 bg-opacity-20"></div>
       </div>
 
-      <ul className="w-full min-h-[100px] max-h-[400px] flex items-center justify-center flex-col-reverse gap-2 overflow-x-hidden overflow-y-auto">
+      <ul className="w-full h-full min-h-[80px] max-h-[160px] px-3 flex flex-col-reverse gap-2 overflow-x-hidden overflow-y-auto">
         { carnetData.payments.map((payment, index) => (
           <li key={index} className="group w-full px-3 py-1 flex items-center justify-start gap-4 shadow-sm border border-gray-300 bg-yoga-white rounded-md transition-all hover:scale-[1.01] hover:shadow-md">
             <span>#{index+1}</span>
             <span title="Payment Amount" className="flex gap-2"><i className="fi fi-sr-hand-holding-usd flex items-center justify-center text-yoga-green transition-all group-hover:text-yoga-green-dark"></i> {payment.amount} MAD</span>
             <i className="fi fi-br-minus flex items-center justify-center text-yoga-green-dark transition-all"></i>
-            <span className="transition-all group-hover:text-yoga-green-dark">{dateFormater(payment.date)}</span>
+            <span className="transition-all group-hover:text-yoga-green-dark">{dateFormater(payment.date).toLowerCase().includes("invalid date") ? dateFormater(new Date().toLocaleDateString()) : dateFormater(payment.date)}</span>
           </li>
         ))}
       </ul>
