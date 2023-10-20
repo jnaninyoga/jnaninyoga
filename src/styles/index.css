@@ -283,8 +283,21 @@
       @apply cinzel;
     }
 
-    .form-field:hover, .form-field:focus, .form-field:active, .form-field:not(:placeholder-shown){
+    .form-field:hover,
+    .form-field:focus,
+    .form-field:active,
+    /* adding box shadow to the parent elemnt "form-filed" when hover/active/focus over the child element "PhoneInputInput"  */
+    .form-field:has(.PhoneInputInput:hover),
+    .form-field:has(.PhoneInputInput:focus),
+    .form-field:has(.PhoneInputInput:active),
+    /* placholder */
+    .form-field:not(:placeholder-shown),
+    .form-field-mouse-interact{
       box-shadow: 5px 5px 0 0 var(--yoga-red);
+    }
+
+    .form-field:has(.PhoneInputInput){
+      box-shadow: none;
     }
 
     .form-field-mouse-interact{

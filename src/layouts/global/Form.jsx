@@ -167,7 +167,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 								defaultCountry={clientIP.country_code2}
 								name={field.name}
 								onChange={value => setFormField(null, {name: field.name, value}) }
-								className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
+								className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field bg-transparent ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
 								placeholder={field.required ? "*"+field.placeholder : field.placeholder}
 								value={form[field.name] || field.defaultValue}
 								required={field.required}

@@ -13,7 +13,7 @@ UserLookup.propTypes = {
 		firstname: PropTypes.string,
 		lastname: PropTypes.string,
 		sex: PropTypes.oneOf(["male", "female"]),
-		birthdate: PropTypes.object,
+		birthdate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 		age: PropTypes.number,
 		email: PropTypes.string,
 		phone: PropTypes.string,

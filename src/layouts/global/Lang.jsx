@@ -47,9 +47,9 @@ export default function Lang() {
   return (
     <div className='relative'>
         <button id="dropdownLang" onClick={()=> setDropdown(!dropdown)} className= "font-medium text-xl px-2 py-1 text-center inline-flex items-center uppercase" type="button">{currentLang} <svg onClick={()=> setDropdown(!dropdown)} className="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg></button>
-        <ul ref={DropDown} id="dropdown" className={`px-4 sm:py-2 py-3 absolute flex flex-1 items-center justify-center sm:gap-2 gap-4 sm:flex-col left-1/2 -translate-x-1/2 sm:top-[100%] transition-all z-10  ${dropdown ? "":"hidden"} text-base bg-yoga-white divide-y divide-gray-100 shadow`}>
+        <ul ref={DropDown} id="dropdown" className={`px-4 sm:py-2 py-3 absolute flex flex-1 items-center justify-center sm:gap-2 gap-4 sm:flex-col left-1/2 -translate-x-1/2 sm:top-[100%] transition-all z-10  ${dropdown ? "":"hidden"} text-base bg-yoga-white divide-y divide-gray-100 drop-shadow-lg shadow-lg`}>
             {supportedLanguages.map((lang, i) => (
-                <li key={i}><button className={`w-full ${lang.code === currentLang ? "text-yoga-red":""} transition-all duration-150 hover:text-yoga-red`} onClick={() => changeLang(lang.code)} title={lang.name}>{lang.name}</button></li>
+                <li key={i}><button className={`w-full ${lang.code === currentLang ? "text-yoga-green-darker":""} transition-all duration-150 hover:text-yoga-green`} onClick={() => changeLang(lang.code)} title={lang.name}>{lang.name}</button></li>
             ))}
         </ul>
     </div>

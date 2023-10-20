@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import Icon from "../../../assets/svg";
 import { useCallback } from "react";
-import { dateFormater, periodAccronymMap } from "../../../utils";
+import { date, dateFormater, periodAccronymMap } from "../../../utils";
 import LabeledSelect from "../../global/LabeledSelect";
 import Session from "./Session";
 import Bullet from "../shared/Bullet";
@@ -193,20 +193,20 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
 
         <label htmlFor={"carnetprice"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
           <span className="cinzel capitalize min-w-max cursor-pointer">Carnet Price:</span>
-          <input id={"price"} type={"text"} name="price" readOnly title={`Carnet Price: ${carnetData.price} MAD`} value={carnetData.price+" MAD"} className="outline-none h-full w-full text-yoga-green-dark" />
+          <input id={"price"} type={"text"} name="price" readOnly title={`Carnet Price: ${carnetData.price} MAD`} value={carnetData.price+" MAD"} className="outline-none h-full w-full text-yoga-green-dark bg-transparent" />
         </label>
 
         <div className="w-full flex justify-between items-center gap-4">
           <label htmlFor={"paidAmount"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
             <span className="cinzel capitalize min-w-max cursor-pointer">Paid Amount:</span>
-            <input id={"paidAmount"} type={"number"} name="paidAmount" title={`Paid Amount: ${carnetData.paidAmount} MAD`} defaultValue={0} value={carnetData.paidAmount} min={0} max={carnetData.remainingAmount === 0 ? carnetData.price : carnetData.remainingAmount} onChange={e => addPayment(e.target.value*1)} className="outline-none h-full w-full" />
+            <input id={"paidAmount"} type={"number"} name="paidAmount" title={`Paid Amount: ${carnetData.paidAmount} MAD`} defaultValue={0} value={carnetData.paidAmount} min={0} max={carnetData.remainingAmount === 0 ? carnetData.price : carnetData.remainingAmount} onChange={e => addPayment(e.target.value*1)} className="outline-none h-full w-full bg-transparent" />
           </label>
           <button type="button" onClick={() => addPaymentTicket()} disabled={paymentTicketSwitch && carnetData.remainingAmount === 0} className="h-full w-full max-w-[45px] aspect-square flex items-center justify-center bg-yoga-green-dark hover:bg-yoga-green focus:bg-yoga-green hover:scale-105 focus:scale-105 outline outline-2 -outline-offset-[5px] outline-white active:scale-90 disabled:pointer-events-none disabled:bg-gray-600 transition-all"><i className="fi fi-sr-receipt flex items-center justify-center text-yoga-white"></i></button>
         </div>
 
         <label htmlFor={"remainingAmount"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
           <span className="cinzel capitalize min-w-max cursor-pointer">Remaining Amount:</span> 
-          <input id={"remainingAmount"} type={"text"} name="remainingAmount" readOnly title={`Remaining Amount: ${carnetData.remainingAmount} MAD`} value={carnetData.remainingAmount+' MAD'} className="outline-none h-full w-full text-yoga-green-dark" />
+          <input id={"remainingAmount"} type={"text"} name="remainingAmount" readOnly title={`Remaining Amount: ${carnetData.remainingAmount} MAD`} value={carnetData.remainingAmount+' MAD'} className="outline-none h-full w-full text-yoga-green-dark bg-transparent" />
         </label>
 
         <p className="w-full flex items-center justify-center gap-4">
@@ -226,11 +226,11 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
 
       <ul className="w-full h-full min-h-[80px] max-h-[160px] px-3 flex flex-col-reverse gap-2 overflow-x-hidden overflow-y-auto">
         { carnetData.payments.map((payment, index) => (
-          <li key={index} className="group w-full px-3 py-1 flex items-center justify-start gap-4 shadow-sm border border-gray-300 bg-yoga-white rounded-md transition-all hover:scale-[1.01] hover:shadow-md">
+          <li key={index} className="group w-full px-3 py-1 flex items-center justify-start gap-4 shadow-sm border border-gray-300 bg-white rounded-md transition-all hover:scale-[1.01] hover:shadow-md">
             <span>#{index+1}</span>
             <span title="Payment Amount" className="flex gap-2"><i className="fi fi-sr-hand-holding-usd flex items-center justify-center text-yoga-green transition-all group-hover:text-yoga-green-dark"></i> {payment.amount} MAD</span>
             <i className="fi fi-br-minus flex items-center justify-center text-yoga-green-dark transition-all"></i>
-            <span className="transition-all group-hover:text-yoga-green-dark">{dateFormater(payment.date).toLowerCase().includes("invalid date") ? dateFormater(new Date().toLocaleDateString()) : dateFormater(payment.date)}</span>
+            <span className="transition-all group-hover:text-yoga-green-dark">{dateFormater(payment.date).toLowerCase().includes("invalid date") ? ( async () => dateFormater(await date()) )() : dateFormater(payment.date)}</span>
           </li>
         ))}
       </ul>

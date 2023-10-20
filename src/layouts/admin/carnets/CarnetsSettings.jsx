@@ -56,7 +56,7 @@ function Field({field, defaultValue, onChange}){
       {/* END NOTE */}
       <label htmlFor={field.key} className="form-field flex gap-4 drop-shadow transition-all duration-150 bg-yoga-white">
         <span className="capitalize">{field.label}:</span>
-        <input id={field.key} type={"text"} value={value} onChange={e => storeValue(e.target.value)} className="outline-none h-full w-full" />
+        <input id={field.key} type={"text"} value={value} onChange={e => storeValue(e.target.value)} className="outline-none h-full w-full bg-transparent" />
       </label>
       {/* FIELD DATA VALUE VISUALISATION */}
       { !field.rawValue && <p className="flex w-full gap-2 z-50">
@@ -114,7 +114,7 @@ export default function CarnetsSettings({onReset}) {
 
   useEffect(() => {
     console.table(settings)
-    console.log(`%cCurrent Carnet Type: %c${carnetType}`, "color:gray;font-family:system-ui;font-size:2rem;font-weight:bold", "color:#b31451;font-family:system-ui;font-size:2rem;font-weight:bold")
+    // console.log(`%cCurrent Carnet Type: %c${carnetType}`, "color:gray;font-family:system-ui;font-size:2rem;font-weight:bold", "color:#b31451;font-family:system-ui;font-size:2rem;font-weight:bold")
   }, [carnetType, settings])
 
   if (settingsLoading){
