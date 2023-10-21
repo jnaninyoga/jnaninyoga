@@ -157,7 +157,9 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 							options={field.options}
 							placeholder={field.placeholder}
 							onSelect={selected => setFormField(null, {name: field.name, value: selected}) }
-							defaultSelected={typeof field.defaultValue == 'number' ? form[field.name] || field.defaultValue : field.options.indexOf(form[field.name] || field.defaultValue) || 0}
+							// defaultSelected={typeof field.defaultValue == 'number' ? form[field.name] || field.defaultValue : field.options.indexOf(form[field.name] || field.defaultValue) || 0}
+							defaultSelected={form[field.name] || field.defaultValue}
+							debug={true}
 						/> :
 
 						// input type phone
@@ -171,6 +173,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 								placeholder={field.required ? "*"+field.placeholder : field.placeholder}
 								value={form[field.name] || field.defaultValue}
 								required={field.required}
+								autoComplete="on"
 							/>
 						</fieldset> :
 
@@ -186,6 +189,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 								placeholder={field.required ? "*"+field.placeholder : field.placeholder}
 								defaultValue={form[field.name] || field.defaultValue}
 								required={field.required}
+								autoComplete="on"
 							/>
 							{// check if the textarea have a maxChars rule like maxChars = 500
 								(field.maxChars && form[field.name]?.length > 0) &&
@@ -203,6 +207,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 								placeholder={field.required ? "*"+field.placeholder : field.placeholder}
 								defaultValue={form[field.name] || field.defaultValue}
 								required={field.required}
+								autoComplete={field.type.toLowerCase() === 'password' ? 'new-password' : 'on'}
 							/>
 							{// if the field is type of password, show the show/hide password button
 								(field.type.toLowerCase() === 'password') && (

@@ -43,8 +43,8 @@ UserLookup.propTypes = {
 		// consultation reason
 		consultationreason: PropTypes.string,
 		// => Database document fields
-		createdAt: PropTypes.string,
-		updatedAt: PropTypes.string,
+		createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		updatedAt: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	}),
 };
 
