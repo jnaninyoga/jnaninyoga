@@ -14,6 +14,9 @@ import UserLookup from "../../layouts/admin/users/UserLookup";
 import Loader from '../../layouts/global/Loader';
 import { addContact, deleteContact, updateContact } from '../../email';
 import { useNavigate } from 'react-router-dom';
+import AgeToGenderChart from '../../layouts/admin/users/AgeToGenderChart';
+import GenderPercentageChart from '../../layouts/admin/users/GenderPercentageChart';
+import Icon from '../../assets/svg';
 
 export default function Users() {
   const [users, DataLoading, DataError] = useData(names.users);
@@ -284,75 +287,92 @@ export default function Users() {
   )
 
   return (
-    <>
-    <Box className="w-fit max-w-full min-h-[250px] p-4 flex flex-col gap-4 print:hidden overflow-x-auto">
+    <section className='w-full h-fit flex items-start flex-col'>
+      <Box className="w-fit h-full sm:h-auto max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4 print:hidden overflow-x-auto">
 
-      <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
-        <button type="button" onClick={() => { setModal({type: "C"}); setUser({}) }} className="h-full min-w-max px-6 py-2 flex justify-center items-center gap-2 cinzel font-semibold text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all"><i className="fi fi-sr-user-add flex justify-center items-center"></i> <span className="">Add User</span></button>
-        <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < users.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
-        <button type="button" onClick={() => setAlert({...alertMessage("DA", "User"), onConfirm: () => alertAction(deleteMultiUsers), onCancel: alertAction})} className={`cinzel h-full min-w-max px-3 py-2 ${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} text-center uppercase flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} ><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 w-full text text-yoga-white">{(selection.length > 0 && selection.length < users.length) ? "Delete Selected" : "Delete All"}</span></button>
-      </div>
+        <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
+          <button type="button" onClick={() => { setModal({type: "C"}); setUser({}) }} className="h-full min-w-max px-6 py-2 flex justify-center items-center gap-2 cinzel font-semibold text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all"><i className="fi fi-sr-user-add flex justify-center items-center"></i> <span className="">Add User</span></button>
+          <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < users.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+          <button type="button" onClick={() => setAlert({...alertMessage("DA", "User"), onConfirm: () => alertAction(deleteMultiUsers), onCancel: alertAction})} className={`cinzel h-full min-w-max px-3 py-2 ${selection.length > 0 ? "translate-y-0 scale-100 opacity-100 delay-100" : "translate-y-[100%] scale-0 opacity-0"} text-center uppercase flex justify-center items-center outline outline-2 text-yoga-white -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`} ><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i> <span className="ml-2 w-full text text-yoga-white">{(selection.length > 0 && selection.length < users.length) ? "Delete Selected" : "Delete All"}</span></button>
+        </div>
 
-      <DataGrid
-        className="h-fit bg-yoga-white text-lg"
-        rows={users}
-        columns={columns}
-        loading={DataLoading}
-        getRowId={(row) => row.id}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5,20,50]}
-        checkboxSelection
-        disableRowSelectionOnClick
-        // get selected rows
-        onRowSelectionModelChange={(selection) => setSelection(selection)}
-      />
-    </Box>
-    
-    {/* User Model */}
-    {modal && (
-      modal.type === "C" || modal.type === "U" ?
-      // Create User
-      <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-full print:w-full print:bg-white">
-          <div className="relative flex h-[95%] md:w-[70%] w-[95%] max-w-2xl bg-yoga-white overflow-hidden" >
-              <img src={user.sex?.toLowerCase() == 'male' ? BGMale : BGFemale} alt="background" className={`h-full w-full select-none object-cover object-center bg-center bg-cover opacity-60`} />
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 py-6 w-full h-full flex justify-center overflow-y-auto overflow-x-hidden" > 
-                <Form
-                  dark
-                  animatedIcon
-                  title={modal.type === "C" ? "Create User" :  `Update ${user.firstname} ${user.lastname} Infos`}
-                  fields={userFields}
-                  state={[user, setUser]}
-                  onSubmit={modal.type === "C" ? createUser : updateUser}
-                  onReset={() => { setModal(null); setUser({}) }}
-                  ErrorMessage={modal.type === "C" ? "Error Creating User" : "Error Updating User"}
-                  errorTrigger={operationError}
-                  resetBtn="Cancel"
-                  submitBtn={modal.type === "C" ? "Create" : "Update"}
-                  insertElement={
-                    modal.type === "U" &&
-                    <ul className="cinzel flex flex-col uppercase text-sm text-center text-gray-700">
-                      <li><span className="text-gray-500 font-semibold">User ID:</span> {modal.data.id}</li>
-                      <li><span className="text-gray-500 font-semibold">Last Update:</span> {dateFormater(modal.data.updatedAt || modal.data.createdAt)}</li>
-                    </ul>
-                  } 
-                />
-              </div>
-          </div>  
-      </section> :
-      // Show User
-      modal.type === "R" &&
-      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white">
-        <UserLookup user={modal.data} />
-      </section>
-    )}
+        <DataGrid
+          className="h-fit bg-yoga-white text-lg"
+          rows={users}
+          columns={columns}
+          loading={DataLoading}
+          getRowId={(row) => row.id}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5,20,50]}
+          checkboxSelection
+          disableRowSelectionOnClick
+          // get selected rows
+          onRowSelectionModelChange={(selection) => setSelection(selection)}
+        />
+      </Box>
+      <Box className="w-full px-4  print:hidden">
+        <section className='py-4 flex justify-center items-center gap-4 flex-col rounded-[4px] bg-yoga-white bg-texture texture-h-1'>
+          <div className={`sm:h-12 sm:w-24 h-10 w-20 flex items-center justify-center transition-all duration-500 select-none z-[50]`}>
+            <Icon
+              label="Lotus"
+              colors={{oc: "#ffffff", pc: "#fdc5ba"}}
+              height={90}
+              width={90}
+            />
+          </div>
+          <h2 className='cinzel text-2xl font-semibold z-[50]'>Users Data Charts</h2>
+          <section className='container z-[50] flex items-start sm:items-center justify-start sm:justify-center sm:flex-row flex-col gap-20 overflow-x-auto sm:overflow-hidden rounded-sm'>
+            <AgeToGenderChart users={users} />
+            <GenderPercentageChart users={users} />
+          </section>
+        </section>
+      </Box>
+      
+      {/* User Model */}
+      {modal && (
+        modal.type === "C" || modal.type === "U" ?
+        // Create User
+        <section className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-full print:w-full print:bg-white">
+            <div className="relative flex h-[95%] md:w-[70%] w-[95%] max-w-2xl bg-yoga-white overflow-hidden" >
+                <img src={user.sex?.toLowerCase() == 'male' ? BGMale : BGFemale} alt="background" className={`h-full w-full select-none object-cover object-center bg-center bg-cover opacity-60`} />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 py-6 w-full h-full flex justify-center overflow-y-auto overflow-x-hidden" > 
+                  <Form
+                    dark
+                    animatedIcon
+                    title={modal.type === "C" ? "Create User" :  `Update ${user.firstname} ${user.lastname} Infos`}
+                    fields={userFields}
+                    state={[user, setUser]}
+                    onSubmit={modal.type === "C" ? createUser : updateUser}
+                    onReset={() => { setModal(null); setUser({}) }}
+                    ErrorMessage={modal.type === "C" ? "Error Creating User" : "Error Updating User"}
+                    errorTrigger={operationError}
+                    resetBtn="Cancel"
+                    submitBtn={modal.type === "C" ? "Create" : "Update"}
+                    insertElement={
+                      modal.type === "U" &&
+                      <ul className="cinzel flex flex-col uppercase text-sm text-center text-gray-700">
+                        <li><span className="text-gray-500 font-semibold">User ID:</span> {modal.data.id}</li>
+                        <li><span className="text-gray-500 font-semibold">Last Update:</span> {dateFormater(modal.data.updatedAt || modal.data.createdAt)}</li>
+                      </ul>
+                    } 
+                  />
+                </div>
+            </div>  
+        </section> :
+        // Show User
+        modal.type === "R" &&
+        <section onClick={closeModal} className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white">
+          <UserLookup user={modal.data} />
+        </section>
+      )}
 
-    {/* Alert Message */}
-    {alert.title && (
-      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200100]">
-        <Alert {...alert} />
-      </section>
-    )}
-    </>
+      {/* Alert Message */}
+      {alert.title && (
+        <section onClick={closeModal} className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200100]">
+          <Alert {...alert} />
+        </section>
+      )}
+    </section>
   )
 }
