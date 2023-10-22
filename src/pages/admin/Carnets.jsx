@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom";
 import CarnetsSettings from "../../layouts/admin/carnets/CarnetsSettings";
 import CarnetLookup from "../../layouts/admin/carnets/CarnetLookup";
 import CarnetUpdate from "../../layouts/admin/carnets/CarnetUpdate";
+import Icon from "../../assets/svg";
+import CarnetsProgressChart from "../../layouts/admin/carnets/CarnetsProgressChart";
+import CarnetTypesChart from "../../layouts/admin/carnets/CarnetTypesChart";
 
 export default function Carnets() {
   const [carnetsData, DataLoading, DataError] = useData(names.carnets);
@@ -225,55 +228,71 @@ export default function Carnets() {
   )
   
   return (
-    <>
-    <Box className="w-full max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4 print:hidden overflow-x-auto">
-      <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
-        <button type="button" onClick={() => setSettings(true)} className="h-full min-w-max px-6 py-2 group flex justify-center items-center gap-2 cinzel font-semibold text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all"><i className="fi fi-sr-settings group-active:rotate-180 flex justify-center items-center transition-all"></i> <span className="">Settings</span></button>
-        <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < carnets.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
-      </div>
+    <section className='w-full h-fit flex items-start flex-col'>
+      <Box className="w-full max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4 print:hidden overflow-x-auto">
+        <div className={`w-full h-full max-h-14 sm:max-h-10 py-1 sm:py-0 flex justify-start items-center gap-2 overflow-x-auto overflow-y-hidden`}>
+          <button type="button" onClick={() => setSettings(true)} className="h-full min-w-max px-6 py-2 group flex justify-center items-center gap-2 cinzel font-semibold text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all"><i className="fi fi-sr-settings group-active:rotate-180 flex justify-center items-center transition-all"></i> <span className="">Settings</span></button>
+          <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>{(selection.length > 0 && selection.length < carnets.length) ? "Export Selected To Excel" : "Export All To Excel"}</button>
+        </div>
 
-      <DataGrid
-        className="h-fit bg-yoga-white text-lg"
-        rows={carnetsData}
-        columns={columns}
-        loading={DataLoading}
-        getRowId={(row) => row.id}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5,20,50]}
-        checkboxSelection
-        disableRowSelectionOnClick
-        onRowSelectionModelChange={(selection) => setSelection(selection)}
-      />
-    </Box>
+        <DataGrid
+          className="h-fit bg-yoga-white text-lg"
+          rows={carnetsData}
+          columns={columns}
+          loading={DataLoading}
+          getRowId={(row) => row.id}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5,20,50]}
+          checkboxSelection
+          disableRowSelectionOnClick
+          onRowSelectionModelChange={(selection) => setSelection(selection)}
+        />
+      </Box>
+      <Box className="w-full px-4  print:hidden">
+        <section className='py-4 flex justify-center items-center gap-4 flex-col rounded-[4px] bg-yoga-white bg-texture texture-h-1'>
+          <div className={`sm:h-12 sm:w-24 h-10 w-20 flex items-center justify-center transition-all duration-500 select-none z-[50]`}>
+            <Icon
+              label="Lotus"
+              colors={{oc: "#ffffff", pc: "#fdc5ba"}}
+              height={90}
+              width={90}
+            />
+          </div>
+          <h2 className='cinzel text-2xl font-semibold z-[50]'>Carnets Data Charts</h2>
+          <section className='container z-[50] flex items-start sm:items-center justify-start sm:justify-center sm:flex-row flex-col gap-8 overflow-x-auto sm:overflow-hidden rounded-sm'>
+            <CarnetTypesChart carnets={carnetsData} types={Object.keys(carnetsSettings)}/>
+            <CarnetsProgressChart carnets={carnetsData} />
+          </section>
+        </section>
+      </Box>
 
-    {/* Settings/Cofiguration UI */}
-    {settings && (
-      <div className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white">
-        <CarnetsSettings onReset={() => setSettings(false)}/>
-      </div>
-    )}
+      {/* Settings/Cofiguration UI */}
+      {settings && (
+        <div className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white">
+          <CarnetsSettings onReset={() => setSettings(false)}/>
+        </div>
+      )}
 
-    {/* message modal */}
-    {modal.data && (
-      modal.type === "R" ? (
-      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-texture print:texture-v-1">
-        <CarnetLookup carnet={modal.data} />
-      </section>
-     ) : (
-      <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200000]">
-        <CarnetUpdate carnet={modal.data} configurations={carnetsSettings}  onUpdate={updateCarnet} onCancel={() => setModal({type: "R", data: null})}  />
-      </section>
-     )
-    )}
+      {/* message modal */}
+      {modal.data && (
+        modal.type === "R" ? (
+        <section onClick={closeModal} className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-texture print:texture-v-1">
+          <CarnetLookup carnet={modal.data} />
+        </section>
+      ) : (
+        <section className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200000]">
+          <CarnetUpdate carnet={modal.data} configurations={carnetsSettings}  onUpdate={updateCarnet} onCancel={() => setModal({type: "R", data: null})}  />
+        </section>
+      )
+      )}
 
-    {/* Alert Message */}
-    {alert.title && (
-      <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200100]">
-        <Alert {...alert} />
-      </section>
-    )}
-
-    </>
+      {/* Alert Message */}
+      {alert.title && (
+        <section onClick={closeModal} className="absolute h-screen w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center z-[200100]">
+          <Alert {...alert} />
+        </section>
+      )}
+    </section>
   )
 }
