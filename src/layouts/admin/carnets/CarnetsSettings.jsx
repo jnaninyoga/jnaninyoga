@@ -150,7 +150,7 @@ export default function CarnetsSettings({onReset}) {
     e.preventDefault();
     try {
       await updateDocument(names.configurations, names.carnets, {settings: {...settings, [carnetType]: settings[carnetType]}})
-      setAlert({...alert, type: "success", title: `Settings Of "${carnetType}" Carnet Type Updated`, message: `The Settings Of "${carnetType}" Carnet Type Was Updated Successfully`});
+      setAlert({...alert, type: "success", title: `Settings Of "${carnetType}" Carnet Type Updated`, message: `The Settings Of "${carnetType}" Carnet Type Was Updated Successfully`, onConfirm: alertAction, onCancel: alertAction});
     } catch (error) {
       console.error(error);
       setAlert({...alert, type: "error", title: "Error Updating Carnet Settings", message: error.message});

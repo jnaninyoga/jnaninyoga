@@ -34,7 +34,7 @@ export default function CarnetLookup({ carnet }) {
     <Helmet>
       <title>{`${carnet.username} - Jnanin Yoga Carnet`}</title>
     </Helmet>
-    <section className="relative py-5 px-8 min-h-[340px] max-h-[650px] w-[95%] md:w-[650px] flex flex-col gap-2 bg-yoga-white print:bg-transparent sm:overflow-x-hidden overflow-y-auto bg-texture texture-v-1 print:h-max print:w-screen print:scale-105">
+    <section className="relative py-8 px-9 min-h-[340px] max-h-[650px] w-[95%] md:w-[650px] flex flex-col gap-2 bg-yoga-white rounded-[4px] drop-shadow-md print:bg-transparent sm:overflow-x-hidden overflow-y-auto bg-texture texture-v-1 print:h-max print:w-screen print:scale-105">
       <header className="relative w-full min-w-max print:px-0 print:pr-5 print:py-4 flex items-center gap-8 print:gap-6">
         <div className="w-32 h-32 flex justify-center items-center aspect-square bg-cover bg-center">
           <img src={logo} alt="jnanin yoga user" className="w-[90%] h-[90%] object-cover object-center aspect-square" />
@@ -81,9 +81,9 @@ export default function CarnetLookup({ carnet }) {
         </div>
       </header>
 
-      <div className="w-full h-[4px] bg-yoga-red-ligth bg-opacity-75"></div>
+      <div className="z-[50] w-full h-[4px] bg-yoga-red-ligth bg-opacity-60"></div>
 
-      <main className="w-full flex items-center flex-col gap-4">
+      <main className="z-[50] w-full flex items-center flex-col gap-4">
         <ul className="w-full flex items-center justify-center gap-4">
           <Bullet
             styledText
@@ -140,7 +140,9 @@ export default function CarnetLookup({ carnet }) {
         </ul>
       </main>
 
-      <footer className="p-4 z-20 w-full min-w-max flex justify-center sm:justify-end items-center gap-5 print:hidden">
+      <div className="z-[50] w-full h-[4px] bg-yoga-red-ligth bg-opacity-60"></div>
+
+      <footer className="pt-2 z-20 w-full min-w-max flex justify-center sm:justify-end items-center gap-5 print:hidden">
         <label htmlFor="carnetidurl" title="download the user profile with user id url that will redirect to this user in the users dashboard" className="flex justify-center items-center gap-1">
           <input
             id="carnetidurl"

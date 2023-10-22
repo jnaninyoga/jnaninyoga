@@ -40,11 +40,11 @@ CarnetUpdate.propTypes = {
 export default function CarnetUpdate({ carnet, configurations, onUpdate, onCancel}) {
   const [carnetData, setCarnetData] = useState(carnet);
   const [paymentTicketSwitch, setPaymentTicketSwitch] = useState(false);
-
-  console.log(carnetData);
   
   // calculate the progress in the fly
   carnetData.progress = Math.round((carnetData.passedSessions / carnetData.sessions) * 100);
+  // calculate if the carnet is fully completed: if all sessions passed and fully paid
+  carnetData.completed = carnetData.passedSessions === carnetData.sessions && carnetData.remainingAmount === 0;
 
   const totalPayments = useMemo(() => carnetData.payments.reduce((acc, payment) => acc + payment.amount, 0), [carnetData]);
 
@@ -54,14 +54,14 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
 
   const addPayment = useCallback(amount => {
     setPaymentTicketSwitch(false);
-    if (amount > 0 && amount <= carnetData.price && amount <= carnetData.remainingAmount) {
+    if (amount > 0 && amount <= carnetData.price) {
       setCarnetData(prev => ({
         ...prev,
         paidAmount: amount,
         remainingAmount: carnetData.price - (totalPayments + amount) < 0 ? carnetData.price : carnetData.price - (totalPayments + amount),
       }));
     }
-  }, [carnetData.price, carnetData.remainingAmount, totalPayments]);
+  }, [carnetData.price, totalPayments]);
 
   // push the payment ticket to the payments array history
   const addPaymentTicket = useCallback(() => { 
@@ -189,7 +189,7 @@ export default function CarnetUpdate({ carnet, configurations, onUpdate, onCance
       </div>
 
       <section className="w-full flex items-center flex-col gap-4 z-[200]">
-        <p className="cinzel font-semibold">Last Payment: <span className="cinzel text-yoga-green-dark">{dateFormater(carnet.payments.at(-1).date).toLowerCase().includes("invalid date") ? "No Payment" : dateFormater(carnet.payments.at(-1).date)}</span></p>
+        <p className="cinzel font-semibold">Last Payment: <span className="cinzel text-yoga-green-dark">{dateFormater(carnet.payments.at(-1)?.date).toLowerCase().includes("invalid date") ? "No Payment" : dateFormater(carnet.payments.at(-1)?.date)}</span></p>
 
         <label htmlFor={"carnetprice"} className="form-field flex gap-4 drop-shadow transition-all duration-150">
           <span className="cinzel capitalize min-w-max cursor-pointer">Carnet Price:</span>
