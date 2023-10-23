@@ -157,9 +157,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 							options={field.options}
 							placeholder={field.placeholder}
 							onSelect={selected => setFormField(null, {name: field.name, value: selected}) }
-							// defaultSelected={typeof field.defaultValue == 'number' ? form[field.name] || field.defaultValue : field.options.indexOf(form[field.name] || field.defaultValue) || 0}
 							defaultSelected={form[field.name] || field.defaultValue}
-							debug={true}
 						/> :
 
 						// input type phone
