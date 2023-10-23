@@ -28,7 +28,7 @@ export default function userHP({age, sex, medicalhistory, currentcare, liferhyth
     ACC += 0.2; // Increase ACC by 0.2 for females
   }
 
-  // Calculate MH_Coefficient based on medical history
+  //* Calculate MH_Coefficient based on medical history
   const MH_Coefficient = {
     "No Medical History": 0,
     "Osteoarticular": 2,
@@ -44,7 +44,7 @@ export default function userHP({age, sex, medicalhistory, currentcare, liferhyth
     "Sanguines": 1,
   }[medicalhistory.record] || 0;
 
-  // Calculate CC_Coefficient based on current care
+  //* Calculate CC_Coefficient based on current care
   const CC_Coefficient = {
     "No Current Medical Care": 0,
     "Home Remedies/Self-care": 1,
@@ -58,7 +58,7 @@ export default function userHP({age, sex, medicalhistory, currentcare, liferhyth
     "Medical Devices/Appliances": 2,
   }[currentcare] || 0;
 
-  // Calculate LR based on liferhythm data
+  //* Calculate LR based on liferhythm data
   const liferhythmData = liferhythm || {};
   const { sleep, sport, nutrition, meditation } = liferhythmData;
 
@@ -74,4 +74,3 @@ export default function userHP({age, sex, medicalhistory, currentcare, liferhyth
 
   return HP;
 }
-
