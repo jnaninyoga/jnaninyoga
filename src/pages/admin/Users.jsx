@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import AgeToGenderChart from '../../layouts/admin/users/AgeToGenderChart';
 import GenderPercentageChart from '../../layouts/admin/users/GenderPercentageChart';
 import Icon from '../../assets/svg';
+import userHP from '../../constants/healthpoint';
 
 export default function Users() {
   const [users, DataLoading, DataError] = useData(names.users);
@@ -64,18 +65,23 @@ export default function Users() {
 
   // create User
   const createUser = useCallback(async (user) => {
+    // clear the form error message
+    setOperationError(false);
     try {
-      // clear the form error message
-      setOperationError(false);
-      await addRefDocument(names.users, {...user, age: await userAge(user.birthdate)}, names.carnets, carnetPicker(), 'user');
-      await addContact({firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
+      await addRefDocument(names.users, {...user, hp: userHP(user), age: await userAge(user.birthdate)}, names.carnets, carnetPicker(), 'user');
       setModal(null);
       setAlert({...alertMessage("C", "User", true), onConfirm: alertAction, onCancel: alertAction})
     } catch (error) {
-      console.error(error);
+      console.error("ERROR CREATING USER:", error);
       setOperationError(true);
       // throw an error alert to try again
       setAlert({ ...alertMessage("E", "User", true, "Creating"), confirm: "Try Again", onConfirm: () => alertAction(async () => await createUser(user)), onCancel: alertAction })
+    }
+    try {
+      await addContact({firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
+    } catch (error) {
+      console.error("ERROR CREATING BREVO CONTACT:", error);
+      setAlert({ ...alertMessage("E", "Brevo Contact", true, "Creating"), confirm: "Try Again", onConfirm: alertAction, onCancel: alertAction })
     }
   }, [alertAction]);
 
@@ -85,7 +91,7 @@ export default function Users() {
       await deleteContact(users.find(user => user.id === id).email)
       setAlert({...alertMessage("D", "Brevo Contact", true), onConfirm: alertAction, onCancel: alertAction})
     } catch (error) {
-      console.error(error);
+      console.error("ERROR DELETING BREVO CONTACT:", error);
       setAlert({ ...alertMessage("E", "Brevo Contact", true, "Deleting"), confirm: "Try Again", onConfirm: alertAction, onCancel: alertAction })
     }
     try {
@@ -93,7 +99,7 @@ export default function Users() {
       const restoreUser = async () => await deleteOnCascade(names.users, id, names.carnets, 'user', true);
       setAlert({...alertMessage("D", "User", true), onConfirm: () => alertAction(restoreUser), onCancel: alertAction, confirm: "Restore"})
     } catch (error) {
-      console.error(error);
+      console.error("ERROR DELETING USER:", error);
       // throw an error alert to try again
       setAlert({ ...alertMessage("E", "User", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(async () => await deleteUser(id)), onCancel: alertAction })
     }
@@ -106,7 +112,7 @@ export default function Users() {
       const restoreUsers = async () => await Promise.all(selection.map(async id => await deleteOnCascade(names.users, id, names.carnets, 'user', true)));
       setAlert({...alertMessage("DA", "User", true), onConfirm: () => alertAction(restoreUsers), onCancel: alertAction, confirm: "Restore All"})
     } catch (error) {
-      console.error(error);
+      console.error("ERROR DELETING USERS:", error);
       // throw an error alert to try again
       setAlert({ ...alertMessage("E", "Users", true, "Deleting"), confirm: "Try Again", onConfirm: () => alertAction(deleteMultiUsers), onCancel: alertAction })
     }
@@ -114,18 +120,23 @@ export default function Users() {
 
   // update User
   const updateUser = useCallback(async (user) => {
+    // clear the form error message
+    setOperationError(false);
     try {
-      // clear the form error message
-      setOperationError(false);
-      await updateDocument(names.users, modal.data.id, {...user, age: await userAge(user.birthdate)});
-      await updateContact(modal.data.email, {firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
+      await updateDocument(names.users, modal.data.id, {...user, hp: userHP(user), age: await userAge(user.birthdate)});
       setModal(null);
       setAlert({...alertMessage("U", "User", true), onConfirm: alertAction, onCancel: alertAction})
     } catch (error) {
-      console.error(error);
+      console.error("ERROR UPDATING USER:", error);
       setOperationError(true);
       // throw an error alert to try again
       setAlert({ ...alertMessage("E", "User", true, "Updating"), confirm: "Try Again", onConfirm: () => alertAction(async () => await updateUser(user)), onCancel: alertAction })
+    }
+    try {
+      await updateContact(modal.data.email, {firstname:user.firstname, lastname:user.lastname, sex:user.sex, birthdate:user.birthdate, email:user.email, sms:user.phone})
+    } catch (error) {
+      console.error("ERROR UPDATING BREVO CONTACT:", error);
+      setAlert({ ...alertMessage("E", "Brevo Contact", true, "Updating"), confirm: "Try Again", onConfirm: alertAction, onCancel: alertAction })
     }
   }, [alertAction, modal]);
 
@@ -139,6 +150,7 @@ export default function Users() {
         "ID": user.id,
         "First Name": user.firstname,
         "Last Name": user.lastname,
+        "HP": user.hp,
         "Sex": user.sex,
         "Birth Date": dateFormater(user.birthdate, false),
         "age": user.age,
@@ -198,7 +210,13 @@ export default function Users() {
       renderCell: ({ value }) => <h1 title={value} className="cinzel font-semibold">{value}</h1>
     },
 
-    { field: "sex", headerName: "Sex", width: 70,
+    { field: "hp", headerName: "HP", width: 50,
+      type: "number",
+      editable: false,
+      renderCell: ({ value }) => <span title={value} className="cinzel font-semibold text-center">{value}</span>
+    },
+
+    { field: "sex", headerName: "Sex", width: 50,
       type: "singleSelect",
       valueOptions: ["Male", "Female"],
       renderCell: ({ value }) => <i title={value} className={`fi ${ value.toLowerCase() == 'male' ? "fi-bs-mars text-yoga-green-dark scale-105" : "fi-bs-venus text-yoga-red-dark scale-[1.21]"}`}></i>

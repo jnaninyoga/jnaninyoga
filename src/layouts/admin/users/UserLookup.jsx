@@ -10,6 +10,7 @@ UserLookup.propTypes = {
 	user: PropTypes.shape({
 		// personal info
 		id: PropTypes.string,
+		hp: PropTypes.number,
 		firstname: PropTypes.string,
 		lastname: PropTypes.string,
 		sex: PropTypes.oneOf(["male", "female"]),
@@ -126,12 +127,19 @@ export default function UserLookup({ user }) {
 										icon={"fi fi-ss-user"}
 									/>
 								</ul>
-								<ul className="w-full flex">
+								<ul className="w-full flex gap-4">
 									<Bullet
 										styledText
 										title={`registred on ${dateFormater(user.createdAt)}`}
 										value={dateFormater(user.createdAt)}
 										icon={"fi fi-sr-user-time"}
+									/>
+									<Bullet
+										styledText
+										sm={false}
+										title={`${user.firstname} ${user.lastname} Health Point (HP) is: ${user.hp}`}
+										label={user.hp + " HP"}
+										icon={"fi fi-ss-pharmacy"}
 									/>
 								</ul>
 							</div>
