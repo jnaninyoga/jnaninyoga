@@ -29,6 +29,7 @@ export default function About() {
   <Meta title={t('about.metaTitle')} {...metadata.about}/>
   <Header/>
 
+
   <OverLaped banner={banner} type={"video"}>
     <img src={LotusOverlay} className={`opacity-100 -z-10 absolute scale-75 bottom-32 sm:right-4 right-1 object-cover object-center mix-blend-screen transition-all duration-700 delay-300`} alt="Lotus Overlay" />
     <section ref={wrapper} className="relative w-full lg:px-20 sm:px-10 px-2 flex items-center gap-4 flex-col">
