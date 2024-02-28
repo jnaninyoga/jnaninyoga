@@ -44,8 +44,7 @@ export default function Contact() {
       const contact = await addDocument(names.contacts, {...contactdata, lang: currentLanguage.name, answered: false});
       // send the contact as an email to the admin
       const emailData = await sendEmail({
-        // to: import.meta.env.VITE_CONTACT_EMAIL,
-        to: "vvhybe@gmail.com",
+        to: import.meta.env.VITE_CONTACT_EMAIL,
         from: {
           name: contactdata.fullname,
           email: contactdata.email
