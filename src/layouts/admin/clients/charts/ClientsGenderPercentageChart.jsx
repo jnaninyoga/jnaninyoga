@@ -1,10 +1,10 @@
 import { PieChart } from '@mui/x-charts';
 import PropTypes from 'prop-types';
-import { userFields } from '../../../utils/form';
+import { clientFields } from '../../../../utils/form';
 import { useMemo } from 'react';
 
-GenderPercentageChart.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.shape({
+ClientsGenderPercentageChart.propTypes = {
+  clients: PropTypes.arrayOf(PropTypes.shape({
     // personal info
 		id: PropTypes.string,
 		firstname: PropTypes.string,
@@ -19,10 +19,10 @@ GenderPercentageChart.propTypes = {
 		// medical info
 		medicalhistory: PropTypes.shape({
 			// current care
-			currentcare: PropTypes.oneOf(userFields.find((field) => field.name === "currentcare").options),
+			currentcare: PropTypes.oneOf(clientFields.find((field) => field.name === "currentcare").options),
 			currentcareinfo: PropTypes.string,
 			// medical history
-			record: PropTypes.oneOf(userFields.find((field) => field.name === "record").options),
+			record: PropTypes.oneOf(clientFields.find((field) => field.name === "record").options),
 			recordinfo: PropTypes.string,
 		}),
 		// physical / mental info
@@ -32,10 +32,10 @@ GenderPercentageChart.propTypes = {
 		}),
 		// life rhythm
 		liferhythm: PropTypes.shape({
-			sleep: PropTypes.oneOf(userFields.find((field) => field.name === "sleep").options),
-			nutrition: PropTypes.oneOf(userFields.find((field) => field.name === "nutrition").options),
-			sport: PropTypes.oneOf(userFields.find((field) => field.name === "sport").options),
-			meditation: PropTypes.oneOf(userFields.find((field) => field.name === "meditation").options),
+			sleep: PropTypes.oneOf(clientFields.find((field) => field.name === "sleep").options),
+			nutrition: PropTypes.oneOf(clientFields.find((field) => field.name === "nutrition").options),
+			sport: PropTypes.oneOf(clientFields.find((field) => field.name === "sport").options),
+			meditation: PropTypes.oneOf(clientFields.find((field) => field.name === "meditation").options),
 		}),
 		// consultation reason
 		consultationreason: PropTypes.string,
@@ -46,21 +46,21 @@ GenderPercentageChart.propTypes = {
 };
 
 
-export default function GenderPercentageChart({ users }) {
+export default function ClientsGenderPercentageChart({ clients }) {
 
-  // * The users geneder percentage chart data
+  // * The clients geneder percentage chart data
   const chartData = useMemo(() => {
-    const femaleCount = users.filter(user => user.sex === 'female').length;
-    const maleCount = users.filter(user => user.sex === 'male').length;
+    const femaleCount = clients.filter(client => client.sex === 'female').length;
+    const maleCount = clients.filter(client => client.sex === 'male').length;
     const totalCount = femaleCount + maleCount;
     return [
       { id: "f", value: (femaleCount / totalCount) * 100, label: 'Females' },
       { id: "m", value: (maleCount / totalCount) * 100, label: 'Males' },
     ];
-  }, [users]);
+  }, [clients]);
 
   return (
-    <article title='The Users Gender Percentage' className='container w-1/2 sm:w-fit max-w-[50%]'>
+    <article title='The Clients Gender Percentage' className='container w-1/2 sm:w-fit max-w-[50%]'>
       <PieChart
         colors={['#fdc5ba', '#8CC9D2']}
         series={[{ data: chartData, valueFormatter: ({ value }) => `${value}%` }]}

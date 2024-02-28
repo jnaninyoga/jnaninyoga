@@ -50,17 +50,21 @@ export default function BookNow() {
         },
         subject: `New Booking From, ${bookdata.fullname}`,
         html: `
-          <h1>New Booking Form</h1>
+          <h1>New Booking Form - ${bookdata.fullname}</h1>
           <p>You have a new booking from, <strong>${bookdata.fullname}<strong>.</p>
           <ul>
             <li><strong>Name:</strong> ${bookdata.fullname}</li>
-            <li><strong>Email:</strong> ${bookdata.email}</li>
-            <li><strong>Phone:</strong> ${bookdata.phone}</li>
+            <li><strong>Email:</strong> <a href="mailto:${bookdata.email}">${bookdata.email}</a></li>
+            <li><strong>Phone:</strong> <a href="tel:${bookdata.phone}">${bookdata.phone}</a></li>
+            <li><strong>WhatsApp:</strong> <a href="https://wa.me/${bookdata.phone}">${bookdata.phone}</a></li>
             <li><strong>Interest:</strong> ${bookdata.interest}</li>
           </ul>
-          <p><strong><u>BOOKS DASHBOARD:</u></strong> <a href="${import.meta.env.VITE_HOST_NAME}/lotus/books?id=${book.id}">${import.meta.env.VITE_HOST_NAME}/lotus/books?id=${book.id}</a></p>
+          <p>
+            <strong><u>BOOKS DASHBOARD:</u></strong>
+            <a href="${import.meta.env.VITE_HOST_NAME}/lotus/books/${book.id}">${import.meta.env.VITE_HOST_NAME}/lotus/books/${book.id}</a>
+          </p>
         `,
-        text: `New Booking From, ${bookdata.fullname}\nYou have a new contact from, ${bookdata.fullname}.\nName: ${bookdata.fullname}\nEmail: ${bookdata.email}\nPhone: ${bookdata.phone}\nInterest: ${bookdata.interest}\nBOOKS DASHBOARD: ${import.meta.env.VITE_HOST_NAME}/lotus/books?id=${book.id}`
+        text: `New Booking From, ${bookdata.fullname}\nYou have a new contact from, ${bookdata.fullname}.\nName: ${bookdata.fullname}\nEmail: ${bookdata.email}\nPhone: ${bookdata.phone}\nInterest: ${bookdata.interest}\nBOOKS DASHBOARD: ${import.meta.env.VITE_HOST_NAME}/lotus/books/${book.id}`
       });
       // email log
       await emailLog("booking", book, emaillog.messageId);

@@ -97,20 +97,6 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "reviews",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "deleted",
-          "order": "ASCENDING"
-        },
-        {
           "fieldPath": "rate",
           "order": "DESCENDING"
         },
@@ -121,7 +107,7 @@
       ]
     },
     {
-      "collectionGroup": "users",
+      "collectionGroup": "clients",
       "queryScope": "COLLECTION",
       "fields": [
         {

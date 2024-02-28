@@ -127,7 +127,7 @@ export const reviewsFields = [
   },
 ];
 
-export const userFields = [
+export const clientFields = [
   // separator title --------------------------------------------------------
   { type: "separator", title: "Personal Information" },
   {
@@ -162,6 +162,10 @@ export const userFields = [
     placeholder: "Birthdate",
     regex: /^[\S\s]{2,}$/,
     error: "Birthdate Field is required",
+    attributes: {
+      max: new Date().toISOString().split("T")[0],
+      min: "1900-01-01",
+    },
   },
   // phone field
   {

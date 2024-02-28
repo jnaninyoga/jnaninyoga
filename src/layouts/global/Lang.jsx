@@ -33,7 +33,7 @@ export default function Lang() {
 
     useEffect(() => {
         window.addEventListener('click', hideDropdown);
-        // setting a timeout to close the dropdown when the user leave it open
+        // setting a timeout to close the dropdown when the client leave it open
         const timeout = setTimeout(() => {
             window.addEventListener('click', hideDropdown);
         }, 500);

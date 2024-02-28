@@ -4,11 +4,11 @@ import { dashboardNavbar } from "../../../utils";
 // Board Components
 import Account from "../../../pages/admin/Account";
 import Books from "../../../pages/admin/Books";
-import Carnets from "../../../pages/admin/Carnets";
+import Carnets from "../clients/Carnets";
 import Sessions from "../../../pages/admin/Sessions";
 import Contacts from "../../../pages/admin/Contacts";
 import Reviews from "../../../pages/admin/Reviews";
-import Users from "../../../pages/admin/Users";
+import Clients from "../../../pages/admin/Clients";
 import { useMemo } from "react";
 
 export default function Switchboard() {
@@ -25,9 +25,10 @@ export default function Switchboard() {
             case "contacts": return <Contacts />;
             case "books": return <Books />;
             case "reviews": return <Reviews />;
-            case "users": return <Users />;
+            case "users": return <Clients />;
+            case "clients": return <Clients />;
             case "carnets": return <Carnets />;
-            default: return <Users />;
+            default: return <Clients />;
         }
     }
 

@@ -8,7 +8,7 @@ export default function Dashboard() {
       <ActiveBoardProvider>
         <DashboardSidebar/>
         <Switchboard />
-      </ActiveBoardProvider>    
+      </ActiveBoardProvider>
     </main>
   )
 }

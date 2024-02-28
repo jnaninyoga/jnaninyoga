@@ -6,6 +6,7 @@ import './locale/index'
 // TAILWIND - CSS
 import './styles/index.css'
 import './styles/loader.css'
+import './styles/ribbon.css'
 
 const rootElement = document.getElementById("YogaMat");
 // const reactRoot = ReactDOM.createRoot(rootElement);

@@ -44,24 +44,29 @@ export default function Contact() {
       const contact = await addDocument(names.contacts, {...contactdata, lang: currentLanguage.name, answered: false});
       // send the contact as an email to the admin
       const emailData = await sendEmail({
-        to: import.meta.env.VITE_CONTACT_EMAIL,
+        // to: import.meta.env.VITE_CONTACT_EMAIL,
+        to: "vvhybe@gmail.com",
         from: {
           name: contactdata.fullname,
           email: contactdata.email
         },
         subject: `New Contact From, ${contactdata.fullname}`,
         html: `
-          <h1>New Contact Form</h1>
+          <h1>New Contact Form - ${contactdata.fullname}</h1>
           <p>You have a new contact from, <strong>${contactdata.fullname}<strong>.</p>
           <ul>
             <li><strong>Name:</strong> ${contactdata.fullname}</li>
-            <li><strong>Email:</strong> ${contactdata.email}</li>
-            <li><strong>Phone:</strong> ${contactdata.phone}</li>
+            <li><strong>Email:</strong> <a href="mailto:${contactdata.email}">${contactdata.email}</a></li>
+            <li><strong>Phone:</strong> <a href="tel:${contactdata.phone}">${contactdata.phone}</a></li>
+            <li><strong>WhatsApp:</strong> <a href="https://wa.me/${contactdata.phone}">${contactdata.phone}</a></li>
             <li><strong>Message:</strong> ${contactdata.message}</li>
           </ul>
-          <p><strong><u>CONTACT DASHBOARD:</u></strong> <a href="${import.meta.env.VITE_HOST_NAME}/lotus/contacts?id=${contact.id}">${import.meta.env.VITE_HOST_NAME}/lotus/contacts?id=${contact.id}</a></p>
+          <p>
+            <strong><u>CONTACT DASHBOARD:</u></strong>
+            <a href="${import.meta.env.VITE_HOST_NAME}/lotus/contacts/${contact.id}">${import.meta.env.VITE_HOST_NAME}/lotus/contacts/${contact.id}</a>
+          </p>
         `,
-        text: `New Contact From, ${contactdata.fullname}\nYou have a new contact from, ${contactdata.fullname}.\nName: ${contactdata.fullname}\nEmail: ${contactdata.email}\nPhone: ${contactdata.phone}\nMessage: ${contactdata.message}\nCONTACT DASHBOARD: ${import.meta.env.VITE_HOST_NAME}/lotus/contacts?id=${contact.id}`
+        text: `New Contact From, ${contactdata.fullname}\nYou have a new contact from, ${contactdata.fullname}.\nName: ${contactdata.fullname}\nEmail: ${contactdata.email}\nPhone: ${contactdata.phone}\nMessage: ${contactdata.message}\nCONTACT DASHBOARD: ${import.meta.env.VITE_HOST_NAME}/lotus/contacts/${contact.id}`
       });
       // email log
       await emailLog("contact", contact, emailData.messageId);

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useData, useSearchParamsSerializer } from "../../hooks";
+import { useData, useActiveBoard } from "../../hooks";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import Lookup from "../../layouts/admin/shared/Lookup";
 import { dateFormater, whatsappLink, supportedLanguages, toXlsx, alertMessage } from "../../utils";
@@ -18,7 +18,7 @@ export default function Books() {
   const [selection, setSelection] = useState([]);
 
   // get the booked session id 'BID' from the url search params
-  const searchParams = useSearchParamsSerializer();
+  const {boardParams} = useActiveBoard();
   const navigate = useNavigate();
 
   // message modal state
@@ -33,10 +33,10 @@ export default function Books() {
 
   // check if the book id 'ID' is presented in the search params,and set the Modal with the coresponding book
   useEffect(() => {
-    if(!searchParams.id) return;
-    const book = books.find((book) => book.id === searchParams.id);
+    if(!boardParams.id) return;
+    const book = books.find((book) => book.id === boardParams.id);
     book && setModal(book);
-  }, [searchParams, books]);
+  }, [boardParams, books]);
 
   // updating the document in firestore
   const updateBook = useCallback(async (id, data) => {
@@ -111,6 +111,7 @@ export default function Books() {
       setModal(null);
       setAlert({});
       navigate({search: ''});
+      navigate(`/lotus/${names.books}`);
     }
   }
 
@@ -135,7 +136,7 @@ export default function Books() {
       renderCell: ({ value }) => ( <a title={value} href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
-    { field: "interest", headerName: "User Interest", width: 200,
+    { field: "interest", headerName: "Client Interest", width: 200,
       sortable: false,
       // formating the message to be 250 characters max and suffix "..."
       valueFormatter: ({ value }) => value.length > 250 ? `${value.substring(0, 250)}...` : value,

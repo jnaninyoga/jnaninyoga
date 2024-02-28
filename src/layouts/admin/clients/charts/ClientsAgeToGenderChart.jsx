@@ -1,10 +1,10 @@
 import { BarChart } from '@mui/x-charts';
 import PropTypes from 'prop-types';
-import { userFields } from '../../../utils/form';
+import { clientFields } from '../../../../utils/form';
 import { useMemo } from 'react';
 
-AgeToGenderChart.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.shape({
+ClientsAgeToGenderChart.propTypes = {
+  clients: PropTypes.arrayOf(PropTypes.shape({
     // personal info
 		id: PropTypes.string,
 		firstname: PropTypes.string,
@@ -19,10 +19,10 @@ AgeToGenderChart.propTypes = {
 		// medical info
 		medicalhistory: PropTypes.shape({
 			// current care
-			currentcare: PropTypes.oneOf(userFields.find((field) => field.name === "currentcare").options),
+			currentcare: PropTypes.oneOf(clientFields.find((field) => field.name === "currentcare").options),
 			currentcareinfo: PropTypes.string,
 			// medical history
-			record: PropTypes.oneOf(userFields.find((field) => field.name === "record").options),
+			record: PropTypes.oneOf(clientFields.find((field) => field.name === "record").options),
 			recordinfo: PropTypes.string,
 		}),
 		// physical / mental info
@@ -32,10 +32,10 @@ AgeToGenderChart.propTypes = {
 		}),
 		// life rhythm
 		liferhythm: PropTypes.shape({
-			sleep: PropTypes.oneOf(userFields.find((field) => field.name === "sleep").options),
-			nutrition: PropTypes.oneOf(userFields.find((field) => field.name === "nutrition").options),
-			sport: PropTypes.oneOf(userFields.find((field) => field.name === "sport").options),
-			meditation: PropTypes.oneOf(userFields.find((field) => field.name === "meditation").options),
+			sleep: PropTypes.oneOf(clientFields.find((field) => field.name === "sleep").options),
+			nutrition: PropTypes.oneOf(clientFields.find((field) => field.name === "nutrition").options),
+			sport: PropTypes.oneOf(clientFields.find((field) => field.name === "sport").options),
+			meditation: PropTypes.oneOf(clientFields.find((field) => field.name === "meditation").options),
 		}),
 		// consultation reason
 		consultationreason: PropTypes.string,
@@ -45,25 +45,25 @@ AgeToGenderChart.propTypes = {
   })).isRequired,
 };
 
-export default function AgeToGenderChart({ users }) {
+export default function ClientsAgeToGenderChart({ clients }) {
 
-  // * Count the number of users in each age group starting from 10 years old to 70 years old
+  // * Count the number of clients in each age group starting from 10 years old to 70 years old
   const ChartData = useMemo(() => {
     const data = { males: Array(7).fill(0), females: Array(7).fill(0) };
-    users.forEach((user) => {
-      if (user.age >= 10 && user.age <= 70) {
-        const ageGroup = Math.floor((user.age - 10) / 10);
-        const gender = user.sex === "male" ? "males" : "females";
+    clients.forEach((client) => {
+      if (client.age >= 10 && client.age <= 70) {
+        const ageGroup = Math.floor((client.age - 10) / 10);
+        const gender = client.sex === "male" ? "males" : "females";
         data[gender][ageGroup]++;
       }
     });
     return data;
-  }, [users]);
+  }, [clients]);
 
   return (
-    <article title='Users Age To Gender Distribution' className='container w-1/2 sm:w-fit max-w-[50%]'>
+    <article title='Clients Age To Gender Distribution' className='container w-1/2 sm:w-fit max-w-[50%]'>
       <BarChart
-        title='Users Age To Gender Distribution'
+        title='Clients Age To Gender Distribution'
 				className='h-36 w-80 sm:w-[700px] sm:h-[300px]'
         width={650}
         height={300}
@@ -73,7 +73,7 @@ export default function AgeToGenderChart({ users }) {
           { data: ChartData.males, label: 'Males', id: 'm' },
         ]}
         xAxis={[{ data: ['10','20','30','40','50','60','70'], scaleType: 'band', valueFormatter: (value) => value + ' Years Old' }]}
-        desc='Users Age To Gender Distribution'
+        desc='Clients Age To Gender Distribution'
       />
     </article>
   )

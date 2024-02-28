@@ -40,13 +40,13 @@ export const standardYogaCoursesTypes = [
 
 export const dashboardNavbar = [
 	{
-		name: "Users",
+		name: "Clients",
 		icon: "fi fi-sr-users-alt",
 	},
-	{
-		name: "Carnets",
-		icon: "fi fi-sr-address-book",
-	},
+	// {
+	// 	name: "Carnets",
+	// 	icon: "fi fi-sr-address-book",
+	// },
 	{
 		name: "Sessions",
 		icon: "fi fi-sr-calendar",
@@ -100,13 +100,23 @@ export const carnetsPeriodToPriceSessions = {
 };
 
 export const DefaultCarnetsSettings = {
-	periods: ["1Y", "6M", "4M", "2M"],
-	sessions: [50, 30, 20, 10],
-	prices: [5000, 3600, 2600, 1500],
+	periods: ["2M", "4M", "6M", "1Y"],
+	sessions: [10, 20, 30, 50],
+	prices: [1500, 2600, 3600, 5000],
 };
+
+export const CarnetStatus = ["active", "paid", "cancelled"];
+export const CarnetFilters = [
+	{ value: "all", title: "All Carnets" }, 																// [auto] default
+	{ value: "active", title: "Active Carnets" },														// [auto] default payment status   ; 
+	{ value: "paid", title: "Paid Carnets" },                               // [auto] paid payment status      ; paid
+	{ value: "fullypaid", title: "Completed Carnets' Sessions and Paid" },  // [auto] completed session status and paid payment status ; paid
+	{ value: "cancelled", title: "Cancelled Carnets" },                     // [manual] cancelled carnet status  ;
+];
 
 // periods map: 1Y => 1 year, xY or xM => x Year or X Month ...
 export const periodAccronymMap = (period) => {
+	// console.log("period", period);
 	const x =  period.slice(0,1);
 	const P = period.slice(1);
 	const map = { y: "Year", m: "Month",};
@@ -202,8 +212,8 @@ export async function date() {
 	return new Date(APIDate.fulldate);
 }
 
-// caclulate the user age from his birthdate using accurate time from: 'https://github.com/davidayalas/current-time' API
-export async function userAge(birthdate) {
+// caclulate the client age from his birthdate using accurate time from: 'https://github.com/davidayalas/current-time' API
+export async function clientAge(birthdate) {
 	try {
 		return Math.floor(
 			new Date(await date()).getFullYear() - new Date(birthdate).getFullYear()
@@ -213,7 +223,7 @@ export async function userAge(birthdate) {
 	}
 }
 
-// util function that detect user IP/Geo address:
+// util function that detect client IP/Geo address:
 export async function clientIPify() {
 	const ipify = await (await fetch("https://api.ipify.org?format=json")).json();
 	const ipgeolocation = await (await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${import.meta.env.VITE_IPGEOLOCATION_API_KEY}&ip=${ipify.ip}`)).json();

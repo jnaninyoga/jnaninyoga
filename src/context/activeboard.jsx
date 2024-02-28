@@ -8,26 +8,26 @@ ActiveBoardProvider.propTypes = {
     children: PropTypes.any,
 };
 
-export const ActiveBoardContext = createContext(localStorage.getItem("activeBoard") || "users");
+export const ActiveBoardContext = createContext(localStorage.getItem("activeBoard") || "clients");
 
 export default function ActiveBoardProvider(props) {
-    const [activeBoard, setActiveBoard] = useState(localStorage.getItem("activeBoard") || "users");
+    const [activeBoard, setActiveBoard] = useState(localStorage.getItem("activeBoard") || "clients");
     // getting the target board from the url
-    const { board } = useParams();
+    const { board, ...boardParams } = useParams();
     // check if the requested board buy url is valid
     const supportedBoards = useMemo(() => dashboardNavbar.map(board => board.name.toLowerCase()), []);
 
-    // if the board is not supported, redirect to the users board
+    // if the board is not supported, redirect to the clients board
     useEffect(() => {
         if (!supportedBoards.includes(board?.toLowerCase())) {
-            setActiveBoard("users");
+            setActiveBoard("clients");
         } else {
             setActiveBoard(board);
         }
     }, [board, supportedBoards]);
 
     // set the active board in local storage
-    const ActiveBoard = useMemo(() => ({ activeBoard, setActiveBoard }), [activeBoard, setActiveBoard]);
+    const ActiveBoard = useMemo(() => ({ activeBoard, setActiveBoard, boardParams }), [activeBoard, setActiveBoard, boardParams]);
     useEffect(() => localStorage.setItem("activeBoard", activeBoard), [activeBoard]);
 
     return (

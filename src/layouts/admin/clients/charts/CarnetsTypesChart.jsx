@@ -2,11 +2,11 @@ import { BarChart } from '@mui/x-charts';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
-CarnetTypesChart.propTypes = {
+CarnetsTypesChart.propTypes = {
   carnets: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    userID: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    clientID: PropTypes.string.isRequired,
+    clientname: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
     type: PropTypes.string.isRequired,
     period: PropTypes.string.isRequired,
@@ -30,7 +30,7 @@ CarnetTypesChart.propTypes = {
 };
 
 
-export default function CarnetTypesChart({ carnets, types }) {
+export default function CarnetsTypesChart({ carnets, types }) {
   // * The Total Carnets grouped by type
   const chartData = useMemo(() => {
     const data = Array(types.length).fill(0);

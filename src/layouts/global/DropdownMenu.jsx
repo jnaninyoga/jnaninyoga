@@ -60,7 +60,7 @@ export default function DropdownMenu({id, options, onSelect, placeholder, defaul
 	}, [dropdownMenu, hideDropdownMenu]);
 
 	return (
-		<div className="relative w-full flex justify-center items-center">
+		<div className="relative w-full flex justify-center items-center z-[80]">
 			<button type="button" id={id || cid} onKeyDown={keyboardNavigation} onClick={dropdownMenuStatus} className={`${menuStyle ?? ''} cinzel w-full flex justify-center items-center gap-3 text-center bg-yoga-red text-sm sm:text-base font-semibold uppercase px-3 py-3 outline outline-2 -outline-offset-[7px] outline-white focus:contrast-[1.20] hover:contrast-[1.20] ${dropdownMenu && "contrast-[1.20]"} transition-all`}>
 				
 				{(valueFormatter ? valueFormatter(selection.current) : selection.current) || placeholder}

@@ -1,13 +1,24 @@
+// === HOOKS ===
 import { useCallback, useEffect, useState } from "react";
+
+// === ASSETS ===
+import Icon from "../../../../assets/svg";
+
+// === UTILS ===
 import PropTypes from "prop-types";
-import Icon from "../../../assets/svg";
-import DropdownMenu from "../../../layouts/global/DropdownMenu";
-import collections, { names } from "../../../firebase/collections";
-import Alert from "../../../layouts/admin/shared/Alert";
-import Loader from "../../../layouts/global/Loader";
-import { DefaultCarnetsSettings } from "../../../utils";
-import { fetchDocs, updateDocument } from "../../../firebase";
+
+// === DB ===
+import collections, { names, configurations } from "../../../../firebase/collections";
+import { DefaultCarnetsSettings } from "../../../../utils";
+import { fetchDocs, updateDocument } from "../../../../firebase";
 import { onSnapshot } from "firebase/firestore";
+
+// === COMPONENTS ===
+// --- LAYOUTS ---
+import DropdownMenu from "../../../global/DropdownMenu";
+import Alert from "../../shared/Alert";
+import Loader from "../../../global/Loader";
+
 
 Field.propTypes = {
   field: PropTypes.object.isRequired,
@@ -59,7 +70,7 @@ function Field({field, defaultValue, onChange}){
         <input id={field.key} type={"text"} value={value} onChange={e => storeValue(e.target.value)} className="outline-none h-full w-full bg-transparent" />
       </label>
       {/* FIELD DATA VALUE VISUALISATION */}
-      { !field.rawValue && <p className="flex w-full gap-2 z-50">
+      { !field.rawValue && <p className="flex w-full gap-2 z-50 flex-wrap">
         {encodeValue(value, field.dataType).map((v, i) => (
           <span key={i} className={`flex items-center justify-center bg-yoga-green text-yoga-white text-sm px-1 py-[2px] rounded-md`}>{field.key === "prices" ? v + " MAD" : v}</span>
         ))}
@@ -85,10 +96,10 @@ export default function CarnetsSettings({onReset}) {
       try {
         onSnapshot(fetchDocs(collections.configurations), (querySnapshot) => {
           // set the documents in the collection state with there ids
-          setSettings(querySnapshot.docs.filter((doc) => doc.id === names.carnets)[0]?.data().settings);
+          setSettings(querySnapshot.docs.filter((doc) => doc.id === configurations.carnets)[0]?.data().settings);
         });
       } catch (error) {
-        console.error(`${names.carnets.toUpperCase()} DASHBOARD CONFIGURATIONS ERROR`, error);
+        console.error(`${configurations.carnets.toUpperCase()} DASHBOARD CONFIGURATIONS ERROR`, error);
         setSettingsError(error);
       } finally {
         setSettingsLoading(false);
@@ -112,10 +123,17 @@ export default function CarnetsSettings({onReset}) {
     onCancel: alertAction
 	})
 
-  useEffect(() => {
-    console.table(settings)
-    // console.log(`%cCurrent Carnet Type: %c${carnetType}`, "color:gray;font-family:system-ui;font-size:2rem;font-weight:bold", "color:#b31451;font-family:system-ui;font-size:2rem;font-weight:bold")
-  }, [carnetType, settings])
+  // useEffect(() => {
+  //   console.table(settings)
+  //   // console.log(`%cCurrent Carnet Type: %c${carnetType}`, "color:gray;font-family:system-ui;font-size:2rem;font-weight:bold", "color:#b31451;font-family:system-ui;font-size:2rem;font-weight:bold")
+  // }, [carnetType, settings])
+
+  const reset = () => {
+    setIsTypeAdding(false);
+    setSettings({regular: DefaultCarnetsSettings});
+    setCarnetType("regular");
+    onReset();
+  }
 
   if (settingsLoading){
     return <section className="flex items-center justify-center h-full w-full max-h-[400px] max-w-[600px]">
@@ -123,20 +141,22 @@ export default function CarnetsSettings({onReset}) {
     </section>
   }
 
-  if (!settingsLoading && ( settingsError || Object.values(settings).length === 0 )){
+  if (!settings || (!settingsLoading && ( settingsError || Object.values(settings).length === 0 ))){
     return <Alert
       type="error"
-      message="Error Loading Carnet Settings"
-      confirm={"Try Agin"}
-      onConfirm={window.location.reload}
-  />}
+      title="Error Loading Carnet Settings"
+      message={settingsError?.message || "No Carnet Settings Found"}
+      confirm="Close"
+      onConfirm={reset}
+    />
+  }
 
-  if (alert.message) return <Alert {...alert} />
+  if (alert.message) return <Alert {...alert} confirm="Ok" onConfirm={() => setAlert({})}/>
 
   // Create New carnet type with te default settings:
   const createNewCarnetType = async () => {
     try {
-      await updateDocument(names.configurations, names.carnets, {settings: {...settings, [newCarnetType]: DefaultCarnetsSettings}})
+      await updateDocument(names.configurations, configurations.carnets, {settings: {...settings, [newCarnetType]: DefaultCarnetsSettings}})
       setIsTypeAdding(false)
       setCarnetType(newCarnetType)
     } catch (error) {
@@ -149,21 +169,13 @@ export default function CarnetsSettings({onReset}) {
   const updateCarnetSettings = async (e) => {
     e.preventDefault();
     try {
-      await updateDocument(names.configurations, names.carnets, {settings: {...settings, [carnetType]: settings[carnetType]}})
-      setAlert({...alert, type: "success", title: `Settings Of "${carnetType}" Carnet Type Updated`, message: `The Settings Of "${carnetType}" Carnet Type Was Updated Successfully`, onConfirm: alertAction, onCancel: alertAction});
+      await updateDocument(names.configurations, configurations.carnets, {settings: {...settings, [carnetType]: settings[carnetType]}})
+      setAlert({...alert, type: "success", title: `Settings Of "${carnetType}" Carnet Type Updated`, message: `The Settings Of "${carnetType}" Carnet Type Was Updated Successfully`});
     } catch (error) {
       console.error(error);
       setAlert({...alert, type: "error", title: "Error Updating Carnet Settings", message: error.message});
     }
   }
-
-  const reset = () => {
-    setIsTypeAdding(false);
-    setSettings({regular: DefaultCarnetsSettings});
-    setCarnetType("regular");
-    onReset();
-  }
-
 
   return (
     <section className="py-4 flex flex-1 h-full w-full max-h-[800px] max-w-[550px] flex-col items-center gap-5 bg-texture texture-v-1 overflow-y-auto">
@@ -179,7 +191,7 @@ export default function CarnetsSettings({onReset}) {
       <h1 className="cinzel text-center text-2xl font-bold uppercase z-50">Carnet Configurations</h1>
 
       <form onSubmit={updateCarnetSettings} className="px-8 w-full flex flex-col gap-9 items-center">
-        <div className="flex w-full gap-4 max-h-14 z-50">
+        <div className="flex w-full gap-4 max-h-14 z-[80]">
           { isTypeAdding ? (
             <div className="w-full flex items-center justify-center gap-2">
               <input type="text" placeholder="Carnet type" onChange={e => setNewCarnetType(e.target.value.trim().toLowerCase())} className="form-field h-full shadow-md drop-shadow-md" />

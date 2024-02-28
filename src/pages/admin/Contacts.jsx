@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useData, useSearchParamsSerializer } from "../../hooks";
+import { useData, useActiveBoard } from "../../hooks";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import Lookup from "../../layouts/admin/shared/Lookup";
 import { dateFormater, supportedLanguages, toXlsx, alertMessage, whatsappLink } from "../../utils";
@@ -17,8 +17,8 @@ export default function Contacts() {
   const [pageSize, setPageSize] = useState(10);
   const [selection, setSelection] = useState([]);
 
-  // get the contact id 'CID' from the url search params
-  const searchParams = useSearchParamsSerializer();
+  // get the contact id 'CID' from the url board params
+  const {boardParams} = useActiveBoard();
   const navigate = useNavigate();
 
   // message modal state
@@ -33,11 +33,18 @@ export default function Contacts() {
 
   // check if the contact id 'ID' is presented in the search params,and set the Modal with the coresponding contact
   useEffect(() => {
-    if(!searchParams.id) return;
-    const contact = contacts.find((contact) => contact.id === searchParams.id);
+    if(!boardParams.id) return;
+    const contact = contacts.find((contact) => contact.id === boardParams.id);
     contact && setModal(contact);
-  }, [searchParams, contacts]);
+  }, [boardParams, contacts]);
 
+  // === CONTACTS VIEWS === //
+  const displayContact = useCallback((contact) => {
+    navigate(`${contact.id}`);
+  }, [navigate]);
+
+
+  // === CONTACTS ACTIONS === //
   // updating the document in firestore
   const updateContact = useCallback(async (id, data) => {
     try {
@@ -110,6 +117,7 @@ export default function Contacts() {
       setModal(null);
       setAlert({});
       navigate({search: ''});
+      navigate(`/lotus/${names.contacts}`);
     }
   }
 
@@ -122,7 +130,7 @@ export default function Contacts() {
       renderCell: ({ value }) => <div title={value ? "Answered" : "Not Answered"} className={`cinzel text-center flex justify-center items-center font-bold uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] ${value ? "bg-yoga-green" : "bg-yoga-red"} outline-white transition-all duration-300`}><i className={`fi ${value ? "fi-bs-check text-yoga-white" : "fi-bs-cross"} flex justify-center items-center`}></i></div> 
     },
     { field: "fullname", headerName: "Full Name", width: 150, 
-      renderCell: ({ value }) => <h1 title={value} className="cinzel font-semibold">{value}</h1>
+      renderCell: ({ value, row }) => <h1 title={value} onClick={() => displayContact(row)} className="cinzel font-semibold">{value}</h1>
     },
     { field: "email", headerName: "Email", width: 180,
       sortable: false,
@@ -134,14 +142,14 @@ export default function Contacts() {
       renderCell: ({ value }) => ( <a title={value} href={whatsappLink(value)} className="hover:text-yoga-green hover:underline underline-offset-4 transition-all">{value}</a> )
     },
 
-    { field: "message", headerName: "Message", width: 200,
+    { field: "message", headerName: "Message", width: 245,
       sortable: false,
       // formating the message to be 250 characters max and suffix "..."
       valueFormatter: ({ value }) => value.length > 250 ? `${value.substring(0, 250)}...` : value,
 
     },
 
-    { field: "lang", headerName: "Language", width: 100,
+    { field: "lang", headerName: "Language", width: 80,
       type: "singleSelect",
       // choices for the language
       valueOptions: supportedLanguages.map((lang) => lang.name),
@@ -153,7 +161,7 @@ export default function Contacts() {
       valueFormatter: ({ value }) => dateFormater(value)
     },
     // action field to delete make the contact as answered or not
-    { field: "action", headerName: "Action", width: 300,
+    { field: "action", headerName: "Action", width: 280,
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
@@ -164,11 +172,11 @@ export default function Contacts() {
       )
     },
     // filed to show the contact message info inside a modal
-    { field: "show", headerName: "Show", width: 100,
+    { field: "show", headerName: "Show", width: 90,
       sortable: false,
       filterable: false,
       renderCell: ({ row }) => (
-        <button onClick={() => { setModal(row); }} title={"show Contact Detailes"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
+        <button onClick={() => { displayContact(row); }} title={"show Contact Detailes"} className={`cinzel text-center uppercase px-3 py-2 outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}>Show</button>
       )
     },
     // field for making a contact as deleted
@@ -179,7 +187,7 @@ export default function Contacts() {
         <button onClick={() => setAlert({...alertMessage("D", "Contact"), onConfirm: () => alertAction(() => deleteContact(row.id)), onCancel: alertAction})} title={"Delete This Contact"} className={`cinzel text-center uppercase px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-red-400 outline-white hover:bg-red-500 active:scale-90 transition-all`}><i className="fi fi-bs-trash text-yoga-white flex justify-center items-center"></i></button>
       )
     }
-  ], [updateContact, deleteContact, alertAction]);
+  ], [updateContact, deleteContact, displayContact, alertAction]);
 
   // if data been loading
   if (!contacts && DataLoading) return <Loader loading='Loading Contacts Data...' />;

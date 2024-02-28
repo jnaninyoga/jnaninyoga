@@ -180,7 +180,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 						<fieldset className={`relative w-full h-fit flex flex-col gap-1`} >
 							<textarea
 								onChange={setFormField}
-								// expand the textarea as the user types new lines
+								// expand the textarea as the client types new lines
 								rows={form[field.name] ? form[field.name].split('\n').length : 2}
 								className={`${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} resize-y placeholder:capitalize delay-[${ 100 * index + 100 }ms] `}
 								name={field.name}
@@ -206,6 +206,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 								defaultValue={form[field.name] || field.defaultValue}
 								required={field.required}
 								autoComplete={field.type.toLowerCase() === 'password' ? 'new-password' : 'on'}
+								{...field.attributes}
 							/>
 							{// if the field is type of password, show the show/hide password button
 								(field.type.toLowerCase() === 'password') && (

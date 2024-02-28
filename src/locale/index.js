@@ -9,7 +9,7 @@ i18n
 .use(initReactI18next)
 .init({
   supportedLngs: ["en", "fr", "ar"],
-  // default language to the user's browser language in the supported languages [en, fr, ar]
+  // default language to the client's browser language in the supported languages [en, fr, ar]
   lng: ["en", "fr", "ar"].includes(navigator.language) ? navigator.language : "en",
   fallbackLng: "en",
   fallbackNS: "/langs/en.json",

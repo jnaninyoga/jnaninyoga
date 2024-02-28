@@ -5,8 +5,8 @@ import { useMemo } from 'react';
 CarnetsProgressChart.propTypes = {
   carnets: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    userID: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    clientID: PropTypes.string.isRequired,
+    clientname: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
     type: PropTypes.string.isRequired,
     period: PropTypes.string.isRequired,
