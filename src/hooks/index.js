@@ -2,7 +2,7 @@ import i18next, { changeLanguage } from "i18next";
 import { useState, useEffect, useContext, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
 import { standardNavbar, supportedLanguages, tokenDecoder } from "../utils";
-import { docSnap, fetchDescDocs, fetchDocs } from "../firebase";
+import { docSnap, fetchDescDocs, fetchDocs, fetchSubColDocs } from "../firebase";
 import { ActiveBoardContext } from "../context/activeboard";
 import collections, { names } from "../firebase/collections";
 import { onSnapshot, orderBy, where } from "firebase/firestore";
@@ -49,13 +49,14 @@ export function useSearchParamsSerializer() {
 		const searchParams = new URLSearchParams(location.search);
 		const params = {};
 		for (const [key, value] of searchParams.entries()) {
-			params[key] = value;
+			// normalize the value to be a number if it's a number and remove the quotes over the string: '\"hola\"' -> "hola"
+			params[key] = !isNaN(value) ? Number(value) : value.replace(/^"(.*)"$/, "$1");
 		}
 		return params;
 	}, [location]);
 }
 
-// Auth Hook that check if the user is logged in or not buy checking the token in the cokies 'jnaninyoga'
+// Auth Hook that check if the client is logged in or not buy checking the token in the cokies 'jnaninyoga'
 export function useAdminAuth() {
 	const [auth, setAuth] = useState(false);
 	const [verifying, setVerifying] = useState(true);
@@ -64,13 +65,14 @@ export function useAdminAuth() {
 	const currentLang = useCurrentLanguage();
 
 	const searchParams = useSearchParamsSerializer();
-	const { activeBoard } = useActiveBoard();
+	const { activeBoard, boardParams } = useActiveBoard();
 
 	useEffect(() => {
 		if (!activeBoard) return;
-		const stringifiedSearchParams = Object.keys(searchParams).length > 0 ? `?${new URLSearchParams(searchParams).toString()}` : "";
-		localStorage.setItem("navigationHistory", `/lotus/${activeBoard ?? ''}${stringifiedSearchParams}`);
-	}, [activeBoard, searchParams]);
+		const SearchParamsURI = Object.keys(searchParams).length > 0 ? `?${new URLSearchParams(searchParams).toString()}` : "";
+		const BoardParamsURI = boardParams && '/'+Object.values(boardParams).join("/");
+		localStorage.setItem("navigationHistory", `/lotus/${activeBoard ? activeBoard+BoardParamsURI : ''}${SearchParamsURI}`);
+	}, [activeBoard, boardParams, searchParams]);
 
 	useEffect(() => {
 		if (!verifying) return;
@@ -116,6 +118,22 @@ export function useData(collection) {
 	// start loading data based on the collection
 	useEffect(() => {
 		(async () => {
+			// if the collection is a sub collection
+			if (collection.includes("/")) {
+				const [col, doc, subCol] = collection.split("/");
+				try {
+					onSnapshot(fetchSubColDocs(col, doc, subCol, orderBy("order")), (querySnapshot) => {
+						// set the documents in the collection state with there ids
+						setData(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+					});
+				} catch (error) {
+					console.error(`[SUB] - ${collection.toUpperCase()} DASHBOARD ERROR: `, error);
+					setError(error);
+				} finally {
+					setLoading(false);
+				}
+				return;
+			}
 			//swith the collection:
 			switch (collection) {
 				case names.auth:
@@ -123,7 +141,7 @@ export function useData(collection) {
 						const admin = (await docSnap(collections.auth)).docs[0];
 						setData({ ...admin.data(), id: admin.id });
 					} catch (error) {
-						console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+						console.error(`${collection.toUpperCase()} DASHBOARD ERROR: `, error);
 						setError(error);
 					} finally {
 						setLoading(false);
@@ -137,7 +155,7 @@ export function useData(collection) {
 							setData(querySnapshot.docs.map((doc) => ({ ...doc.data(), day: doc.id })));
 						});
 					} catch (error) {
-						console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+						console.error(`${collection.toUpperCase()} DASHBOARD ERROR: `, error);
 						setError(error);
 					} finally {
 						setLoading(false);
@@ -151,7 +169,7 @@ export function useData(collection) {
 							setData(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
 						});
 					} catch (error) {
-						console.error(`${collection.toUpperCase()} DASHBOARD ERROR`, error);
+						console.error(`${collection.toUpperCase()} DASHBOARD ERROR: `, error);
 						setError(error);
 					} finally {
 						setLoading(false);
@@ -179,6 +197,7 @@ export function useConfigurations(collection, defaultSettings) {
 
 	useEffect(() => {
 		(async () => {
+			// if the collection is a sub collection and contains `/` in it
 			try {
 				onSnapshot(fetchDocs(collections.configurations), (querySnapshot) => {
 					// set the documents in the collection state with there ids
@@ -200,6 +219,6 @@ export function useConfigurations(collection, defaultSettings) {
 
 // hook the server the active board in the dashboard
 export function useActiveBoard() {
-	const { activeBoard, setActiveBoard } = useContext(ActiveBoardContext);
-	return { activeBoard, setActiveBoard };
+	const { activeBoard, setActiveBoard, boardParams } = useContext(ActiveBoardContext);
+	return { activeBoard, setActiveBoard, boardParams };
 }

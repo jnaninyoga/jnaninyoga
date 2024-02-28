@@ -2,15 +2,19 @@ import { collectionDB } from ".";
 
 export const names = {
     auth: import.meta.env.VITE_COLLECTION_AUTH,
-    users: import.meta.env.VITE_COLLECTION_USERS,
+    books: import.meta.env.VITE_COLLECTION_BOOKS,
     carnets: import.meta.env.VITE_COLLECTION_CARNETS,
     classes: import.meta.env.VITE_COLLECTION_CLASSES,
-    contacts: import.meta.env.VITE_COLLECTION_CONTACTS,
-    books: import.meta.env.VITE_COLLECTION_BOOKS,
-    reviews: import.meta.env.VITE_COLLECTION_REVIEWS,
-    emails: import.meta.env.VITE_COLLECTION_EMAILS,
-    // collection configuations:
+    clients: import.meta.env.VITE_COLLECTION_CLIENTS,
     configurations: import.meta.env.VITE_COLLECTION_CONFIGURATIONS,
+    contacts: import.meta.env.VITE_COLLECTION_CONTACTS,
+    emails: import.meta.env.VITE_COLLECTION_EMAILS,
+    reviews: import.meta.env.VITE_COLLECTION_REVIEWS,
+    // collection configurations:
+}
+
+export const configurations = {
+    carnets: import.meta.env.VITE_COLLECTION_CARNETS,
 }
 
 export const collections = Object.keys(names).reduce((collection, name) => {

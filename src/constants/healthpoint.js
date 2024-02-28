@@ -1,5 +1,5 @@
-export default function userHP({age, sex, medicalhistory, currentcare, liferhythm}) {
-  const BASEHP = 70; // Base HP for all users
+export default function clientHP({age, sex, medicalhistory, currentcare, liferhythm}) {
+  const BASEHP = 70; // Base HP for all clients
   const ACCCoifficient = 10; // ACC Coefficient
   const MHCoifficient = 5; // MH Coefficient
   const CCCoifficient = 5; // CC Coefficient

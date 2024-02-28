@@ -59,6 +59,9 @@ export const fetchDocs = (collectionRef, ...queryConstraints) => query( collecti
 // get docs ordered by timestamp
 export const fetchDescDocs = (collectionRef, ...queryConstraints) => fetchDocs(collectionRef, ...queryConstraints, orderBy("createdAt", "desc"));
 
+// get the docs in a sub collection
+export const fetchSubColDocs = (col, doc, subCol, ...queryConstraints) => fetchDocs(collection(DB, col, doc, subCol), ...queryConstraints, orderBy("createdAt", "desc"));
+
 // ======== add doc ========
 
 // add/create doc
@@ -72,10 +75,43 @@ export async function addRefDocument(collection, data, refCollection, refData, r
   return await addDocument(refCollection, refData ? {...refData, [ref]: docRef} : {[ref]: docRef} );
 }
 
-// ======== update doc ========
+// adding a document in a sub collection
+export async function addSubColDocument(coll, doc, subCollection, subDoc) {
+  if(!subCollection) throw new Error("subCol is required");
+  try {
+    const docRef = await addDocument(coll, doc);
+    const subColRef = collection(DB, coll, docRef.id, subCollection);
+    return await addDoc(subColRef, document(subDoc));
+  } catch (error) {
+    console.error("Error adding sub-collection document: ", error);
+  }
+}
+
+export async function addSubDocument(coll, id, subCollection, subDoc) {
+  if(!subCollection) throw new Error("subCollection is required");
+  try {
+    const subColRef = collection(DB, coll, id, subCollection);
+    return await addDoc(subColRef, document(subDoc));
+  } catch (error) {
+    console.error("Error adding sub document: ", error);
+  }
+}
+
+// ======== update doc ======== 
 
 //update doc
 export const updateDocument = async (collection, id, data) => await updateDoc(doc(DB, collection, id), {...data, updatedAt: timestamp});
+
+// update doc in a sub collection
+export async function updateSubColDocument(col, docID, subCol, subDocID, subDoc) {
+  if(!subCol) throw new Error("subCol is required");
+  try {
+    const subColRef = doc(DB, col, docID, subCol, subDocID);
+    return await updateDoc(subColRef, {...subDoc, updatedAt: timestamp});
+  } catch (error) {
+    console.error("Error updating sub-collection document: ", error);
+  }
+}
 
 // ======== delete doc ========
 

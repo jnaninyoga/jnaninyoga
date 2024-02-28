@@ -2,8 +2,8 @@ import { names } from "../firebase/collections";
 import { tokenDecoder } from "../utils";
 import sessions from './sessions.json';
 
-// defaut user data:
-export const User = {
+// defaut client data:
+export const Client = {
 	id: 0,
 	firstname: "",
 	lastname: "",
@@ -36,14 +36,18 @@ export const User = {
 
 export const Carnet = {
 	id: 0,
-	user: 0,
-	completed: false,
+	order: 1,
 	type: "regular",
+	status: "active",
+		// "active", // ? if the carnet is active
+		// "paid", // ? if the carnet is fully paid
+		// "cancelled", // ? if the carnet is cancelled
+	
 	period: "2M", // 2 months, periods: 1Y, 6M, 4M, 2M
 	sessions: 10, // number of sessions, sessions: 50, 30, 20, 10
 	passedSessions: 0, // number of passed sessions
+	progress: 0, // progress in percentage
 	price: 1500, // price of the carnet, prices: 5000MAD, 3600MAD, 2600MAD, 1500MAD
-	paidAmount: 0, // amount paid by the user
 	remainingAmount: 1500, // remaining amount to pay
 	payments: [], // payments history
 	createdAt: new Date().toDateString(),
@@ -86,7 +90,7 @@ export const Review = {
 // function that return the default data for each collection:
 export default function deafultData(collection){
 	switch (collection) {
-		case names.users: return [User];
+		case names.clients: return [Client];
 		case names.contacts: return [Contact];
 		case names.books: return [Book];
 		case names.reviews: return [Review];
