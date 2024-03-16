@@ -47,7 +47,35 @@
       ]
     },
     {
+      "collectionGroup": "carnets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "order",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "classes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deleted",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "clients",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -97,22 +125,22 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "rate",
-          "order": "DESCENDING"
-        },
-        {
           "fieldPath": "createdAt",
           "order": "DESCENDING"
         }
       ]
     },
     {
-      "collectionGroup": "clients",
+      "collectionGroup": "reviews",
       "queryScope": "COLLECTION",
       "fields": [
         {
           "fieldPath": "deleted",
           "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "rate",
+          "order": "DESCENDING"
         },
         {
           "fieldPath": "createdAt",
