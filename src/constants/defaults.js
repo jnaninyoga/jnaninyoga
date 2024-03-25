@@ -46,6 +46,7 @@ export const Carnet = {
 	period: "2M", // 2 months, periods: 1Y, 6M, 4M, 2M
 	sessions: 10, // number of sessions, sessions: 50, 30, 20, 10
 	passedSessions: 0, // number of passed sessions
+	sessionReports: [], // sessions reports
 	progress: 0, // progress in percentage
 	price: 1500, // price of the carnet, prices: 5000MAD, 3600MAD, 2600MAD, 1500MAD
 	remainingAmount: 1500, // remaining amount to pay

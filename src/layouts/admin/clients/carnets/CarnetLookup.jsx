@@ -27,6 +27,7 @@ CarnetLookup.propTypes = {
     period: PropTypes.string.isRequired,
     sessions: PropTypes.number.isRequired,
     passedSessions: PropTypes.number.isRequired,
+    sessionReports: PropTypes.arrayOf(PropTypes.object),
     progress: PropTypes.number,
     price: PropTypes.number.isRequired,
     remainingAmount: PropTypes.number.isRequired,
@@ -59,7 +60,7 @@ export default function CarnetLookup({ carnet, client, onUpdate=() => console.lo
     <Helmet>
       <title>{`${client.firstname} ${client.lastname} - Jnanin Yoga Carnet`}</title>
     </Helmet>
-    <section className="relative py-8 px-9 min-h-[340px] max-h-[650px] w-[95%] md:w-[680px] flex justify-center items-center flex-col gap-2 bg-yoga-white rounded-[4px] drop-shadow-md sm:overflow-x-hidden overflow-y-auto bg-texture texture-v-1 print:before:hidden print:bg-transparent print:h-max print:w-screen print:scale-105">
+    <section className="relative py-8 px-9 min-h-[340px] max-h-[650px] w-[95%] md:w-[700px] flex justify-center items-center flex-col gap-2 bg-yoga-white rounded-[4px] drop-shadow-md sm:overflow-x-hidden overflow-y-auto bg-texture texture-v-1 print:before:hidden print:bg-transparent print:h-max print:w-screen print:scale-105">
       <div className={`ribbon-top-left ${PaidStatusDisplay.ribbon}`}>{PaidStatusDisplay.text}</div>
       <header className="relative w-full min-w-max print:px-0 print:pr-5 print:py-4 flex items-center gap-8 print:gap-6">
         <div className="w-32 h-32 flex justify-center items-center aspect-square bg-cover bg-center">
@@ -193,6 +194,7 @@ export default function CarnetLookup({ carnet, client, onUpdate=() => console.lo
           {" "}With Carnet Id URL
         </label>
         <button onClick={window.print} className="yoga-btn drop-shadow-lg group"><i className="fi fi-sr-file-pdf flex items-center justify-center mr-1 group-hover:text-yoga-green-dark transition-all"></i>{" "}Download</button>
+        <button onClick={onUpdate} title={`Show Session Reports For This Carnet`} className={`h-full flex items-center cinzel uppercase px-4 py-3 outline outline-2 -outline-offset-[5px] text-yoga-white bg-gray-400 outline-white hover:bg-gray-600 active:scale-90 drop-shadow-lg transition-all`}><i className="fi fi-sr-newspaper mr-2 text-yoga-white flex justify-center items-center"></i>Session Reports</button>
         <button onClick={onUpdate} title={`Update ${client.firstname} ${client.lastname} Carnet`} className={`h-full flex items-center cinzel uppercase px-4 py-3 outline outline-2 -outline-offset-[5px] text-yoga-white bg-yoga-green outline-white hover:bg-yoga-green-dark active:scale-90 drop-shadow-lg transition-all`}><i className="fi fi-sr-user-pen mr-2 text-yoga-white flex justify-center items-center"></i>Edit</button>
       </footer>
     </section>

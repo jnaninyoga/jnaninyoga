@@ -19,6 +19,7 @@ CarnetCard.propTypes = {
     period: PropTypes.string.isRequired,
     sessions: PropTypes.number.isRequired,
     passedSessions: PropTypes.number.isRequired,
+    sessionReports: PropTypes.arrayOf(PropTypes.object),
     progress: PropTypes.number,
     price: PropTypes.number.isRequired,
     paidAmount: PropTypes.number,

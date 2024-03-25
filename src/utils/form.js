@@ -332,3 +332,10 @@ export const clientFields = [
     placeholder: "Reason For The Consultation",
   },
 ];
+
+
+// const sessionReportsFields = [
+//   {
+//     type:
+//   }
+// ]

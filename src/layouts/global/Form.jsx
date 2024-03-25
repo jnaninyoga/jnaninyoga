@@ -122,14 +122,14 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 				</fieldset> }
 
 					{
-						// Separators
+						// --- Separators
 						field.type === 'separator' ?
 						<div className={`relative h-10 mt-4 w-full flex justify-center items-center gap-2 overflow-x-hidden`}>
 							<h4 className={`absolute ${isWrapperIntersected ? "left-4 opacity-100" : 'left-[-100%] opacity-0'} pl-2 pr-4 cinzel font-semibold uppercase w-max bg-yoga-white transition-all duration-[${ 100 * index + 100 }ms]`}>{field.title}:</h4>
 							<div className="w-full h-[2px] bg-cyan-800 bg-opacity-10"></div>
 						</div> : 
 
-						// Single Select
+						// --- Single Select
 						field.type === 'singleSelect' ?
 						<fieldset className={`form-field flex gap-4 ${isWrapperIntersected ? "translate-y-0 opacity-100" : 'translate-y-[100%] opacity-0'}  ${errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error" : ""} ${dark && "drop-shadow"} transition-all duration-[${ 100 * index + 100 }ms] bg-yoga-white`}>
 							<div className='cinzel font-semibold w-fit'>{field.name}{field.required && <span className="form-label-error">*</span>}:</div>
@@ -151,7 +151,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 							</div>
 						</fieldset> :
 
-						// Custom Select
+						// --- Custom Select
 						field.type === 'select' ?
 						<DropdownMenu 
 							options={field.options}
@@ -160,7 +160,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 							defaultSelected={form[field.name] || field.defaultValue}
 						/> :
 
-						// input type phone
+						// --- input type phone
 						field.type === 'tel' ?
 						<fieldset className='relative w-full h-fit flex gap-1'>
 							<PhoneInput
@@ -175,7 +175,7 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 							/>
 						</fieldset> :
 
-						// Textarea element
+						// --- Textarea element
 						field.type === 'textarea' ?
 						<fieldset className={`relative w-full h-fit flex flex-col gap-1`} >
 							<textarea
@@ -195,7 +195,24 @@ const Form = memo(({title, state, fields, insertElement, resetBtn,  submitBtn="S
 							}
 						</fieldset> :
 
-						// default input element
+						// --- Input with a label
+						field.type === 'labeledInput' ?
+						<fieldset className='relative w-full h-fit flex flex-col gap-1'>
+							<label className={`cinzel font-semibold ${dark ? "text-yoga-white" : "text-yoga-green"} transition-all duration-[${ 100 * index + 100 }ms]`}>{field.label || field.name}{field.required && <span className="form-label-error">*</span>}</label>
+							<input
+								onChange={setFormField}
+								className={`${isWrapperIntersected ? "translate-y-0 opacity-100": 'translate-y-[100%] opacity-0'} form-field ${ errorTrigger || (isError && field.required) || errors[field.name] ? "form-field-error form-label-error" : ""} ${dark && "drop-shadow"} ${field.required && "placeholder:first-letter:text-red-600"} placeholder:capitalize delay-[${ 100 * index + 100 }ms]`}
+								type={field.type.toLowerCase()}
+								name={field.name}
+								placeholder={field.required ? "*"+field.placeholder : field.placeholder}
+								defaultValue={form[field.name] || field.defaultValue}
+								required={field.required}
+								autoComplete="on"
+							/>
+						</fieldset> :
+
+
+						// --- default input element
 						<fieldset className='relative w-full h-fit flex flex-col gap-1'>
 							<input
 								onChange={setFormField}

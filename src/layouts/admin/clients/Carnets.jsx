@@ -81,7 +81,6 @@ export default function Carnets({ configs, client, onClose }) {
 
   // filter carnets by status
   const [filter, setFilter] = useState("all"); // ["All", "In Progress", "Completed", "Paid"]
-  console.log("Filter", filter);
   const filters = useMemo(() => CarnetFilters, []);
 
   // search params
