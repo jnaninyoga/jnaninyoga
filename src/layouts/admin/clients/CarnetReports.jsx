@@ -125,7 +125,7 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
     const newCarnetData = await addSubDocument(configurations, names.clients, client.id, names.carnets, newCarnet);
     if(newCarnetData.error) return setAlert(alertMessage("error", "Failed to add new carnet, please try again later."));
     setAlert(alertMessage("success", "New carnet added successfully."));
-  }, [alertAction, client, carnets]);
+  }, [client, carnet]);
 
 
 
@@ -156,7 +156,7 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
     // exporting the data to xlsx
     return toXlsx(data, `${client.firstname} ${client.lastname}-jnaninyoga-carnets`);
 
-  }, [carnet, client]);
+  }, [SessionReports, carnet, client]);
 
 
     // close the model when click outside the modal in the parent element
@@ -175,7 +175,7 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
     <Helmet>
       <title>{`${client.firstname} ${client.lastname} - Jnanin Yoga Carnet Session Reports`}</title>
     </Helmet>
-    <section className='w-[95%] h-[95%] flex items-start flex-col bg-yoga-white bg-texture texture-h-1 before:opacity-25 rounded-md print:bg-none print:before:hidden print:flex print:items-center print:justify-center'>
+    <section className='w-[98%] h-[96%] flex items-start flex-col bg-yoga-white bg-texture texture-h-1 before:opacity-25 rounded-md print:bg-none print:before:hidden print:flex print:items-center print:justify-center'>
       <Box className="w-full max-w-full min-h-[250px] max-h-screen p-4 flex flex-col gap-4 print:hidden overflow-hidden">
         
         <header className='w-full h-fit flex justify-between items-center gap-2 z-[100]'>
@@ -189,10 +189,10 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
                   width={90}
                 />
               </div>
-              <h2 className='cinzel text-xl font-semibold z-[50]'>{client.firstname} {client.lastname} Carnet <span className="text-yoga-green font-bold">#{carnet.order}</span> Session Reports </h2>
+              <h2 className='cinzel text-xl font-semibold z-[50]'>Sessions Report For <span className="cinzel text-yoga-green font-bold">{client.firstname} {client.lastname}</span>  Carnet: <span className="cinzel text-yoga-green font-bold">#{carnet.order}</span></h2>
             </div>
             <div className="h-full w-[5px] bg-yoga-red bg-opacity-20 z-50"></div>
-            <button onClick={addSessionReport} title={`Add New Carnet To ${client.firstname} ${client.lastname}`} className={`h-full cinzel text-center uppercase font-semibold px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}><i className="mr-2 fi fi-sr-book-medical text-yoga-black flex justify-center items-center"></i> Add New Carnet</button>
+            <button onClick={addSessionReport} title={`Add New Report To Carnet ${carnet.order}`} className={`h-full cinzel text-center uppercase font-semibold px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}><i className="mr-2 fi fi-sr-book-medical text-yoga-black flex justify-center items-center"></i> Add New Report</button>
             <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Export All To Excel</button>
             <div className="h-full w-[5px] bg-yoga-red bg-opacity-20 z-100"></div>
           </section>
@@ -203,8 +203,8 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
         <main className="p-4 w-full h-full flex flex-wrap gap-6 z-[80] print:bg-none print:before:hidden print:flex print:items-center print:justify-center">
           {SessionReports.length === 0 ? (
             <section className="w-full h-full flex justify-center items-center flex-col gap-4">
-              <h2 className="cinzel text-2xl font-semibold text-center uppercase">No Carnets Found</h2>
-              <p className="cinzel text-xl text-center uppercase">There is no Carnets for this client yet.</p>
+              <h2 className="cinzel text-2xl font-semibold text-center uppercase">No Reports Found</h2>
+              <p className="cinzel text-xl text-center uppercase">There is no Session Reports sets for this Client Carnet yet</p>
             </section>
           ) : (
             SessionReports.map((carnet) => 
@@ -220,9 +220,9 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
       </Box>
 
       {/* message modal */}
-      {modal.data && (
+      {modal && (
         <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
-          <SessionReport carnet={modal.data} client={client} />
+          <SessionReport carnet={carnet} client={client} />
         </section>
       )}
 

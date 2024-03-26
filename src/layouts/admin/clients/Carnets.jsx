@@ -25,6 +25,7 @@ import { updateSubColDocument, addSubDocument } from "../../../firebase";
 import CarnetCard from "./carnets/CarnetCard";
 import CarnetLookup from "./carnets/CarnetLookup";
 import CarnetUpdate from "./carnets/CarnetUpdate";
+import CarnetReports from "./CarnetReports";
 import LabeledSelect from "../../global/LabeledSelect";
 // --- CHARTS ---
 
@@ -71,7 +72,7 @@ Carnets.propTypes = {
 		updatedAt: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	}),
 
-  configs: PropTypes.shape(DefaultCarnetsSettings),
+  configs: PropTypes.oneOfType([PropTypes.object, PropTypes.array]), // the configurations for the carnet
 };
 
 
@@ -307,15 +308,29 @@ export default function Carnets({ configs, client, onClose }) {
 
       {/* message modal */}
       {modal.data && (
-        modal.type === "R" ? (
-        <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
-          <CarnetLookup carnet={modal.data} client={client} onUpdate={() => setModal({type: "U", data: modal.data})}/>
-        </section>
-      ) : (
+
+        modal.type === "U" ?
         <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] overflow-hidden">
           <CarnetUpdate carnet={modal.data} client={client} configurations={configs}  onUpdate={updateCarnet} onCancel={() => setModal({type: "R", data: modal.data})}  />
-        </section>
-      )
+        </section> :
+
+        modal.type === "SESSION_REPORTS" ?
+        <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
+          <CarnetReports carnet={modal.data} client={client} onClose={() => setModal({type: "R", data: modal.data})}/>
+        </section> :
+      
+        // --- CARNET LOOKUP
+        <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
+          <CarnetLookup carnet={modal.data} client={client} 
+          onUpdate={() => {
+            setModal({type: "U", data: modal.data})
+          }}
+          onReportsDisplay={() => { 
+            setModal({type: "SESSION_REPORTS", data: modal.data})
+            window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${modal.data.order}/reports`);
+          }}
+        />
+        </section>      
       )}
 
       {/* Alert Message */}

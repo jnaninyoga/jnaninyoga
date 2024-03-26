@@ -18,6 +18,8 @@ import Session from "./Session";
 
 CarnetLookup.propTypes = {
   onUpdate: PropTypes.func,
+  onReportsDisplay: PropTypes.func,
+
   client: PropTypes.object.isRequired,
   carnet: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -43,7 +45,7 @@ CarnetLookup.propTypes = {
   }).isRequired,
 }
 
-export default function CarnetLookup({ carnet, client, onUpdate=() => console.log("Carnet Lookup Update Clicked") }) {
+export default function CarnetLookup({ carnet, client, onUpdate=() => console.log("Carnet Lookup Update Clicked"), onReportsDisplay=() => console.log("Carnet Lookup Reports Clicked")}) {
   const [withCarnetIDURL, setWithCarnetIDURL] = useState(false);
 
   const PaidStatusDisplay = useMemo(() => {
@@ -194,7 +196,7 @@ export default function CarnetLookup({ carnet, client, onUpdate=() => console.lo
           {" "}With Carnet Id URL
         </label>
         <button onClick={window.print} className="yoga-btn drop-shadow-lg group"><i className="fi fi-sr-file-pdf flex items-center justify-center mr-1 group-hover:text-yoga-green-dark transition-all"></i>{" "}Download</button>
-        <button onClick={onUpdate} title={`Show Session Reports For This Carnet`} className={`h-full flex items-center cinzel uppercase px-4 py-3 outline outline-2 -outline-offset-[5px] text-yoga-white bg-gray-400 outline-white hover:bg-gray-600 active:scale-90 drop-shadow-lg transition-all`}><i className="fi fi-sr-newspaper mr-2 text-yoga-white flex justify-center items-center"></i>Session Reports</button>
+        <button onClick={onReportsDisplay} title={`Show Session Reports For This Carnet`} className={`h-full flex items-center cinzel uppercase px-4 py-3 outline outline-2 -outline-offset-[5px] text-yoga-white bg-gray-400 outline-white hover:bg-gray-600 active:scale-90 drop-shadow-lg transition-all`}><i className="fi fi-sr-newspaper mr-2 text-yoga-white flex justify-center items-center"></i>Session Reports</button>
         <button onClick={onUpdate} title={`Update ${client.firstname} ${client.lastname} Carnet`} className={`h-full flex items-center cinzel uppercase px-4 py-3 outline outline-2 -outline-offset-[5px] text-yoga-white bg-yoga-green outline-white hover:bg-yoga-green-dark active:scale-90 drop-shadow-lg transition-all`}><i className="fi fi-sr-user-pen mr-2 text-yoga-white flex justify-center items-center"></i>Edit</button>
       </footer>
     </section>
