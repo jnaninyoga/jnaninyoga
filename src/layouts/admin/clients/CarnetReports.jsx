@@ -23,7 +23,8 @@ import { updateSubColDocument, addSubDocument } from "../../../firebase";
 // === COMPONENTS ===
 // --- LOCAL ---
 import SessionReportCard from "./carnets/SessionReportCard";
-import SessionReport from "./carnets/SessionReport";
+import SessionReportCreate from "./carnets/SessionReportCreate";
+import SessionReportLookup from "./carnets/SessionReportLookup";
 // --- CHARTS ---
 
 CarnetReports.propTypes = {
@@ -101,7 +102,7 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
 
 
   // message modal state
-  const [modal, setModal] = useState(null);
+  const [modal, setModal] = useState(null); // SHOW, CREATE
   const [alert, setAlert] = useState({})
 
     // Alert Action
@@ -113,50 +114,22 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
 
   // === CRUD ===
   const displayReports = useCallback(carnet => {
-    setModal(carnet);
+    setModal({type: "SHOW", data: carnet});
     window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}/reports`);
   }, [client.id]);
 
 
-  //  ADD NEW CARNET
-  // add new carnet to the carnets data when the carnetsData state change
-  const addSessionReport = useCallback( async () => {
-    const newCarnet = carnetPicker(client, carnet);
-    const newCarnetData = await addSubDocument(configurations, names.clients, client.id, names.carnets, newCarnet);
-    if(newCarnetData.error) return setAlert(alertMessage("error", "Failed to add new carnet, please try again later."));
-    setAlert(alertMessage("success", "New carnet added successfully."));
-  }, [client, carnet]);
+  const addSessionReport = useCallback( async (sessionReports) => {
+    try {
+      const newSessionReports = [...SessionReports, sessionReports];
+      await updateSubColDocument(names.clients, client.id, configurations.carnets, carnet.id, {...carnet, sessionReports: newSessionReports});
+      setAlert({...alertMessage("C", "Session Report", true), onConfirm: alertAction, onCancel: alertAction});
+    } catch (error) {
+      console.error("Error on adding new session report: ", error);
+      setAlert({...alertMessage("E", "Session Report", false), onConfirm: alertAction, onCancel: alertAction});
+    }
 
-
-
-
-
-  // === DATA EXPORT ===
-  const exportToXLSX = useCallback(() => {
-    // check if there is a selected rows export the selected rows else export all rows
-    const data = SessionReports.map((report) => {
-    // formating the data to be readable
-    return {
-      "Client ID": client.id,
-      "ID": carnet.id,
-      "Order": carnet.order,
-      "Type": carnet.type,
-      "Period": periodAccronymMap(carnet.period),
-      "Sessions": carnet.sessions,
-      "Passed Sessions": carnet.passedSessions,
-      "Progress": carnet.progress+"%",
-      "Price": carnet.price + " MAD",
-      "Remaining Amount": carnet.remainingAmount + " MAD",
-      "Status": carnet.status.toCapitalCase(),
-
-      "Registeration Date": dateFormater(carnet.createdAt),
-      }
-    });
-
-    // exporting the data to xlsx
-    return toXlsx(data, `${client.firstname} ${client.lastname}-jnaninyoga-carnets`);
-
-  }, [SessionReports, carnet, client]);
+  }, [SessionReports, client, carnet, alertAction]);
 
 
     // close the model when click outside the modal in the parent element
@@ -192,8 +165,7 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
               <h2 className='cinzel text-xl font-semibold z-[50]'>Sessions Report For <span className="cinzel text-yoga-green font-bold">{client.firstname} {client.lastname}</span>  Carnet: <span className="cinzel text-yoga-green font-bold">#{carnet.order}</span></h2>
             </div>
             <div className="h-full w-[5px] bg-yoga-red bg-opacity-20 z-50"></div>
-            <button onClick={addSessionReport} title={`Add New Report To Carnet ${carnet.order}`} className={`h-full cinzel text-center uppercase font-semibold px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}><i className="mr-2 fi fi-sr-book-medical text-yoga-black flex justify-center items-center"></i> Add New Report</button>
-            <button type="button" onClick={exportToXLSX} className={`cinzel h-full min-w-max mx-1 px-3 py-2 text-center uppercase outline outline-2 -outline-offset-[5px] bg-yoga-green text-yoga-white outline-white hover:bg-yoga-green-dark active:scale-90 transition-all`}>Export All To Excel</button>
+            <button onClick={() => setModal("CREATE")} title={`Add New Report To Carnet ${carnet.order}`} className={`h-full cinzel text-center uppercase font-semibold px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}><i className="mr-2 fi fi-sr-book-medical text-yoga-black flex justify-center items-center"></i> Add New Report</button>
             <div className="h-full w-[5px] bg-yoga-red bg-opacity-20 z-100"></div>
           </section>
 
@@ -219,10 +191,18 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
         </main>
       </Box>
 
-      {/* message modal */}
-      {modal && (
+      {/* data modal */}
+      { modal && (
+        
+        // --- CREATE ---
+        modal == "CREATE" ?
+        <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
+          <SessionReportCreate carnet={carnet} client={client} onSubmit={addSessionReport} onCancel={() => setModal(null)}/>
+        </section> :
+
+        // --- SHOW ---
         <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
-          <SessionReport carnet={carnet} client={client} />
+          <SessionReportLookup carnet={carnet} client={client} />
         </section>
       )}
 

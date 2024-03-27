@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useData, useActiveBoard, useSearchParamsSerializer } from "../../../hooks";
 
 // === UTILS ===
-import { DefaultCarnetsSettings, alertMessage, dateFormater, periodAccronymMap, toXlsx, carnetPicker, CarnetFilters } from "../../../utils";
+import { alertMessage, dateFormater, periodAccronymMap, toXlsx, carnetPicker, CarnetFilters } from "../../../utils";
 import { clientFields } from '../../../utils/form';
 import PropTypes from "prop-types";
 
