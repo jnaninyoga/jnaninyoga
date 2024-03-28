@@ -31,7 +31,7 @@ Bullet.displayName = "Bullet";
 Bullet.propTypes = {
 	type: PropTypes.oneOf(["bullet", "stack"]),
 	title: PropTypes.string,
-	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
 	label: PropTypes.string,
 	link: PropTypes.string,
 	icon: PropTypes.string,

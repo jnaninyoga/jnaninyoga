@@ -34,7 +34,7 @@ export default function SessionReportCreate({carnet, client, onSubmit, onCancel}
   }
 
   const reset = () => {
-    setSessionReport({mental: "", physical: "", spiritual: "", energitic: "", emotional: ""});
+    setSessionReport({mental: "", physical: "", spiritual: "", energetic: "", emotional: ""});
     onCancel && onCancel();
   }
 
@@ -88,13 +88,13 @@ export default function SessionReportCreate({carnet, client, onSubmit, onCancel}
           <textarea id={"spiritual"} name="spiritual" rows={5} onChange={setupHealthReport} title={`Spiritual Health Report`} className="form-field-mouse-interact h-full w-full px-6 py-3 outline outline-2 outline-[var(--yoga-green)] -outline-offset-8 bg-yoga-white z-50 drop-shadow transition-all duration-300 ease-in-out" ></textarea>
         </label>
           
-        {/* --- Energitic HEALTH --- */}
-        <label htmlFor={"energitic"} className="w-full flex gap-2 flex-col transition-all duration-150">
+        {/* --- ENERGETIC  HEALTH --- */}
+        <label htmlFor={"energetic"} className="w-full flex gap-2 flex-col transition-all duration-150">
           <div className={`relative py-3 w-full flex justify-center items-center gap-2 overflow-hidden z-40`}>
-            <h4 className={`absolute left-10 pl-2 pr-4 cinzel font-bold uppercase w-max bg-yoga-white text-yoga-green-dark transition-all`}>Energitic Health:</h4>
+            <h4 className={`absolute left-10 pl-2 pr-4 cinzel font-bold uppercase w-max bg-yoga-white text-yoga-green-dark transition-all`}>Energetic Health:</h4>
             <div className="w-full h-[2.5px] bg-yoga-red bg-opacity-20"></div>
           </div>
-          <textarea id={"energitic"} name="energitic" rows={5} onChange={setupHealthReport} title={`Energitic Health Report`} className="form-field-mouse-interact h-full w-full px-6 py-3 outline outline-2 outline-[var(--yoga-green)] -outline-offset-8 bg-yoga-white z-50 drop-shadow transition-all duration-300 ease-in-out" ></textarea>
+          <textarea id={"energetic"} name="energetic" rows={5} onChange={setupHealthReport} title={`Energetic Health Report`} className="form-field-mouse-interact h-full w-full px-6 py-3 outline outline-2 outline-[var(--yoga-green)] -outline-offset-8 bg-yoga-white z-50 drop-shadow transition-all duration-300 ease-in-out" ></textarea>
         </label>
 
         {/* --- Emotional HEALTH --- */}

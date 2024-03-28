@@ -105,6 +105,16 @@ const router = [
     element: <Dashboard />,
     errorElement: <Error/>
   },
+  {
+    path: "/lotus/:board/:id/:view/:viewId/:subView",
+    element: <Dashboard />,
+    errorElement: <Error/>
+  },
+  {
+    path: "/lotus/:board/:id/:view/:viewId/:subView/:subViewId",
+    element: <Dashboard />,
+    errorElement: <Error/>
+  },
   //-------- 404 - Not Found Error -------//
   {
     path: "*",

@@ -1,5 +1,6 @@
 // === HOOKS ===
 // import { useState } from "react";
+import { useMemo } from "react";
 
 // === ASSETS ===
 import logo from "../../../../assets/imgs/spine/logo.webp";
@@ -7,7 +8,6 @@ import logo from "../../../../assets/imgs/spine/logo.webp";
 // === UTILS ===
 import PropTypes from "prop-types";
 import { CarnetStatus, dateFormater } from "../../../../utils";
-import { useMemo } from "react";
 
 CarnetCard.propTypes = {
   onShow: PropTypes.func,

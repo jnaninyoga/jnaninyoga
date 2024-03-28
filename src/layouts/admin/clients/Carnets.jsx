@@ -85,7 +85,7 @@ export default function Carnets({ configs, client, onClose }) {
   const filters = useMemo(() => CarnetFilters, []);
 
   // search params
-  const {boardParams} = useActiveBoard();
+  const { boardParams } = useActiveBoard();
   const searchParams = useSearchParamsSerializer();
 
   // Alert Action
@@ -102,15 +102,24 @@ export default function Carnets({ configs, client, onClose }) {
   // check if the carnets id 'ID' is presented in the search params,and set the Modal with the coresponding carnet data
   useEffect(() => {
     if(!boardParams.viewId) return;
-    const carnet = carnets.find((carnet) => carnet.order === boardParams.viewId || carnet.id === boardParams.viewId);
-    carnet && setModal({type: "R", data: carnet});
-  }, [boardParams, carnets]);
+    const carnet = carnets.find((carnet) => carnet.order == boardParams.viewId || carnet.id == boardParams.viewId);
+    console.log("Carnet: ", carnet)
+    if (!carnet) return;
+    // CARNET LOOKUP
+    setModal({type: "R", data: carnet});
+    window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}`);
+    // SESSION REPORTS
+    if(boardParams.subView && boardParams.subView.toLowerCase() === "reports") {
+      setModal({type: "SESSION_REPORTS", data: carnet})
+      window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}/reports`);
+    }
+  }, [boardParams, carnets, client]);
 
   // check if the uri conayis preset filter and set the filter state
   useEffect(() => {
     if(!searchParams.filter || !filters.includes(searchParams.filter.toLowerCase()) || searchParams.filter.toLowerCase() === "all") {
       // clear the search params without refreshing the page
-      window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets`);
+      setFilter("all");
       return;
     }
     setFilter(searchParams.filter.toLowerCase());
@@ -311,12 +320,23 @@ export default function Carnets({ configs, client, onClose }) {
 
         modal.type === "U" ?
         <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] overflow-hidden">
-          <CarnetUpdate carnet={modal.data} client={client} configurations={configs}  onUpdate={updateCarnet} onCancel={() => setModal({type: "R", data: modal.data})}  />
+          <CarnetUpdate 
+            carnet={modal.data} 
+            client={client} 
+            configurations={configs}  
+            onUpdate={updateCarnet} 
+            onCancel={() => displayCarnets(modal.data)}
+          />
         </section> :
 
         modal.type === "SESSION_REPORTS" ?
         <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
-          <CarnetReports carnet={modal.data} client={client} onClose={() => setModal({type: "R", data: modal.data})}/>
+          <CarnetReports 
+            carnet={modal.data} 
+            client={client} 
+            updateCarnets={setCarnets} 
+            onClose={() => displayCarnets(modal.data)}
+          />
         </section> :
       
         // --- CARNET LOOKUP

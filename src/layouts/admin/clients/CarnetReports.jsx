@@ -1,9 +1,9 @@
 // === HOOKS ===
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useData, useActiveBoard, useSearchParamsSerializer } from "../../../hooks";
+import { useActiveBoard } from "../../../hooks";
 
 // === UTILS ===
-import { DefaultCarnetsSettings, CarnetStatus, alertMessage, dateFormater, periodAccronymMap, toXlsx, carnetPicker, CarnetFilters } from "../../../utils";
+import { DefaultCarnetsSettings, CarnetStatus, alertMessage, dateFormater, toXlsx } from "../../../utils";
 import { clientFields } from '../../../utils/form';
 import PropTypes from "prop-types";
 
@@ -12,13 +12,12 @@ import Icon from "../../../assets/svg";
 
 // === LAYOUTS ===
 import Alert from "../shared/Alert";
-import Loader from "../../global/Loader";
 import { Box } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 
 // === DB ===
 import { names, configurations } from "../../../firebase/collections";
-import { updateSubColDocument, addSubDocument } from "../../../firebase";
+import { updateSubColDocument } from "../../../firebase";
 
 // === COMPONENTS ===
 // --- LOCAL ---
@@ -92,18 +91,32 @@ CarnetReports.propTypes = {
 	}),
 
   configs: PropTypes.shape(DefaultCarnetsSettings),
+  updateCarnets: PropTypes.func.isRequired,
 };
 
 
 
 
-export default function CarnetReports({ carnet, client, onClose=() => console.log("Carnet Reports Closed")}) {
+export default function CarnetReports({ carnet, client, updateCarnets, onClose=() => console.log("Carnet Reports Closed")}) {
   const SessionReports = useMemo(() => carnet.sessionReports || [], [carnet.sessionReports]);
 
 
   // message modal state
-  const [modal, setModal] = useState(null); // SHOW, CREATE
+  const [modal, setModal] = useState({type:"", data: null}); // SHOW, CREATE
   const [alert, setAlert] = useState({})
+
+  // search params
+  const { boardParams } = useActiveBoard();
+
+  useEffect(() => {
+    if(!boardParams.subViewId) return;
+      // map: session = 1 To /reports/S1
+      const report = SessionReports.find(r => r.session === parseInt(boardParams.subViewId.toLowerCase().replace("s", "")));
+      if (!report) return;
+      setModal({type:"SHOW", data: report});
+      window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}/reports/S${report.session}`);
+  }, [boardParams.subViewId, SessionReports, client, carnet]);
+
 
     // Alert Action
   const alertAction = useCallback((onAction, closeAlert=true) => {
@@ -113,15 +126,17 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
 
 
   // === CRUD ===
-  const displayReports = useCallback(carnet => {
-    setModal({type: "SHOW", data: carnet});
-    window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}/reports`);
-  }, [client.id]);
+  const displayReports = useCallback(report => {
+    setModal({type:"SHOW", data: report});
+    window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}/reports/S${report.session}`);
+  }, [carnet, client]);
 
 
   const addSessionReport = useCallback( async (sessionReports) => {
     try {
       const newSessionReports = [...SessionReports, sessionReports];
+      // add the new session report to the current carnets data
+      updateCarnets(prev => prev.map(c => c.id === carnet.id ? {...c, sessionReports: newSessionReports} : c ));
       await updateSubColDocument(names.clients, client.id, configurations.carnets, carnet.id, {...carnet, sessionReports: newSessionReports});
       setAlert({...alertMessage("C", "Session Report", true), onConfirm: alertAction, onCancel: alertAction});
     } catch (error) {
@@ -129,15 +144,15 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
       setAlert({...alertMessage("E", "Session Report", false), onConfirm: alertAction, onCancel: alertAction});
     }
 
-  }, [SessionReports, client, carnet, alertAction]);
+  }, [SessionReports, client, carnet, alertAction, updateCarnets]);
 
 
     // close the model when click outside the modal in the parent element
   const closeModal = e =>{
     if(e.target === e.currentTarget){
-      setModal(null);
+      setModal({type:"", data: null});
       setAlert({});
-      window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets`);
+      window.history.replaceState(null, null, `/lotus/${names.clients}/${client.id}/carnets/${carnet.order}/reports/`);
     }
   }
 
@@ -165,7 +180,7 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
               <h2 className='cinzel text-xl font-semibold z-[50]'>Sessions Report For <span className="cinzel text-yoga-green font-bold">{client.firstname} {client.lastname}</span>  Carnet: <span className="cinzel text-yoga-green font-bold">#{carnet.order}</span></h2>
             </div>
             <div className="h-full w-[5px] bg-yoga-red bg-opacity-20 z-50"></div>
-            <button onClick={() => setModal("CREATE")} title={`Add New Report To Carnet ${carnet.order}`} className={`h-full cinzel text-center uppercase font-semibold px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}><i className="mr-2 fi fi-sr-book-medical text-yoga-black flex justify-center items-center"></i> Add New Report</button>
+            <button onClick={() => setModal({type:"CREATE", data: null})} title={`Add New Report To Carnet ${carnet.order}`} className={`h-full cinzel text-center uppercase font-semibold px-3 py-2 flex justify-center items-center outline outline-2 -outline-offset-[5px] bg-yoga-red outline-white hover:bg-yoga-red-dark active:scale-90 transition-all`}><i className="mr-2 fi fi-sr-book-medical text-yoga-black flex justify-center items-center"></i> Add New Report</button>
             <div className="h-full w-[5px] bg-yoga-red bg-opacity-20 z-100"></div>
           </section>
 
@@ -179,12 +194,13 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
               <p className="cinzel text-xl text-center uppercase">There is no Session Reports sets for this Client Carnet yet</p>
             </section>
           ) : (
-            SessionReports.map((carnet) => 
+            SessionReports.map((report) => 
               <SessionReportCard
-                key={carnet.id} 
+                key={report.session} 
+                report={report}
                 carnet={carnet}
                 client={client} 
-                onShow={() => displayReports(carnet)}
+                onShow={() => displayReports(report)}
               />
             )
           )}
@@ -192,17 +208,18 @@ export default function CarnetReports({ carnet, client, onClose=() => console.lo
       </Box>
 
       {/* data modal */}
-      { modal && (
+      { modal.type && (
         
         // --- CREATE ---
-        modal == "CREATE" ?
+        modal.type == "CREATE" ?
         <section className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
           <SessionReportCreate carnet={carnet} client={client} onSubmit={addSessionReport} onCancel={() => setModal(null)}/>
         </section> :
 
         // --- SHOW ---
-        <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center print:items-start z-[200000] print:h-screen print:w-screen print:bg-white print:bg-texture print:texture-v-1 print:before:opacity-20 print:py-6 overflow-hidden">
-          <SessionReportLookup carnet={carnet} client={client} />
+        modal.type == "SHOW" &&
+        <section onClick={closeModal} className="absolute h-full w-full top-0 left-0 bg-black bg-opacity-40 print:bg-opacity-100 flex justify-center items-center print:fixed print:left-0 print:top-0 z-[200000] print:h-screen print:w-screen print:bg-white print:before:hidden">
+          <SessionReportLookup report={modal.data} carnet={carnet} client={client} />
         </section>
       )}
 
